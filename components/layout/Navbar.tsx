@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Building2, Menu, X } from "lucide-react";
+import { Building2, Menu, X, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useUIStore } from "@/lib/store";
 
@@ -32,7 +32,33 @@ export function Navbar() {
             <NavLink href="/">Home</NavLink>
             <NavLink href="/about">About Us</NavLink>
             <NavLink href="/services">Services</NavLink>
-            <NavLink href="/trade">Trade Solutions</NavLink>
+            
+            {/* Trade Solutions Dropdown */}
+            <div className="relative group">
+              <Link 
+                href="/trade"
+                className="flex items-center gap-1 text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white transition-colors py-4"
+              >
+                Trade Solutions <ChevronDown className="w-4 h-4 transition-transform group-hover:rotate-180" />
+              </Link>
+              <div className="absolute top-full left-0 w-64 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-2 group-hover:translate-y-0">
+                <div className="bg-white dark:bg-slate-900 rounded-xl shadow-xl border border-slate-100 dark:border-slate-800 p-2 overflow-hidden flex flex-col">
+                  <Link href="/trade/import-export" className="px-4 py-3 text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-primary rounded-lg transition-colors text-left">
+                    Import/Export Services
+                  </Link>
+                  <Link href="/trade/supply-chain" className="px-4 py-3 text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-primary rounded-lg transition-colors text-left">
+                    Supply Chain Management
+                  </Link>
+                  <Link href="/trade/partnerships" className="px-4 py-3 text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-primary rounded-lg transition-colors text-left">
+                    Partnerships & Collaborations
+                  </Link>
+                  <Link href="/trade/expertise" className="px-4 py-3 text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-primary rounded-lg transition-colors text-left">
+                    Industry-Specific Expertise
+                  </Link>
+                </div>
+              </div>
+            </div>
+
             <NavLink href="/portfolio">Projects</NavLink>
             <NavLink href="/contact">Contact</NavLink>
           </div>
@@ -76,6 +102,21 @@ export function Navbar() {
             <MobileNavLink href="/trade" onClick={closeMobileMenu}>
               Trade Solutions
             </MobileNavLink>
+            {/* Mobile Submenu */}
+            <div className="pl-4 space-y-1 border-l-2 border-slate-100 dark:border-slate-800 ml-2">
+              <MobileNavLink href="/trade/import-export" onClick={closeMobileMenu} className="text-sm py-2">
+                Import/Export
+              </MobileNavLink>
+              <MobileNavLink href="/trade/supply-chain" onClick={closeMobileMenu} className="text-sm py-2">
+                Supply Chain
+              </MobileNavLink>
+              <MobileNavLink href="/trade/partnerships" onClick={closeMobileMenu} className="text-sm py-2">
+                Partnerships
+              </MobileNavLink>
+              <MobileNavLink href="/trade/expertise" onClick={closeMobileMenu} className="text-sm py-2">
+                Industry Expertise
+              </MobileNavLink>
+            </div>
             <MobileNavLink href="/portfolio" onClick={closeMobileMenu}>
               Projects
             </MobileNavLink>
@@ -108,16 +149,18 @@ function MobileNavLink({
   href,
   onClick,
   children,
+  className = "",
 }: {
   href: string;
   onClick: () => void;
   children: React.ReactNode;
+  className?: string;
 }) {
   return (
     <Link
       href={href}
       onClick={onClick}
-      className="block py-3 px-4 text-base font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-md transition-colors"
+      className={`block py-3 px-4 text-base font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-md transition-colors ${className}`}
     >
       {children}
     </Link>
