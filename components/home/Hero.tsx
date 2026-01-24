@@ -1,6 +1,7 @@
-import { Download, Verified } from "lucide-react";
+import { ArrowRight, Verified } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import Link from "next/link";
 
 export function Hero() {
   return (
@@ -33,10 +34,12 @@ export function Hero() {
             Mekelle University Consultancy and Business Enterprise serves as the bridge between academic rigor and practical industrial solutions.
           </p>
           <div className="flex flex-wrap gap-4">
-            <Button className="bg-accent text-primary px-8 py-6 rounded-md font-bold hover:bg-white transition-all flex items-center gap-2 text-base">
-              <Download size={20} />
-              Corporate Profile
-            </Button>
+            <Link href="/contact">
+              <Button className="bg-accent text-primary px-8 py-6 rounded-md font-bold hover:bg-white transition-all flex items-center gap-2 text-base">
+                Contact Us
+                <ArrowRight size={20} />
+              </Button>
+            </Link>
             <Button variant="outline" className="bg-white/10 backdrop-blur-md border-white/20 text-white px-8 py-6 rounded-md font-bold hover:bg-white/20 transition-all text-base border">
               Our Impact
             </Button>
