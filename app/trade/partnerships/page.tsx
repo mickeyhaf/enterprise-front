@@ -74,7 +74,7 @@ export default function PartnershipsPage() {
                 className="h-14 px-10 rounded-xl bg-primary text-white font-bold hover:bg-primary/90 shadow-lg shadow-primary/20 transition-all text-base"
                 onClick={() => setIsModalOpen(true)}
               >
-                Become a Strategic Partner <ArrowRight className="ml-3 w-5 h-5" />
+                Become a Partner <ArrowRight className="ml-3 w-5 h-5" />
               </Button>
             </div>
 

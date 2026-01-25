@@ -115,7 +115,7 @@ export default function ExpertisePage() {
                       className="w-full h-16 font-bold bg-primary text-white hover:bg-accent hover:text-primary justify-between rounded-xl shadow-lg shadow-primary/10 transition-all text-base px-8 group/btn"
                       onClick={() => handleConnect(industry.title)}
                     >
-                      Connect with an Industry Expert <ArrowRight className="ml-2 w-5 h-5 transition-transform group-hover/btn:translate-x-1" />
+                      Consult an Expert <ArrowRight className="ml-2 w-5 h-5 transition-transform group-hover/btn:translate-x-1" />
                     </Button>
                   </div>
                 </div>
