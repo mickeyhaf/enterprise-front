@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Building2, MapPin, Mail, Phone } from "lucide-react";
+import { Building2, MapPin, Mail, Phone, Facebook, Twitter, Linkedin } from "lucide-react";
 
 export function Footer() {
   return (
@@ -14,17 +14,19 @@ export function Footer() {
                 MU CONSULTANCY & BUSINESS ENTERPRISE
               </h2>
             </div>
-            <p className="text-sm text-slate-300 leading-relaxed mb-6">
+            <p className="text-sm text-slate-300 leading-relaxed mb-8">
               Mekelle, Ethiopia. Providing excellence in research, industrial consultancy, and trade solutions since 1993.
             </p>
-            <div className="bg-white/10 p-2 rounded-lg inline-flex items-center gap-3 px-4">
-              <span className="text-[10px] uppercase font-bold tracking-widest opacity-60">
-                Strategic Partner
-              </span>
-              <div className="h-4 w-[1px] bg-white/20"></div>
-              <span className="font-display font-bold text-sm tracking-tight italic">
-                MEKELLE UNIVERSITY
-              </span>
+            <div className="flex gap-4 mb-8">
+              <Link href="#" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-accent hover:text-primary transition-all duration-300">
+                <Facebook size={18} />
+              </Link>
+              <Link href="#" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-accent hover:text-primary transition-all duration-300">
+                <Twitter size={18} />
+              </Link>
+              <Link href="#" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-accent hover:text-primary transition-all duration-300">
+                <Linkedin size={18} />
+              </Link>
             </div>
           </div>
 
@@ -32,11 +34,6 @@ export function Footer() {
           <div>
             <h3 className="text-lg font-bold mb-6">Quick Links</h3>
             <ul className="space-y-4 text-sm text-slate-300">
-              <li>
-                <Link href="#" className="hover:text-accent transition-colors">
-                  University Website
-                </Link>
-              </li>
               <li>
                 <Link href="/services" className="hover:text-accent transition-colors">
                   Service Catalog
@@ -60,33 +57,27 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Resource Center */}
           <div>
             <h3 className="text-lg font-bold mb-6">Resource Center</h3>
             <ul className="space-y-4 text-sm text-slate-300">
               <li>
-                <Link href="/contact" className="hover:text-accent transition-colors">
-                  Company FAQ
+                <Link href="/resources/brochures" className="hover:text-accent transition-colors">
+                  Brochures
                 </Link>
               </li>
               <li>
-                <Link href="/downloads" className="hover:text-accent transition-colors">
-                  Compliance Reports
+                <Link href="/resources/whitepapers" className="hover:text-accent transition-colors">
+                  Whitepapers
                 </Link>
               </li>
               <li>
-                <Link href="/downloads" className="hover:text-accent transition-colors">
-                  Technical Briefs
+                <Link href="/resources/case-studies" className="hover:text-accent transition-colors">
+                  Case Studies
                 </Link>
               </li>
               <li>
-                <Link href="/downloads" className="hover:text-accent transition-colors">
-                  Client Guidelines
-                </Link>
-              </li>
-              <li>
-                <Link href="/contact" className="hover:text-accent transition-colors">
-                  Feedback Portal
+                <Link href="/resources/reports" className="hover:text-accent transition-colors">
+                  Annual Reports
                 </Link>
               </li>
             </ul>
