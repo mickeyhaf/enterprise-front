@@ -2,81 +2,51 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { PageShell } from "@/components/layout/PageShell";
 import { SectionHeader } from "@/components/ui/SectionHeader";
-import { ArrowRight, Building2, Leaf, BarChart3, Globe, CheckCircle } from "lucide-react";
+import { ArrowRight, BarChart3, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
+import { PROJECTS } from "@/lib/projects";
 
 export default function PortfolioPage() {
-  const projects = [
-    {
-      title: "Mekelle Industrial Park Expansion",
-      category: "Engineering & Construction",
-      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCy0CHoOaR_EuZN-cOReFWOt3iAsGtQeZ0grPlPurcIegBkZj7TQDqRT4Fndi1TEfYaV7fHQR-jggMj5fqBq6y-qI3BXKdchQk14OveuGngJPx8c12b0kqAGQhaCbRGLDnJDtby4IuGV42Oa_Vh1u2MSVbvvrTfFpriQ7c-RaIAZRcNk3NEFXkZiJikWYFVSEI2R8n43TOXo0qUWLFafKmoZ9TH1qH6MH5iJHzmN4l7XU8kgptPeRMpkXMOwjz4E4fLx81vA-Frlsuw",
-      description: "Structural design and project management for the 50-hectare expansion of the industrial park facilities.",
-      icon: Building2
-    },
-    {
-      title: "Sustainable Agriculture Initiative",
-      category: "Agri-Business",
-      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuAAj2TqrSz5GqTnny1EaluHJdm8FZ2t59TX6BXKm7-wrKLO7cN7JYHthpE94yXx4ymfl6r4sxn50g5kYsAFepye2qDnBuUDbw-ypEtM-kjBQh0hTypufXvfeKveGZnAeWxBNEvJFc4ItvFDmsPIYMGstLGTIrCa_6q6GYz-ilZ-57QqqxJMPvWzweU3af0TvCpImFgCGlHza8TE7_ZvCm9BTlg8BCRFgVY1TmVwwo5qXXXn0jOPKTTQg2GmVVjbwXJ4oVP-AeolBVTm",
-      description: "Supply chain optimization for organic sesame export, benefiting over 2,000 local farmers.",
-      icon: Leaf
-    },
-    {
-      title: "Regional Trade Logistics Study",
-      category: "Strategic Consultancy",
-      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDuq25mY3vXtdcC6waRuuYWdh-edBAMgq6MdS_JXCUmLFWfLOoyvNpZoj_099FXdAgo9XaQ8KE8PLMnWwdiQ7MyBH8IGsagy-as-ltkMky2oJGuxvfaONJ99VOQReAmppFueZxJ47Ycar9VSmxPWdSXnw7WzSRmNzGz9fYWQM84mOzB0uRpiD6zNa5QAHqZND5H5k0IyHOohMJrcRfAw9nUa8zYUh0NNjbxcNf0XrtPydzrGQfxKG0nfWx0zSDgwyVglJ7HL0HJW3ir",
-      description: "Comprehensive feasibility study for a new dry port facility in Northern Ethiopia.",
-      icon: Globe
-    },
-    {
-      title: "Textile Quality Assurance System",
-      category: "Manufacturing",
-      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuArZfHMXyLu6bE9DlN9LiX3kznR88dr2mhDOpHw0gvXhsxHPlaKa_lb3vpOWPa38-xxvHDwtsPx4ethSbFQKdDFuP86XQGUb5baDVtCWoovEwFD_1E1y1FV3pghTjgsP3RUAafZMG55UdLngpbe0CA1P85Z7nqVuzHKjV-yK954Et4dFvLeju_XwGkfJbRZBu5fix3mhgksBTyu1dvG4In6ssgP8yTv1NHeUAcxlJ2QT0iCRlzIs28nFTaDw5U73jj5CCOtJIt0lytN",
-      description: "Implementation of ISO 9001:2015 quality management systems for a leading garment manufacturer.",
-      icon: CheckCircle
-    }
-  ];
-
   return (
     <PageShell>
       <Navbar />
-      
+
       {/* Hero Section */}
       <header className="relative min-h-[calc(100vh-5rem)] flex items-center overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0 w-full h-full">
-           <Image
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuDCtxVlcl-gnjzWsuPlV6PxBvqqR1hdBZEw6kBWG6u07uAL4mBktYhy_vE5wOVnSn86F4SyCqTNkBGnOAZFmT2L1J4BmV-j-41sFOkGVi8H-0b63_se1gelW8aW-bmS1k3fa9-ZtNaRirti2pAl6mFEsKhuUTT_tzlyw3jIr0ilKu2CSyndyw73u-KJsjEJvJndBI3P1cV0zIvFyIPAeVCnzK4M3400wYIaIvX668JrC7NiRwlEeOjKg8DF97Gd31pFa7i1j4zIkZQZ"
-              alt="Engineering blueprint review"
-              fill
-              className="object-cover grayscale-[20%]"
-              priority
-           />
+          <Image
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDCtxVlcl-gnjzWsuPlV6PxBvqqR1hdBZEw6kBWG6u07uAL4mBktYhy_vE5wOVnSn86F4SyCqTNkBGnOAZFmT2L1J4BmV-j-41sFOkGVi8H-0b63_se1gelW8aW-bmS1k3fa9-ZtNaRirti2pAl6mFEsKhuUTT_tzlyw3jIr0ilKu2CSyndyw73u-KJsjEJvJndBI3P1cV0zIvFyIPAeVCnzK4M3400wYIaIvX668JrC7NiRwlEeOjKg8DF97Gd31pFa7i1j4zIkZQZ"
+            alt="Engineering blueprint review"
+            fill
+            className="object-cover grayscale-[20%]"
+            priority
+          />
         </div>
-        
+
         {/* Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-r from-primary/95 to-primary/40"></div>
 
         {/* Content */}
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-white w-full">
           <div className="max-w-3xl">
-             <div className="inline-flex items-center gap-2 bg-accent text-primary px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-6">
-               <BarChart3 size={16} />
-               Proven Track Record
-             </div>
-             <h1 className="text-5xl md:text-7xl font-display font-extrabold mb-6 leading-[1.1]">
-               Our Projects & <span className="text-accent italic">Impact</span>
-             </h1>
-             <p className="text-lg text-slate-100 mb-8 max-w-xl font-light">
-               Delivering excellence across industries. From large-scale infrastructure to strategic business solutions, explore how we transform vision into reality.
-             </p>
-             <div className="flex gap-4">
-               <Button size="lg" className="bg-accent text-primary px-8 py-6 rounded-md font-bold hover:bg-white transition-all flex items-center gap-2 text-base">
-                 Download Portfolio <ArrowRight className="w-5 h-5" />
-               </Button>
-             </div>
+            <div className="inline-flex items-center gap-2 bg-accent text-primary px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-6">
+              <BarChart3 size={16} />
+              Proven Track Record
+            </div>
+            <h1 className="text-5xl md:text-7xl font-display font-extrabold mb-6 leading-[1.1]">
+              Our Projects & <span className="text-accent italic">Impact</span>
+            </h1>
+            <p className="text-lg text-slate-100 mb-8 max-w-xl font-light">
+              Delivering excellence across industries. From large-scale infrastructure to strategic business solutions, explore how we transform vision into reality.
+            </p>
+            <div className="flex gap-4">
+              <Button size="lg" className="bg-accent text-primary px-8 py-6 rounded-md font-bold hover:bg-white transition-all flex items-center gap-2 text-base">
+                Download Portfolio <ArrowRight className="w-5 h-5" />
+              </Button>
+            </div>
           </div>
         </div>
       </header>
@@ -84,65 +54,67 @@ export default function PortfolioPage() {
       {/* Stats Section */}
       <section className="bg-primary text-white py-12 border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-             <div>
-               <div className="text-4xl font-bold font-display mb-2">150+</div>
-               <div className="text-sm opacity-80 uppercase tracking-widest">Projects Completed</div>
-             </div>
-             <div>
-               <div className="text-4xl font-bold font-display mb-2">30+</div>
-               <div className="text-sm opacity-80 uppercase tracking-widest">Years Experience</div>
-             </div>
-             <div>
-               <div className="text-4xl font-bold font-display mb-2">50+</div>
-               <div className="text-sm opacity-80 uppercase tracking-widest">Global Partners</div>
-             </div>
-             <div>
-               <div className="text-4xl font-bold font-display mb-2">2B+</div>
-               <div className="text-sm opacity-80 uppercase tracking-widest">ETB Value Generated</div>
-             </div>
-           </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+            <div>
+              <div className="text-4xl font-bold font-display mb-2">150+</div>
+              <div className="text-sm opacity-80 uppercase tracking-widest">Projects Completed</div>
+            </div>
+            <div>
+              <div className="text-4xl font-bold font-display mb-2">30+</div>
+              <div className="text-sm opacity-80 uppercase tracking-widest">Years Experience</div>
+            </div>
+            <div>
+              <div className="text-4xl font-bold font-display mb-2">50+</div>
+              <div className="text-sm opacity-80 uppercase tracking-widest">Global Partners</div>
+            </div>
+            <div>
+              <div className="text-4xl font-bold font-display mb-2">2B+</div>
+              <div className="text-sm opacity-80 uppercase tracking-widest">ETB Value Generated</div>
+            </div>
+          </div>
         </div>
       </section>
 
       {/* Projects Grid */}
       <section className="py-24 bg-slate-50 dark:bg-slate-950">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionHeader 
-             title="Featured Projects" 
-             description="A selection of our defining work across various sectors."
-             centered
-             className="mb-16"
+          <SectionHeader
+            title="Featured Projects"
+            description="A selection of our defining work across various sectors."
+            centered
+            className="mb-16"
           />
-          
+
           <div className="grid md:grid-cols-2 gap-8">
-            {projects.map((project, index) => (
+            {PROJECTS.map((project, index) => (
               <div key={index} className="group bg-white dark:bg-slate-900 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 hover:shadow-2xl transition-all duration-300 flex flex-col h-full">
                 <div className="relative h-64 overflow-hidden">
-                   <Image 
-                     src={project.image} 
-                     alt={project.title}
-                     fill
-                     className="object-cover group-hover:scale-105 transition-transform duration-700"
-                   />
-                   <div className="absolute top-4 left-4 bg-white/90 dark:bg-slate-900/90 backdrop-blur text-xs font-bold px-3 py-1 rounded-full flex items-center gap-2 shadow-sm">
-                     <project.icon className="w-3 h-3 text-primary" />
-                     {project.category}
-                   </div>
+                  <Image
+                    src={project.image}
+                    alt={project.title}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-700"
+                  />
+                  <div className="absolute top-4 left-4 bg-white/90 dark:bg-slate-900/90 backdrop-blur text-xs font-bold px-3 py-1 rounded-full flex items-center gap-2 shadow-sm">
+                    <project.icon className="w-3 h-3 text-primary" />
+                    {project.category}
+                  </div>
                 </div>
                 <div className="p-8 flex flex-col flex-grow">
-                   <h3 className="text-2xl font-bold font-display mb-4 group-hover:text-primary transition-colors">{project.title}</h3>
-                   <p className="text-slate-600 dark:text-slate-400 mb-6 flex-grow leading-relaxed">
-                     {project.description}
-                   </p>
-                   <Button variant="outline" className="w-full justify-between hover:bg-primary hover:text-white border-slate-300 dark:border-slate-700">
-                     View Case Study <ArrowRight className="w-4 h-4" />
-                   </Button>
+                  <h3 className="text-2xl font-bold font-display mb-4 group-hover:text-primary transition-colors">{project.title}</h3>
+                  <p className="text-slate-600 dark:text-slate-400 mb-6 flex-grow leading-relaxed">
+                    {project.description}
+                  </p>
+                  <Link href={`/portfolio/${project.slug}`} className="w-full">
+                    <Button variant="outline" className="w-full justify-between hover:bg-primary hover:text-white border-slate-300 dark:border-slate-700">
+                      View Case Study <ArrowRight className="w-4 h-4" />
+                    </Button>
+                  </Link>
                 </div>
               </div>
             ))}
           </div>
-          
+
           <div className="mt-12 text-center">
             <Button variant="ghost" className="font-bold text-slate-500 hover:text-primary">
               Load More Projects
@@ -154,24 +126,24 @@ export default function PortfolioPage() {
       {/* Testimonials */}
       <section className="py-24 bg-white dark:bg-slate-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-           <SectionHeader title="Client Success Stories" centered />
-           <div className="grid md:grid-cols-3 gap-8 mt-12">
-             <TestimonialCard 
-               quote="MU Consultancy delivered exceptional results for our infrastructure project. Their technical expertise coupled with local insight is unmatched."
-               author="Ato Kebede T."
-               role="CEO, Northern Construction Corp"
-             />
-             <TestimonialCard 
-               quote="Professional, reliable, and innovative. They guided us through complex regulatory landscapes seamlessly."
-               author="Dr. Sarah Jones"
-               role="Director, NGO International"
-             />
-             <TestimonialCard 
-               quote="Their trade solutions streamlined our supply chain significantly. We saw a 20% reduction in logistics costs."
-               author="Ms. Bethelhem A."
-               role="Ops Manager, Trans-Ethiopia Trading"
-             />
-           </div>
+          <SectionHeader title="Client Success Stories" centered />
+          <div className="grid md:grid-cols-3 gap-8 mt-12">
+            <TestimonialCard
+              quote="MU Consultancy delivered exceptional results for our infrastructure project. Their technical expertise coupled with local insight is unmatched."
+              author="Ato Kebede T."
+              role="CEO, Northern Construction Corp"
+            />
+            <TestimonialCard
+              quote="Professional, reliable, and innovative. They guided us through complex regulatory landscapes seamlessly."
+              author="Dr. Sarah Jones"
+              role="Director, NGO International"
+            />
+            <TestimonialCard
+              quote="Their trade solutions streamlined our supply chain significantly. We saw a 20% reduction in logistics costs."
+              author="Ms. Bethelhem A."
+              role="Ops Manager, Trans-Ethiopia Trading"
+            />
+          </div>
         </div>
       </section>
 
@@ -180,12 +152,12 @@ export default function PortfolioPage() {
         <div className="max-w-7xl mx-auto px-4 text-center">
           <p className="text-sm font-bold uppercase tracking-widest text-slate-500 mb-8">Trusted By Industry Leaders</p>
           <div className="flex flex-wrap justify-center gap-12 items-center opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
-             {/* Simple text placeholders for logos for now, but styled nicely */}
-             <div className="text-xl font-bold font-display text-slate-700 dark:text-slate-300">WORLD BANK</div>
-             <div className="text-xl font-bold font-display text-slate-700 dark:text-slate-300">UN HABITAT</div>
-             <div className="text-xl font-bold font-display text-slate-700 dark:text-slate-300">GIZ</div>
-             <div className="text-xl font-bold font-display text-slate-700 dark:text-slate-300">MINISTRY OF MINES</div>
-             <div className="text-xl font-bold font-display text-slate-700 dark:text-slate-300">ETHIO TELECOM</div>
+            {/* Simple text placeholders for logos for now, but styled nicely */}
+            <div className="text-xl font-bold font-display text-slate-700 dark:text-slate-300">WORLD BANK</div>
+            <div className="text-xl font-bold font-display text-slate-700 dark:text-slate-300">UN HABITAT</div>
+            <div className="text-xl font-bold font-display text-slate-700 dark:text-slate-300">GIZ</div>
+            <div className="text-xl font-bold font-display text-slate-700 dark:text-slate-300">MINISTRY OF MINES</div>
+            <div className="text-xl font-bold font-display text-slate-700 dark:text-slate-300">ETHIO TELECOM</div>
           </div>
         </div>
       </section>
