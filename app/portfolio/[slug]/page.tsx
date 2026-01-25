@@ -22,9 +22,9 @@ export default function ProjectDetailPage({ params }: { params: Promise<{ slug: 
                 <Navbar />
                 <div className="min-h-[60vh] flex items-center justify-center">
                     <div className="text-center">
-                        <h1 className="text-4xl font-bold mb-4">Project Not Found</h1>
+                        <h1 className="text-4xl font-bold mb-6">Project Not Found</h1>
                         <Link href="/portfolio">
-                            <Button>Return to Portfolio</Button>
+                            <Button className="h-12 px-8 rounded-xl font-bold">Return to Portfolio</Button>
                         </Link>
                     </div>
                 </div>
@@ -102,7 +102,7 @@ export default function ProjectDetailPage({ params }: { params: Promise<{ slug: 
                                 </div>
 
                                 <div className="mt-10 pt-10 border-t border-slate-200 dark:border-slate-800">
-                                    <Button className="w-full h-14 font-bold rounded-xl shadow-lg shadow-primary/20" onClick={() => setIsModalOpen(true)}>
+                                    <Button className="w-full h-14 font-bold rounded-xl shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all" onClick={() => setIsModalOpen(true)}>
                                         Request Similar Service
                                     </Button>
                                 </div>

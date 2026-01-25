@@ -56,7 +56,7 @@ export default function NewsPage() {
             className="mb-20"
           />
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {NEWS_ARTICLES.map((item) => (
               <div key={item.id} className="group bg-white dark:bg-slate-900 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 hover:shadow-2xl transition-all duration-500 flex flex-col h-full hover:-translate-y-1">
                 <div className="relative h-64 w-full overflow-hidden">
@@ -86,18 +86,18 @@ export default function NewsPage() {
             ))}
           </div>
 
-          <div className="mt-16 flex justify-center items-center gap-2">
-            <Button variant="outline" size="icon" className="w-10 h-10" disabled>
-              <ChevronLeft className="w-4 h-4" />
+          <div className="mt-20 flex justify-center items-center gap-3">
+            <Button variant="outline" size="icon" className="w-12 h-12 rounded-xl border-slate-200 dark:border-slate-800" disabled>
+              <ChevronLeft className="w-5 h-5" />
             </Button>
-            <Button variant="default" size="icon" className="w-10 h-10 bg-primary text-white hover:bg-primary/90">
+            <Button variant="default" size="icon" className="w-12 h-12 rounded-xl bg-primary text-white hover:bg-primary/90 shadow-lg shadow-primary/20">
               1
             </Button>
-            <Button variant="outline" size="icon" className="w-10 h-10 hover:bg-primary hover:text-white transition-colors">
+            <Button variant="outline" size="icon" className="w-12 h-12 rounded-xl border-slate-200 dark:border-slate-800 hover:bg-primary hover:text-white transition-all shadow-sm">
               2
             </Button>
-            <Button variant="outline" size="icon" className="w-10 h-10 hover:bg-primary hover:text-white transition-colors">
-              <ChevronRight className="w-4 h-4" />
+            <Button variant="outline" size="icon" className="w-12 h-12 rounded-xl border-slate-200 dark:border-slate-800 hover:bg-primary hover:text-white transition-all shadow-sm">
+              <ChevronRight className="w-5 h-5" />
             </Button>
           </div>
         </div>

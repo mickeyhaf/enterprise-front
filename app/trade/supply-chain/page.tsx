@@ -105,7 +105,7 @@ export default function SupplyChainPage() {
               </p>
               <Button
                 size="lg"
-                className="h-16 px-10 rounded-xl bg-accent text-primary font-bold hover:bg-white transition-all shadow-lg text-base"
+                className="h-14 px-10 rounded-xl bg-accent text-primary font-bold hover:bg-white transition-all shadow-lg shadow-accent/10 text-base"
                 onClick={() => setIsModalOpen(true)}
               >
                 Get a Custom Quote <ArrowRight className="ml-3 w-5 h-5" />

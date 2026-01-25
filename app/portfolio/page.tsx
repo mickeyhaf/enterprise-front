@@ -89,26 +89,26 @@ export default function PortfolioPage() {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {PROJECTS.map((project, index) => (
-              <div key={index} className="group bg-white dark:bg-slate-900 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 hover:shadow-xl transition-all duration-500 flex flex-col h-full hover:-translate-y-1">
-                <div className="relative h-60 w-full overflow-hidden">
+              <div key={index} className="group bg-white dark:bg-slate-900 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 hover:shadow-2xl transition-all duration-500 flex flex-col h-full hover:-translate-y-1">
+                <div className="relative h-64 w-full overflow-hidden">
                   <Image
                     src={project.image}
                     alt={project.title}
                     fill
                     className="object-cover group-hover:scale-110 transition-transform duration-700"
                   />
-                  <div className="absolute top-4 left-4 bg-white/95 dark:bg-slate-900/95 backdrop-blur shadow-md text-[10px] font-bold px-3 py-1 rounded-full flex items-center gap-2 uppercase tracking-widest text-primary">
+                  <div className="absolute top-4 left-4 bg-white/95 dark:bg-slate-900/95 backdrop-blur shadow-lg text-[10px] font-bold px-3 py-1 rounded-full flex items-center gap-2 uppercase tracking-widest text-primary">
                     <project.icon size={12} />
                     {project.category}
                   </div>
                 </div>
-                <div className="p-6 flex flex-col flex-grow">
-                  <h3 className="text-xl font-bold font-display mb-3 group-hover:text-primary transition-colors leading-tight">{project.title}</h3>
-                  <p className="text-slate-600 dark:text-slate-400 mb-6 flex-grow leading-relaxed font-light text-sm line-clamp-3">
+                <div className="p-8 flex flex-col flex-grow">
+                  <h3 className="text-2xl font-bold font-display mb-4 group-hover:text-primary transition-colors leading-tight">{project.title}</h3>
+                  <p className="text-slate-600 dark:text-slate-400 mb-8 flex-grow leading-relaxed font-light text-base line-clamp-3">
                     {project.description}
                   </p>
                   <Link href={`/portfolio/${project.slug}`} className="w-full">
-                    <Button variant="outline" className="w-full justify-between h-11 px-5 font-bold border-slate-200 dark:border-slate-700 hover:bg-primary hover:text-white transition-all group/btn text-xs">
+                    <Button variant="outline" className="w-full justify-between h-12 px-6 font-bold border-slate-200 dark:border-slate-700 hover:bg-primary hover:text-white transition-all group/btn rounded-xl shadow-sm">
                       View Case Study <ArrowRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-1" />
                     </Button>
                   </Link>
@@ -118,8 +118,8 @@ export default function PortfolioPage() {
           </div>
 
           <div className="mt-20 text-center">
-            <Button variant="ghost" className="font-bold text-slate-500 hover:text-primary transition-colors text-base p-6">
-              Explore More Projects
+            <Button variant="ghost" className="h-12 px-8 rounded-xl font-bold text-slate-500 hover:text-primary transition-all text-base border border-transparent hover:border-slate-200 dark:hover:border-slate-800">
+              Explore More Projects <ArrowRight className="ml-2 w-4 h-4" />
             </Button>
           </div>
         </div>

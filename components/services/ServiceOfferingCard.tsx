@@ -11,26 +11,26 @@ interface ServiceOfferingCardProps {
 
 export function ServiceOfferingCard({ title, description, image, onRequestQuote }: ServiceOfferingCardProps) {
   return (
-    <div className="flex flex-col h-full bg-slate-50 dark:bg-slate-800/50 rounded-xl border-l-4 border-primary hover:shadow-lg transition-all duration-300 group overflow-hidden">
+    <div className="flex flex-col h-full bg-white dark:bg-slate-900/50 rounded-2xl border border-slate-200 dark:border-slate-800 border-l-4 border-l-primary hover:shadow-2xl hover:-translate-y-1 transition-all duration-500 group overflow-hidden">
       {image && (
-        <div className="relative h-48 w-full shrink-0 overflow-hidden">
+        <div className="relative h-60 w-full shrink-0 overflow-hidden">
           <Image
             src={image}
             alt={title}
             fill
-            className="object-cover group-hover:scale-105 transition-transform duration-500"
+            className="object-cover group-hover:scale-110 transition-transform duration-700"
           />
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
         </div>
       )}
-      <div className="flex flex-col flex-grow p-8">
-        <h3 className="text-xl font-display font-bold text-slate-900 dark:text-white mb-3">{title}</h3>
-        <p className="text-slate-600 dark:text-slate-400 mb-8 flex-grow leading-relaxed">
+      <div className="flex flex-col flex-grow p-10">
+        <h3 className="text-2xl font-display font-bold text-slate-900 dark:text-white mb-4 group-hover:text-primary transition-colors leading-tight">{title}</h3>
+        <p className="text-lg text-slate-600 dark:text-slate-400 mb-10 flex-grow leading-relaxed font-light">
           {description}
         </p>
-        <Button 
+        <Button
           onClick={() => onRequestQuote(title)}
-          variant="outline"
-          className="w-full justify-between hover:bg-primary hover:text-white hover:border-primary transition-all group-hover:shadow-sm font-semibold bg-transparent border-slate-300 dark:border-slate-700"
+          className="w-full h-12 rounded-xl font-bold bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white hover:bg-primary hover:text-white transition-all justify-between px-6 border border-slate-200 dark:border-slate-700 hover:border-primary"
         >
           Request Service <ArrowRight className="w-4 h-4" />
         </Button>

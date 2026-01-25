@@ -16,18 +16,18 @@ export function QuoteModal({ isOpen, onClose, itemName, itemType, interestOption
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6">
-      <div 
+      <div
         className="absolute inset-0 bg-slate-900/50 backdrop-blur-sm"
         onClick={onClose}
       ></div>
       <div className="relative bg-white dark:bg-slate-900 w-full max-w-2xl lg:max-w-4xl rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 p-5 sm:p-8 animate-in fade-in zoom-in-95 duration-200 max-h-[calc(100vh-2rem)] overflow-y-auto">
-        <button 
+        <button
           onClick={onClose}
           className="absolute right-4 top-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
         >
           <X size={24} />
         </button>
-        
+
         <div className="mb-6">
           <h2 className="text-2xl font-display font-bold text-slate-900 dark:text-white mb-2">Request a Quote</h2>
           <p className="text-slate-600 dark:text-slate-400 text-sm">
@@ -46,9 +46,9 @@ export function QuoteModal({ isOpen, onClose, itemName, itemType, interestOption
           <div className="grid sm:grid-cols-2 gap-6">
             <div className="space-y-2">
               <label htmlFor="name" className="text-sm font-bold text-slate-700 dark:text-slate-300">Full Name *</label>
-              <input 
-                id="name" 
-                type="text" 
+              <input
+                id="name"
+                type="text"
                 required
                 className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
                 placeholder="John Doe"
@@ -56,21 +56,21 @@ export function QuoteModal({ isOpen, onClose, itemName, itemType, interestOption
             </div>
             <div className="space-y-2">
               <label htmlFor="email" className="text-sm font-bold text-slate-700 dark:text-slate-300">Email Address *</label>
-              <input 
-                id="email" 
-                type="email" 
+              <input
+                id="email"
+                type="email"
                 required
                 className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
                 placeholder="john@example.com"
               />
             </div>
           </div>
-          
+
           <div className="grid sm:grid-cols-2 gap-6">
             <div className="space-y-2">
               <label htmlFor="phone" className="text-sm font-bold text-slate-700 dark:text-slate-300">Phone Number</label>
-              <input 
-                id="phone" 
+              <input
+                id="phone"
                 type="tel"
                 className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
                 placeholder="+251 111 223 344"
@@ -78,8 +78,8 @@ export function QuoteModal({ isOpen, onClose, itemName, itemType, interestOption
             </div>
             <div className="space-y-2">
               <label htmlFor="company" className="text-sm font-bold text-slate-700 dark:text-slate-300">Company Name</label>
-              <input 
-                id="company" 
+              <input
+                id="company"
                 type="text"
                 className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
                 placeholder="Your Company"
@@ -122,8 +122,8 @@ export function QuoteModal({ isOpen, onClose, itemName, itemType, interestOption
 
           <div className="space-y-2">
             <label htmlFor="details" className="text-sm font-bold text-slate-700 dark:text-slate-300">Additional Details *</label>
-            <textarea 
-              id="details" 
+            <textarea
+              id="details"
               rows={4}
               required
               className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all h-32 resize-none"
@@ -136,7 +136,7 @@ export function QuoteModal({ isOpen, onClose, itemName, itemType, interestOption
 
           <Button
             type="submit"
-            className="w-full text-base py-6 font-bold bg-orange-500 hover:bg-orange-600 text-white rounded-xl"
+            className="w-full h-14 text-base font-bold bg-primary text-white hover:bg-primary/90 rounded-xl shadow-lg shadow-primary/20 transition-all"
           >
             Submit Quote Request
           </Button>

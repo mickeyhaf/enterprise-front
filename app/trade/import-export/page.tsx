@@ -81,7 +81,7 @@ export default function ImportExportPage() {
 
               <Button
                 size="lg"
-                className="h-16 px-10 rounded-xl font-bold bg-primary text-white hover:bg-primary/90 shadow-lg shadow-primary/20 transition-all text-base"
+                className="h-14 px-10 rounded-xl font-bold bg-primary text-white hover:bg-primary/90 shadow-lg shadow-primary/20 transition-all text-base"
                 onClick={() => setIsModalOpen(true)}
               >
                 Consult with a Trade Expert <ArrowRight className="ml-3 w-5 h-5" />

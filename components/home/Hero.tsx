@@ -8,15 +8,15 @@ export function Hero() {
     <header className="relative min-h-[calc(100vh-5rem)] flex items-center overflow-hidden">
       {/* Background Image */}
       <div className="absolute inset-0 w-full h-full">
-         <Image
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDuq25mY3vXtdcC6waRuuYWdh-edBAMgq6MdS_JXCUmLFWfLOoyvNpZoj_099FXdAgo9XaQ8KE8PLMnWwdiQ7MyBH8IGsagy-as-ltkMky2oJGuxvfaONJ99VOQReAmppFueZxJ47Ycar9VSmxPWdSXnw7WzSRmNzGz9fYWQM84mOzB0uRpiD6zNa5QAHqZND5H5k0IyHOohMJrcRfAw9nUa8zYUh0NNjbxcNf0XrtPydzrGQfxKG0nfWx0zSDgwyVglJ7HL0HJW3ir"
-            alt="Corporate office building"
-            fill
-            className="object-cover grayscale-[20%]"
-            priority
-         />
+        <Image
+          src="https://lh3.googleusercontent.com/aida-public/AB6AXuDuq25mY3vXtdcC6waRuuYWdh-edBAMgq6MdS_JXCUmLFWfLOoyvNpZoj_099FXdAgo9XaQ8KE8PLMnWwdiQ7MyBH8IGsagy-as-ltkMky2oJGuxvfaONJ99VOQReAmppFueZxJ47Ycar9VSmxPWdSXnw7WzSRmNzGz9fYWQM84mOzB0uRpiD6zNa5QAHqZND5H5k0IyHOohMJrcRfAw9nUa8zYUh0NNjbxcNf0XrtPydzrGQfxKG0nfWx0zSDgwyVglJ7HL0HJW3ir"
+          alt="Corporate office building"
+          fill
+          className="object-cover grayscale-[20%]"
+          priority
+        />
       </div>
-      
+
       {/* Gradient Overlay */}
       <div className="absolute inset-0 bg-gradient-to-r from-primary/95 to-primary/40"></div>
 
@@ -35,9 +35,9 @@ export function Hero() {
           </p>
           <div className="flex flex-wrap gap-4">
             <Link href="/contact">
-              <Button className="bg-accent text-primary px-8 py-6 rounded-md font-bold hover:bg-white transition-all flex items-center gap-2 text-base">
+              <Button className="h-14 bg-accent text-primary px-10 rounded-xl font-bold hover:bg-white transition-all flex items-center gap-3 text-base shadow-lg shadow-accent/20">
                 Contact Us
-                <ArrowRight size={20} />
+                <ArrowRight size={20} className="transition-transform group-hover:translate-x-1" />
               </Button>
             </Link>
           </div>
