@@ -43,9 +43,11 @@ export default function PortfolioPage() {
               Delivering excellence across industries. From large-scale infrastructure to strategic business solutions, explore how we transform vision into reality.
             </p>
             <div className="flex gap-4">
-              <Button size="lg" className="bg-accent text-primary px-8 py-6 rounded-md font-bold hover:bg-white transition-all flex items-center gap-2 text-base">
-                Download Portfolio <ArrowRight className="w-5 h-5" />
-              </Button>
+              <Link href="/contact">
+                <Button size="lg" className="bg-accent text-primary px-8 py-6 rounded-xl font-bold hover:bg-white transition-all flex items-center gap-2 text-base shadow-lg shadow-accent/20">
+                  Contact Us <ArrowRight className="w-5 h-5" />
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
@@ -76,38 +78,38 @@ export default function PortfolioPage() {
       </section>
 
       {/* Projects Grid */}
-      <section className="py-24 bg-slate-50 dark:bg-slate-950">
+      <section className="py-32 bg-slate-50 dark:bg-slate-950">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeader
             title="Featured Projects"
-            description="A selection of our defining work across various sectors."
+            description="A selection of our defining work across various sectors, demonstrating our commitment to excellence."
             centered
-            className="mb-16"
+            className="mb-20"
           />
 
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {PROJECTS.map((project, index) => (
-              <div key={index} className="group bg-white dark:bg-slate-900 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 hover:shadow-2xl transition-all duration-300 flex flex-col h-full">
-                <div className="relative h-64 overflow-hidden">
+              <div key={index} className="group bg-white dark:bg-slate-900 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 hover:shadow-xl transition-all duration-500 flex flex-col h-full hover:-translate-y-1">
+                <div className="relative h-60 w-full overflow-hidden">
                   <Image
                     src={project.image}
                     alt={project.title}
                     fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-700"
+                    className="object-cover group-hover:scale-110 transition-transform duration-700"
                   />
-                  <div className="absolute top-4 left-4 bg-white/90 dark:bg-slate-900/90 backdrop-blur text-xs font-bold px-3 py-1 rounded-full flex items-center gap-2 shadow-sm">
-                    <project.icon className="w-3 h-3 text-primary" />
+                  <div className="absolute top-4 left-4 bg-white/95 dark:bg-slate-900/95 backdrop-blur shadow-md text-[10px] font-bold px-3 py-1 rounded-full flex items-center gap-2 uppercase tracking-widest text-primary">
+                    <project.icon size={12} />
                     {project.category}
                   </div>
                 </div>
-                <div className="p-8 flex flex-col flex-grow">
-                  <h3 className="text-2xl font-bold font-display mb-4 group-hover:text-primary transition-colors">{project.title}</h3>
-                  <p className="text-slate-600 dark:text-slate-400 mb-6 flex-grow leading-relaxed">
+                <div className="p-6 flex flex-col flex-grow">
+                  <h3 className="text-xl font-bold font-display mb-3 group-hover:text-primary transition-colors leading-tight">{project.title}</h3>
+                  <p className="text-slate-600 dark:text-slate-400 mb-6 flex-grow leading-relaxed font-light text-sm line-clamp-3">
                     {project.description}
                   </p>
                   <Link href={`/portfolio/${project.slug}`} className="w-full">
-                    <Button variant="outline" className="w-full justify-between hover:bg-primary hover:text-white border-slate-300 dark:border-slate-700">
-                      View Case Study <ArrowRight className="w-4 h-4" />
+                    <Button variant="outline" className="w-full justify-between h-11 px-5 font-bold border-slate-200 dark:border-slate-700 hover:bg-primary hover:text-white transition-all group/btn text-xs">
+                      View Case Study <ArrowRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-1" />
                     </Button>
                   </Link>
                 </div>
@@ -115,19 +117,19 @@ export default function PortfolioPage() {
             ))}
           </div>
 
-          <div className="mt-12 text-center">
-            <Button variant="ghost" className="font-bold text-slate-500 hover:text-primary">
-              Load More Projects
+          <div className="mt-20 text-center">
+            <Button variant="ghost" className="font-bold text-slate-500 hover:text-primary transition-colors text-base p-6">
+              Explore More Projects
             </Button>
           </div>
         </div>
       </section>
 
       {/* Testimonials */}
-      <section className="py-24 bg-white dark:bg-slate-900">
+      <section className="py-32 bg-white dark:bg-slate-900/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionHeader title="Client Success Stories" centered />
-          <div className="grid md:grid-cols-3 gap-8 mt-12">
+          <SectionHeader title="Client Success Stories" centered description="What our partners say about working with MU Consultancy." />
+          <div className="grid md:grid-cols-3 gap-10 mt-16">
             <TestimonialCard
               quote="MU Consultancy delivered exceptional results for our infrastructure project. Their technical expertise coupled with local insight is unmatched."
               author="Ato Kebede T."
@@ -148,16 +150,15 @@ export default function PortfolioPage() {
       </section>
 
       {/* Partners Logos */}
-      <section className="py-16 bg-slate-50 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800">
+      <section className="py-20 bg-slate-50 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800">
         <div className="max-w-7xl mx-auto px-4 text-center">
-          <p className="text-sm font-bold uppercase tracking-widest text-slate-500 mb-8">Trusted By Industry Leaders</p>
-          <div className="flex flex-wrap justify-center gap-12 items-center opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
-            {/* Simple text placeholders for logos for now, but styled nicely */}
-            <div className="text-xl font-bold font-display text-slate-700 dark:text-slate-300">WORLD BANK</div>
-            <div className="text-xl font-bold font-display text-slate-700 dark:text-slate-300">UN HABITAT</div>
-            <div className="text-xl font-bold font-display text-slate-700 dark:text-slate-300">GIZ</div>
-            <div className="text-xl font-bold font-display text-slate-700 dark:text-slate-300">MINISTRY OF MINES</div>
-            <div className="text-xl font-bold font-display text-slate-700 dark:text-slate-300">ETHIO TELECOM</div>
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500 mb-12">Trusted By Industry Leaders</p>
+          <div className="flex flex-wrap justify-center gap-12 md:gap-24 items-center opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
+            <div className="text-xl font-bold font-display text-slate-700 dark:text-slate-300 tracking-wider">WORLD BANK</div>
+            <div className="text-xl font-bold font-display text-slate-700 dark:text-slate-300 tracking-wider">UN HABITAT</div>
+            <div className="text-xl font-bold font-display text-slate-700 dark:text-slate-300 tracking-wider">GIZ</div>
+            <div className="text-xl font-bold font-display text-slate-700 dark:text-slate-300 tracking-wider">MINISTRY OF MINES</div>
+            <div className="text-xl font-bold font-display text-slate-700 dark:text-slate-300 tracking-wider">ETHIO TELECOM</div>
           </div>
         </div>
       </section>

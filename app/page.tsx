@@ -13,20 +13,20 @@ export default function Home() {
   return (
     <PageShell>
       <Navbar />
-      
+
       <Hero />
 
       {/* Heritage & Vision Section */}
-      <section className="py-24 bg-white dark:bg-slate-900">
+      <section className="py-32 bg-white dark:bg-slate-900/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
+          <div className="grid lg:grid-cols-2 gap-20 items-center">
             <div>
-              <SectionHeader 
-                title="Our Heritage & Strategic Vision" 
+              <SectionHeader
+                title="Our Heritage & Strategic Vision"
                 description="MU Consultancy and Business Enterprise was established to leverage the vast intellectual resources of Mekelle University for national development. For over three decades, we have been at the forefront of engineering, environmental science, and business strategy in the Horn of Africa."
               />
-              
-              <div className="grid gap-6">
+
+              <div className="grid gap-8">
                 <ServiceCard
                   variant="primary"
                   icon={Rocket}
@@ -41,35 +41,35 @@ export default function Home() {
                 />
               </div>
             </div>
-            
+
             <div className="relative">
-              <div className="relative h-[400px] w-full rounded-2xl overflow-hidden shadow-2xl z-10">
-        <Image
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuCy0CHoOaR_EuZN-cOReFWOt3iAsGtQeZ0grPlPurcIegBkZj7TQDqRT4Fndi1TEfYaV7fHQR-jggMj5fqBq6y-qI3BXKdchQk14OveuGngJPx8c12b0kqAGQhaCbRGLDnJDtby4IuGV42Oa_Vh1u2MSVbvvrTfFpriQ7c-RaIAZRcNk3NEFXkZiJikWYFVSEI2R8n43TOXo0qUWLFafKmoZ9TH1qH6MH5iJHzmN4l7XU8kgptPeRMpkXMOwjz4E4fLx81vA-Frlsuw"
-                    alt="Team meeting"
-                    fill
-                    className="object-cover"
-                 />
+              <div className="relative h-[500px] w-full rounded-2xl overflow-hidden shadow-2xl z-10">
+                <Image
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuCy0CHoOaR_EuZN-cOReFWOt3iAsGtQeZ0grPlPurcIegBkZj7TQDqRT4Fndi1TEfYaV7fHQR-jggMj5fqBq6y-qI3BXKdchQk14OveuGngJPx8c12b0kqAGQhaCbRGLDnJDtby4IuGV42Oa_Vh1u2MSVbvvrTfFpriQ7c-RaIAZRcNk3NEFXkZiJikWYFVSEI2R8n43TOXo0qUWLFafKmoZ9TH1qH6MH5iJHzmN4l7XU8kgptPeRMpkXMOwjz4E4fLx81vA-Frlsuw"
+                  alt="Team meeting"
+                  fill
+                  className="object-cover"
+                />
               </div>
-              <div className="absolute -bottom-6 -left-6 bg-primary text-white p-8 rounded-2xl z-20 hidden md:block">
-                <div className="text-4xl font-bold mb-1 font-display">30+</div>
-                <div className="text-sm font-medium opacity-80 uppercase tracking-widest">Years of Expertise</div>
+              <div className="absolute -bottom-8 -left-8 bg-primary text-white p-10 rounded-2xl shadow-xl z-20 hidden md:block">
+                <div className="text-5xl font-bold mb-1 font-display">30+</div>
+                <div className="text-sm font-bold opacity-90 uppercase tracking-widest">Years of Expertise</div>
               </div>
-              <div className="absolute -top-10 -right-10 w-64 h-64 bg-accent/20 rounded-full blur-3xl -z-10"></div>
+              <div className="absolute -top-12 -right-12 w-80 h-80 bg-accent/20 rounded-full blur-[100px] -z-10"></div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Leadership Preview */}
-      <section className="py-24 bg-slate-50 dark:bg-slate-950">
+      <section className="py-32 bg-slate-50 dark:bg-slate-950">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeader
             title="Leadership Team"
             description="Driven by a diverse board of industry experts and academic leaders dedicated to transformative growth."
             centered
           />
-          
+
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             <TeamCard
               name="Dr. Tesfaye Hagos"
@@ -77,19 +77,19 @@ export default function Home() {
               description="PhD in Strategic Management with 20+ years of consultancy experience across Africa."
               image="https://lh3.googleusercontent.com/aida-public/AB6AXuDgIa0LBydZg1ubxyErFFj8XKqvTOK5d7_7OTj3Hb3A0X7RUTiA2u6saVtMh7iU9UTuv7zm4ETy4620OOZQ6TQ8oifGraLleIsE4a5xNruTpwLCNz5GCQkx5bPtwy_t50MP2Et7VF6TOmYyHXgZ2oQdIrkRouYzJDScR8jPsPGhSYrgKeG6ITv1jHiIUgF2JpypxymspFSFfkUUwUwZQaTx-dTXD5rMWviRSCI-b5F1Aq9BQirGNqYPatg2xnF2QmunNi7wDIMR-j17"
             />
-             <TeamCard
+            <TeamCard
               name="Ms. Selamawit Kassa"
               role="Director of Operations"
               description="Expert in logistics and infrastructure development projects in emerging markets."
               image="https://lh3.googleusercontent.com/aida-public/AB6AXuDCtxVlcl-gnjzWsuPlV6PxBvqqR1hdBZEw6kBWG6u07uAL4mBktYhy_vE5wOVnSn86F4SyCqTNkBGnOAZFmT2L1J4BmV-j-41sFOkGVi8H-0b63_se1gelW8aW-bmS1k3fa9-ZtNaRirti2pAl6mFEsKhuUTT_tzlyw3jIr0ilKu2CSyndyw73u-KJsjEJvJndBI3P1cV0zIvFyIPAeVCnzK4M3400wYIaIvX668JrC7NiRwlEeOjKg8DF97Gd31pFa7i1j4zIkZQZ"
             />
-             <TeamCard
+            <TeamCard
               name="Ato Gebremedhin T."
               role="Financial Controller"
               description="Certified Public Accountant specializing in public-private partnership financing."
               image="https://lh3.googleusercontent.com/aida-public/AB6AXuArZfHMXyLu6bE9DlN9LiX3kznR88dr2mhDOpHw0gvXhsxHPlaKa_lb3vpOWPa38-xxvHDwtsPx4ethSbFQKdDFuP86XQGUb5baDVtCWoovEwFD_1E1y1FV3pghTjgsP3RUAafZMG55UdLngpbe0CA1P85Z7nqVuzHKjV-yK954Et4dFvLeju_XwGkfJbRZBu5fix3mhgksBTyu1dvG4In6ssgP8yTv1NHeUAcxlJ2QT0iCRlzIs28nFTaDw5U73jj5CCOtJIt0lytN"
             />
-             <TeamCard
+            <TeamCard
               name="Dr. Almaz Berhe"
               role="Technical Advisor"
               description="Head of Innovation Lab, focusing on renewable energy and environmental tech."
@@ -100,12 +100,12 @@ export default function Home() {
       </section>
 
       {/* Trust & Quality Section */}
-      <section className="py-24 bg-white dark:bg-slate-900">
+      <section className="py-32 bg-white dark:bg-slate-900/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-4 items-center gap-12">
+          <div className="grid lg:grid-cols-4 items-center gap-16">
             <div className="lg:col-span-1">
-              <h2 className="text-3xl font-display font-bold text-slate-900 dark:text-white mb-4">Trust & Quality</h2>
-              <p className="text-slate-500 text-sm">
+              <h2 className="text-4xl font-display font-extrabold text-slate-900 dark:text-white mb-6">Trust & Quality</h2>
+              <p className="text-slate-500 font-light leading-relaxed">
                 Our commitment to international standards and professional ethics is recognized globally.
               </p>
             </div>
@@ -122,15 +122,15 @@ export default function Home() {
       </section>
 
       {/* Partners Section */}
-      <div className="py-12 border-y border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/50 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-60">
-           <div className="flex items-center gap-2"><span className="w-8 h-8 rounded-full bg-slate-400"></span><span className="font-bold">WORLD BANK</span></div>
-           <div className="flex items-center gap-2"><span className="w-8 h-8 rounded-full bg-slate-400"></span><span className="font-bold">UN HABITAT</span></div>
-           <div className="flex items-center gap-2"><span className="w-8 h-8 rounded-full bg-slate-400"></span><span className="font-bold">EU DELEGATION</span></div>
-           <div className="flex items-center gap-2"><span className="w-8 h-8 rounded-full bg-slate-400"></span><span className="font-bold">MINISTRY OF MINES</span></div>
-           <div className="flex items-center gap-2"><span className="w-8 h-8 rounded-full bg-slate-400"></span><span className="font-bold">GIZ ETHIOPIA</span></div>
+      <div className="py-16 border-y border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 flex flex-wrap justify-center items-center gap-12 md:gap-24 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
+          <div className="flex items-center gap-3"><span className="w-10 h-10 rounded-full bg-slate-300 dark:bg-slate-700"></span><span className="font-bold tracking-widest text-sm">WORLD BANK</span></div>
+          <div className="flex items-center gap-3"><span className="w-10 h-10 rounded-full bg-slate-300 dark:bg-slate-700"></span><span className="font-bold tracking-widest text-sm">UN HABITAT</span></div>
+          <div className="flex items-center gap-3"><span className="w-10 h-10 rounded-full bg-slate-300 dark:bg-slate-700"></span><span className="font-bold tracking-widest text-sm">EU DELEGATION</span></div>
+          <div className="flex items-center gap-3"><span className="w-10 h-10 rounded-full bg-slate-300 dark:bg-slate-700"></span><span className="font-bold tracking-widest text-sm">MINISTRY OF MINES</span></div>
+          <div className="flex items-center gap-3"><span className="w-10 h-10 rounded-full bg-slate-300 dark:bg-slate-700"></span><span className="font-bold tracking-widest text-sm">GIZ ETHIOPIA</span></div>
         </div>
-    </div>
+      </div>
 
       <Footer />
     </PageShell>

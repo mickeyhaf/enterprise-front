@@ -62,15 +62,16 @@ export default function ServicesPage() {
     <PageShell>
       <Navbar />
       <ServicesHero />
-      
+
       {/* Products Section */}
-      <section className="py-24 bg-slate-50 dark:bg-slate-950">
+      <section className="py-32 bg-slate-50 dark:bg-slate-950">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionHeader 
-            title="Our Products" 
-            description="Quality inputs and materials sourced for reliability and performance."
+          <SectionHeader
+            title="Our Products"
+            description="Quality inputs and materials sourced for reliability, performance, and long-term value in various sectors."
+            className="mb-20"
           />
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-10">
             {PRODUCTS.map((product, index) => (
               <ProductCard
                 key={index}
@@ -86,13 +87,14 @@ export default function ServicesPage() {
       </section>
 
       {/* Services Section */}
-      <section className="py-24 bg-white dark:bg-slate-900">
+      <section className="py-32 bg-white dark:bg-slate-900/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionHeader 
-            title="Consultancy Services" 
-            description="Expert knowledge transformed into actionable business solutions."
+          <SectionHeader
+            title="Consultancy Services"
+            description="Expert knowledge transformed into actionable business solutions for private enterprises and public institutions."
+            className="mb-20"
           />
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
             {SERVICES.map((service, index) => (
               <ServiceOfferingCard
                 key={index}
@@ -106,14 +108,14 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      <QuoteModal 
-        isOpen={modalOpen} 
-        onClose={() => setModalOpen(false)} 
+      <QuoteModal
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
         itemName={selectedItem.name}
         itemType={selectedItem.type}
         interestOptions={interestOptions}
       />
-      
+
       <Footer />
     </PageShell>
   );

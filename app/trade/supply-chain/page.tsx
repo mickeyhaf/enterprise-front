@@ -57,56 +57,58 @@ export default function SupplyChainPage() {
         </div>
       </header>
 
-      <section className="py-24 bg-white dark:bg-slate-900">
+      <section className="py-32 bg-white dark:bg-slate-900/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeader
             title="Optimized Logistics"
-            description="Comprehensive solutions for modern supply chain challenges."
+            description="Comprehensive solutions for modern supply chain challenges, ensuring seamless operations across the globe."
             centered
-            className="mb-16"
+            className="mb-20"
           />
 
-          <div className="grid md:grid-cols-3 gap-8 mb-16">
+          <div className="grid md:grid-cols-3 gap-10 mb-20">
             {[
               {
                 icon: Layers,
                 title: "Inventory Management",
-                description: "Real-time tracking and optimization of stock levels to reduce holding costs."
+                description: "Real-time tracking and optimization of stock levels to reduce holding costs and maximize warehouse efficiency."
               },
               {
                 icon: Clock,
                 title: "Timely Distribution",
-                description: "Efficient routing and scheduling to ensure on-time delivery commitments."
+                description: "AI-driven efficient routing and scheduling to ensure on-time delivery commitments with precision tracking."
               },
               {
                 icon: ShieldCheck,
                 title: "Risk Mitigation",
-                description: "Proactive identification and management of supply chain disruptions."
+                description: "Proactive identification and expert management of potential supply chain disruptions and regulatory changes."
               }
             ].map((feature, i) => (
-              <div key={i} className="p-8 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 hover:shadow-lg transition-shadow">
-                <feature.icon className="w-10 h-10 text-primary mb-6" />
-                <h3 className="text-xl font-bold font-display mb-3 text-slate-900 dark:text-white">{feature.title}</h3>
-                <p className="text-slate-600 dark:text-slate-400">{feature.description}</p>
+              <div key={i} className="p-10 rounded-2xl bg-slate-50 dark:bg-slate-950/50 border border-slate-200 dark:border-slate-800 hover:shadow-2xl transition-all duration-500 hover:-translate-y-1">
+                <div className="w-16 h-16 rounded-xl bg-primary/10 flex items-center justify-center mb-8">
+                  <feature.icon className="w-8 h-8 text-primary" />
+                </div>
+                <h3 className="text-2xl font-bold font-display mb-4 text-slate-900 dark:text-white leading-tight">{feature.title}</h3>
+                <p className="text-slate-600 dark:text-slate-400 font-light leading-relaxed">{feature.description}</p>
               </div>
             ))}
           </div>
 
-          <div className="bg-slate-900 rounded-3xl p-12 text-center relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-primary/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
-            <div className="absolute bottom-0 left-0 w-64 h-64 bg-accent/20 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
+          <div className="bg-primary rounded-3xl p-16 text-center relative overflow-hidden shadow-2xl">
+            <div className="absolute top-0 right-0 w-80 h-80 bg-white/10 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2"></div>
+            <div className="absolute bottom-0 left-0 w-80 h-80 bg-accent/20 rounded-full blur-[80px] translate-y-1/2 -track-x-1/2"></div>
 
-            <div className="relative z-10">
-              <h2 className="text-3xl font-display font-bold text-white mb-6">Ready to Optimize Your Logistics?</h2>
-              <p className="text-slate-300 max-w-2xl mx-auto mb-8">
-                Let us analyze your current supply chain and propose efficiency improvements that save time and money.
+            <div className="relative z-10 max-w-3xl mx-auto">
+              <h2 className="text-4xl md:text-5xl font-display font-extrabold text-white mb-8 leading-tight">Ready to Optimize Your Logistics?</h2>
+              <p className="text-slate-100 text-lg mb-10 font-light leading-relaxed">
+                Let us analyze your current supply chain and propose data-driven efficiency improvements that save time and reduce operational costs.
               </p>
               <Button
                 size="lg"
-                className="bg-accent text-primary font-bold hover:bg-white transition-colors"
+                className="h-16 px-10 rounded-xl bg-accent text-primary font-bold hover:bg-white transition-all shadow-lg text-base"
                 onClick={() => setIsModalOpen(true)}
               >
-                Get a Quote <ArrowRight className="ml-2 w-4 h-4" />
+                Get a Custom Quote <ArrowRight className="ml-3 w-5 h-5" />
               </Button>
             </div>
           </div>

@@ -47,40 +47,39 @@ export default function NewsPage() {
       </header>
 
       {/* News Grid Section */}
-      <section className="py-24 bg-slate-50 dark:bg-slate-950">
+      <section className="py-32 bg-slate-50 dark:bg-slate-950">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeader
             title="Latest Articles"
-            description="Insights and updates from our team."
+            description="Insights and updates from our team of industry experts."
             centered
-            className="mb-16"
+            className="mb-20"
           />
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
             {NEWS_ARTICLES.map((item) => (
-              <div key={item.id} className="group bg-white dark:bg-slate-900 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 hover:shadow-xl transition-all duration-300 flex flex-col">
-                <div className="relative h-56 w-full overflow-hidden">
+              <div key={item.id} className="group bg-white dark:bg-slate-900 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 hover:shadow-2xl transition-all duration-500 flex flex-col h-full hover:-translate-y-1">
+                <div className="relative h-64 w-full overflow-hidden">
                   <Image
                     src={item.image}
                     alt={item.title}
                     fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    className="object-cover group-hover:scale-110 transition-transform duration-700"
                   />
-                  <div className="absolute top-4 left-4 bg-primary text-white text-xs font-bold px-3 py-1 rounded-full">
+                  <div className="absolute top-4 left-4 bg-primary text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest shadow-lg">
                     {item.category}
                   </div>
                 </div>
-                <div className="p-6 flex flex-col flex-grow">
-                  <div className="flex items-center gap-4 text-xs text-slate-500 mb-4">
-                    <span className="flex items-center gap-1"><Calendar size={14} /> {item.date}</span>
-                    <span className="flex items-center gap-1"><User size={14} /> {item.author}</span>
+                <div className="p-8 flex flex-col flex-grow">
+                  <div className="flex items-center gap-6 text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-4">
+                    <span className="flex items-center gap-2"><Calendar size={14} className="text-primary" /> {item.date}</span>
                   </div>
-                  <h3 className="text-xl font-bold font-display mb-3 group-hover:text-primary transition-colors line-clamp-2">{item.title}</h3>
-                  <p className="text-slate-600 dark:text-slate-400 mb-6 text-sm flex-grow leading-relaxed line-clamp-3">
+                  <h3 className="text-2xl font-bold font-display mb-4 group-hover:text-primary transition-colors line-clamp-2 leading-tight">{item.title}</h3>
+                  <p className="text-slate-600 dark:text-slate-400 mb-8 text-base flex-grow leading-relaxed line-clamp-3 font-light">
                     {item.excerpt}
                   </p>
-                  <Link href={`/news/${item.slug}`} className="inline-flex items-center text-primary font-bold text-sm hover:underline mt-auto">
-                    Read Full Story <ArrowRight className="ml-1 w-4 h-4" />
+                  <Link href={`/news/${item.slug}`} className="inline-flex items-center text-primary font-bold text-sm hover:gap-3 transition-all group/link mt-auto">
+                    Read Full Story <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover/link:translate-x-1" />
                   </Link>
                 </div>
               </div>

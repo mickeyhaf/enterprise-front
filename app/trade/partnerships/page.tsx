@@ -57,37 +57,41 @@ export default function PartnershipsPage() {
         </div>
       </header>
 
-      <section className="py-24 bg-white dark:bg-slate-900">
+      <section className="py-32 bg-white dark:bg-slate-900/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
+          <div className="grid lg:grid-cols-2 gap-20 items-center">
             <div>
               <SectionHeader
                 title="Join Our Network"
                 description="At MU Consultancy, we believe in the power of collaboration. Our partnership programs are designed to create synergies that drive innovation and expand market reach."
-                className="mb-8"
+                className="mb-10"
               />
-              <p className="text-slate-600 dark:text-slate-400 mb-8 leading-relaxed">
+              <p className="text-lg text-slate-600 dark:text-slate-400 mb-10 leading-relaxed font-light">
                 Whether you are a technology provider, a manufacturing entity, or a service organization, partnering with us opens doors to new opportunities in Ethiopia and beyond.
               </p>
               <Button
                 size="lg"
-                className="bg-primary text-white font-bold hover:bg-primary/90"
+                className="h-16 px-10 rounded-xl bg-primary text-white font-bold hover:bg-primary/90 shadow-lg shadow-primary/20 transition-all text-base"
                 onClick={() => setIsModalOpen(true)}
               >
-                Become a Partner <ArrowRight className="ml-2 w-4 h-4" />
+                Become a Strategic Partner <ArrowRight className="ml-3 w-5 h-5" />
               </Button>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              <div className="p-8 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700 hover:shadow-lg transition-shadow">
-                <Building2 className="w-10 h-10 text-primary mb-6" />
-                <h3 className="text-xl font-bold font-display mb-3 text-slate-900 dark:text-white">Corporate Partners</h3>
-                <p className="text-sm text-slate-500 dark:text-slate-400">Joint ventures and business alliances for large-scale projects.</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+              <div className="p-10 bg-slate-50 dark:bg-slate-950/50 rounded-2xl border border-slate-200 dark:border-slate-800 hover:shadow-2xl transition-all duration-500 hover:-translate-y-1">
+                <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-8">
+                  <Building2 className="w-8 h-8 text-primary" />
+                </div>
+                <h3 className="text-2xl font-bold font-display mb-4 text-slate-900 dark:text-white leading-tight">Corporate Partners</h3>
+                <p className="text-base text-slate-500 dark:text-slate-400 font-light leading-relaxed">Joint ventures and business alliances for large-scale projects.</p>
               </div>
-              <div className="p-8 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700 hover:shadow-lg transition-shadow">
-                <Users className="w-10 h-10 text-accent mb-6" />
-                <h3 className="text-xl font-bold font-display mb-3 text-slate-900 dark:text-white">Academic Links</h3>
-                <p className="text-sm text-slate-500 dark:text-slate-400">Research collaboration and knowledge transfer with Mekelle University.</p>
+              <div className="p-10 bg-slate-50 dark:bg-slate-950/50 rounded-2xl border border-slate-200 dark:border-slate-800 hover:shadow-2xl transition-all duration-500 hover:-translate-y-1">
+                <div className="w-14 h-14 rounded-xl bg-accent/10 flex items-center justify-center mb-8">
+                  <Users className="w-8 h-8 text-accent" />
+                </div>
+                <h3 className="text-2xl font-bold font-display mb-4 text-slate-900 dark:text-white leading-tight">Academic Links</h3>
+                <p className="text-base text-slate-500 dark:text-slate-400 font-light leading-relaxed">Research collaboration and knowledge transfer with Mekelle University.</p>
               </div>
             </div>
           </div>

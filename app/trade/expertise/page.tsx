@@ -81,40 +81,41 @@ export default function ExpertisePage() {
         </div>
       </header>
 
-      <section className="py-24 bg-white dark:bg-slate-900">
+      <section className="py-32 bg-white dark:bg-slate-900/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeader
             title="Specialized Knowledge"
-            description="Tailored solutions for high-impact industries."
+            description="Our deep sector focus allows us to provide highly relevant, data-driven solutions that address the specific needs of your industry."
             centered
-            className="mb-16"
+            className="mb-20"
           />
 
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid md:grid-cols-2 gap-10">
             {industries.map((industry, index) => (
-              <div key={index} className="flex flex-col rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 overflow-hidden hover:shadow-2xl transition-all duration-300 group">
-                <div className="relative h-64 w-full overflow-hidden">
+              <div key={index} className="flex flex-col rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 overflow-hidden hover:shadow-2xl transition-all duration-500 group hover:-translate-y-1">
+                <div className="relative h-72 w-full overflow-hidden">
                   <Image
                     src={industry.image}
                     alt={industry.title}
                     fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    className="object-cover group-hover:scale-110 transition-transform duration-700"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 </div>
 
-                <div className="p-8 flex flex-col flex-grow">
-                  <h3 className="text-2xl font-bold font-display text-slate-900 dark:text-white mb-3">{industry.title}</h3>
-                  <p className="text-slate-600 dark:text-slate-400 leading-relaxed mb-6 flex-grow">
+                <div className="p-10 flex flex-col flex-grow">
+                  <h3 className="text-3xl font-bold font-display text-slate-900 dark:text-white mb-4 group-hover:text-primary transition-colors leading-tight">{industry.title}</h3>
+                  <p className="text-lg text-slate-600 dark:text-slate-400 leading-relaxed mb-8 flex-grow font-light">
                     {industry.description}
                   </p>
 
                   <div className="mt-auto">
                     <Button
-                      className="w-full font-bold bg-primary text-white hover:bg-primary/90 justify-between group-hover:bg-accent group-hover:text-primary transition-colors"
+                      size="lg"
+                      className="w-full h-16 font-bold bg-primary text-white hover:bg-accent hover:text-primary justify-between rounded-xl shadow-lg shadow-primary/10 transition-all text-base px-8 group/btn"
                       onClick={() => handleConnect(industry.title)}
                     >
-                      Connect with an Expert <ArrowRight className="ml-2 w-4 h-4" />
+                      Connect with an Industry Expert <ArrowRight className="ml-2 w-5 h-5 transition-transform group-hover/btn:translate-x-1" />
                     </Button>
                   </div>
                 </div>

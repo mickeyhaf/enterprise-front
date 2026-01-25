@@ -58,35 +58,37 @@ export default function ImportExportPage() {
         </div>
       </header>
 
-      <section className="py-24 bg-white dark:bg-slate-900">
+      <section className="py-32 bg-white dark:bg-slate-900/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 gap-16 items-center">
+          <div className="grid md:grid-cols-2 gap-20 items-center">
             <div>
               <SectionHeader
                 title="Connecting Global Markets"
                 description="Our import/export services are designed to streamline your international business operations. From sourcing high-quality materials to reaching new customer bases abroad, we handle the logistics so you can focus on growth."
-                className="mb-8"
+                className="mb-10"
               />
 
-              <ul className="space-y-4 mb-8">
+              <ul className="space-y-6 mb-12">
                 {tradeServices.map((item, i) => (
-                  <li key={i} className="flex items-center gap-3">
-                    <CheckCircle className="w-5 h-5 text-primary shrink-0" />
-                    <span className="text-slate-700 dark:text-slate-300">{item}</span>
+                  <li key={i} className="flex items-center gap-4 group">
+                    <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                      <CheckCircle size={14} className="text-primary" />
+                    </div>
+                    <span className="text-slate-700 dark:text-slate-300 font-light text-lg">{item}</span>
                   </li>
                 ))}
               </ul>
 
               <Button
                 size="lg"
-                className="font-bold bg-primary text-white hover:bg-primary/90"
+                className="h-16 px-10 rounded-xl font-bold bg-primary text-white hover:bg-primary/90 shadow-lg shadow-primary/20 transition-all text-base"
                 onClick={() => setIsModalOpen(true)}
               >
-                Consult with a Trade Expert <ArrowRight className="ml-2 w-4 h-4" />
+                Consult with a Trade Expert <ArrowRight className="ml-3 w-5 h-5" />
               </Button>
             </div>
 
-            <div className="relative h-[500px] w-full rounded-2xl overflow-hidden shadow-2xl">
+            <div className="relative h-[600px] w-full rounded-2xl overflow-hidden shadow-2xl z-10 border border-slate-200 dark:border-slate-800">
               <Image
                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuDuq25mY3vXtdcC6waRuuYWdh-edBAMgq6MdS_JXCUmLFWfLOoyvNpZoj_099FXdAgo9XaQ8KE8PLMnWwdiQ7MyBH8IGsagy-as-ltkMky2oJGuxvfaONJ99VOQReAmppFueZxJ47Ycar9VSmxPWdSXnw7WzSRmNzGz9fYWQM84mOzB0uRpiD6zNa5QAHqZND5H5k0IyHOohMJrcRfAw9nUa8zYUh0NNjbxcNf0XrtPydzrGQfxKG0nfWx0zSDgwyVglJ7HL0HJW3ir"
                 alt="Global Logistics"
