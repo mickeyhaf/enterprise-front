@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Building2, Menu, X, ChevronDown } from "lucide-react";
@@ -9,9 +10,29 @@ import { useUIStore } from "@/lib/store";
 export function Navbar() {
   const { isMobileMenuOpen, toggleMobileMenu, closeMobileMenu } = useUIStore();
   const pathname = usePathname();
+  const [languageMenuOpen, setLanguageMenuOpen] = useState(false);
+  const [language, setLanguage] = useState<"EN" | "አማ">("EN");
+  const languageMenuRef = useRef<HTMLDivElement | null>(null);
 
   const isActive = (path: string) => pathname === path;
   const isTradeActive = pathname.startsWith("/trade");
+
+  useEffect(() => {
+    if (!languageMenuOpen) return;
+    const onPointerDown = (event: MouseEvent | TouchEvent) => {
+      const target = event.target as Node | null;
+      if (!target) return;
+      if (languageMenuRef.current && !languageMenuRef.current.contains(target)) {
+        setLanguageMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", onPointerDown);
+    document.addEventListener("touchstart", onPointerDown);
+    return () => {
+      document.removeEventListener("mousedown", onPointerDown);
+      document.removeEventListener("touchstart", onPointerDown);
+    };
+  }, [languageMenuOpen]);
 
   return (
     <nav className="sticky top-0 z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
@@ -125,13 +146,56 @@ export function Navbar() {
 
           {/* Language Switcher */}
           <div className="hidden md:flex items-center gap-4">
-            <Button variant="ghost" className="font-semibold text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white">
-              EN
-            </Button>
-            <div className="h-4 w-[1px] bg-slate-300 dark:bg-slate-700"></div>
-            <Button variant="ghost" className="font-semibold text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white">
-              አማ
-            </Button>
+            <div className="relative" ref={languageMenuRef}>
+              <button
+                type="button"
+                onClick={() => setLanguageMenuOpen((v) => !v)}
+                className="h-11 px-5 rounded-xl border border-slate-300/70 dark:border-slate-700/80 bg-transparent text-slate-700 dark:text-slate-100 font-bold text-sm flex items-center gap-3 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors"
+                aria-haspopup="menu"
+                aria-expanded={languageMenuOpen}
+              >
+                <span>{language}</span>
+                <ChevronDown className="w-4 h-4 text-slate-400" />
+              </button>
+
+              {languageMenuOpen && (
+                <div
+                  role="menu"
+                  className="absolute right-0 mt-2 w-40 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xl overflow-hidden"
+                >
+                  <button
+                    role="menuitem"
+                    type="button"
+                    onClick={() => {
+                      setLanguage("EN");
+                      setLanguageMenuOpen(false);
+                    }}
+                    className={`w-full text-left px-4 py-3 text-sm font-semibold transition-colors ${
+                      language === "EN"
+                        ? "bg-slate-50 dark:bg-slate-800 text-primary"
+                        : "text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
+                    }`}
+                  >
+                    EN
+                  </button>
+                  <button
+                    role="menuitem"
+                    type="button"
+                    onClick={() => {
+                      setLanguage("አማ");
+                      setLanguageMenuOpen(false);
+                    }}
+                    className={`w-full text-left px-4 py-3 text-sm font-semibold transition-colors ${
+                      language === "አማ"
+                        ? "bg-slate-50 dark:bg-slate-800 text-primary"
+                        : "text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
+                    }`}
+                  >
+                    አማ
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Mobile Menu Button */}
@@ -204,8 +268,56 @@ export function Navbar() {
             </div>
 
             <div className="pt-4 flex gap-4 justify-center border-t border-slate-100 dark:border-slate-800 mt-4">
-               <Button variant="ghost" className="font-semibold">EN</Button>
-               <Button variant="ghost" className="font-semibold">አማ</Button>
+               <div className="relative" ref={languageMenuRef}>
+                 <button
+                   type="button"
+                   onClick={() => setLanguageMenuOpen((v) => !v)}
+                   className="h-11 px-5 rounded-xl border border-slate-300/70 dark:border-slate-700/80 bg-transparent text-slate-700 dark:text-slate-100 font-bold text-sm flex items-center gap-3 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors"
+                   aria-haspopup="menu"
+                   aria-expanded={languageMenuOpen}
+                 >
+                   <span>{language}</span>
+                   <ChevronDown className="w-4 h-4 text-slate-400" />
+                 </button>
+
+                 {languageMenuOpen && (
+                   <div
+                     role="menu"
+                     className="absolute right-0 mt-2 w-40 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xl overflow-hidden"
+                   >
+                     <button
+                       role="menuitem"
+                       type="button"
+                       onClick={() => {
+                         setLanguage("EN");
+                         setLanguageMenuOpen(false);
+                       }}
+                       className={`w-full text-left px-4 py-3 text-sm font-semibold transition-colors ${
+                         language === "EN"
+                           ? "bg-slate-50 dark:bg-slate-800 text-primary"
+                           : "text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
+                       }`}
+                     >
+                       EN
+                     </button>
+                     <button
+                       role="menuitem"
+                       type="button"
+                       onClick={() => {
+                         setLanguage("አማ");
+                         setLanguageMenuOpen(false);
+                       }}
+                       className={`w-full text-left px-4 py-3 text-sm font-semibold transition-colors ${
+                         language === "አማ"
+                           ? "bg-slate-50 dark:bg-slate-800 text-primary"
+                           : "text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
+                       }`}
+                     >
+                       አማ
+                     </button>
+                   </div>
+                 )}
+               </div>
             </div>
           </div>
         </div>

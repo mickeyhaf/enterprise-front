@@ -10,30 +10,7 @@ import { ProductCard } from "@/components/services/ProductCard";
 import { ServiceOfferingCard } from "@/components/services/ServiceOfferingCard";
 import { QuoteModal } from "@/components/services/QuoteModal";
 import { Briefcase, Building2, Calculator, LineChart, Leaf, ShieldCheck, Truck, Factory } from "lucide-react";
-
-// Mock Data
-const PRODUCTS = [
-  {
-    title: "Construction Materials",
-    description: "High-quality cement, reinforcement bars, and finishing materials for large-scale infrastructure projects.",
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCy0CHoOaR_EuZN-cOReFWOt3iAsGtQeZ0grPlPurcIegBkZj7TQDqRT4Fndi1TEfYaV7fHQR-jggMj5fqBq6y-qI3BXKdchQk14OveuGngJPx8c12b0kqAGQhaCbRGLDnJDtby4IuGV42Oa_Vh1u2MSVbvvrTfFpriQ7c-RaIAZRcNk3NEFXkZiJikWYFVSEI2R8n43TOXo0qUWLFafKmoZ9TH1qH6MH5iJHzmN4l7XU8kgptPeRMpkXMOwjz4E4fLx81vA-Frlsuw"
-  },
-  {
-    title: "Industrial Machinery",
-    description: "Advanced manufacturing equipment and heavy machinery sourced from global leaders.",
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDuq25mY3vXtdcC6waRuuYWdh-edBAMgq6MdS_JXCUmLFWfLOoyvNpZoj_099FXdAgo9XaQ8KE8PLMnWwdiQ7MyBH8IGsagy-as-ltkMky2oJGuxvfaONJ99VOQReAmppFueZxJ47Ycar9VSmxPWdSXnw7WzSRmNzGz9fYWQM84mOzB0uRpiD6zNa5QAHqZND5H5k0IyHOohMJrcRfAw9nUa8zYUh0NNjbxcNf0XrtPydzrGQfxKG0nfWx0zSDgwyVglJ7HL0HJW3ir"
-  },
-  {
-    title: "Agricultural Inputs",
-    description: "Certified fertilizers, improved seeds, and modern farming tools to boost productivity.",
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuAAj2TqrSz5GqTnny1EaluHJdm8FZ2t59TX6BXKm7-wrKLO7cN7JYHthpE94yXx4ymfl6r4sxn50g5kYsAFepye2qDnBuUDbw-ypEtM-kjBQh0hTypufXvfeKveGZnAeWxBNEvJFc4ItvFDmsPIYMGstLGTIrCa_6q6GYz-ilZ-57QqqxJMPvWzweU3af0TvCpImFgCGlHza8TE7_ZvCm9BTlg8BCRFgVY1TmVwwo5qXXXn0jOPKTTQg2GmVVjbwXJ4oVP-AeolBVTm"
-  },
-  {
-    title: "Textile & Garments",
-    description: "Premium cotton fabrics and ready-made garments for domestic and export markets.",
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuArZfHMXyLu6bE9DlN9LiX3kznR88dr2mhDOpHw0gvXhsxHPlaKa_lb3vpOWPa38-xxvHDwtsPx4ethSbFQKdDFuP86XQGUb5baDVtCWoovEwFD_1E1y1FV3pghTjgsP3RUAafZMG55UdLngpbe0CA1P85Z7nqVuzHKjV-yK954Et4dFvLeju_XwGkfJbRZBu5fix3mhgksBTyu1dvG4In6ssgP8yTv1NHeUAcxlJ2QT0iCRlzIs28nFTaDw5U73jj5CCOtJIt0lytN"
-  }
-];
+import { PRODUCTS } from "@/lib/products";
 
 const SERVICES = [
   {
@@ -78,6 +55,11 @@ export default function ServicesPage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<{ name: string; type: "product" | "service" }>({ name: "", type: "product" });
 
+  const interestOptions = [
+    ...PRODUCTS.map((p) => p.title),
+    ...SERVICES.map((s) => s.title),
+  ];
+
   const handleRequestQuote = (name: string, type: "product" | "service") => {
     setSelectedItem({ name, type });
     setModalOpen(true);
@@ -100,8 +82,9 @@ export default function ServicesPage() {
               <ProductCard
                 key={index}
                 title={product.title}
-                description={product.description}
+                description={product.shortDescription}
                 image={product.image}
+                href={`/products/${product.slug}`}
                 onRequestQuote={(title) => handleRequestQuote(title, "product")}
               />
             ))}
@@ -136,6 +119,7 @@ export default function ServicesPage() {
         onClose={() => setModalOpen(false)} 
         itemName={selectedItem.name}
         itemType={selectedItem.type}
+        interestOptions={interestOptions}
       />
       
       <Footer />

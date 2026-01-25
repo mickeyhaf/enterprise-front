@@ -1,17 +1,30 @@
+"use client";
+
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 interface ProductCardProps {
   title: string;
   description: string;
   image: string;
+  href: string;
   onRequestQuote: (title: string) => void;
 }
 
-export function ProductCard({ title, description, image, onRequestQuote }: ProductCardProps) {
+export function ProductCard({ title, description, image, href, onRequestQuote }: ProductCardProps) {
+  const router = useRouter();
   return (
-    <div className="group bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col h-full">
+    <div
+      role="link"
+      tabIndex={0}
+      onClick={() => router.push(href)}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") router.push(href);
+      }}
+      className="group bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col h-full cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/20"
+    >
       <div className="relative h-56 w-full overflow-hidden">
         <Image
           src={image}
@@ -27,7 +40,10 @@ export function ProductCard({ title, description, image, onRequestQuote }: Produ
           {description}
         </p>
         <Button 
-          onClick={() => onRequestQuote(title)}
+          onClick={(e) => {
+            e.stopPropagation();
+            onRequestQuote(title);
+          }}
           variant="secondary"
           className="w-full font-bold group-hover:bg-primary group-hover:text-white transition-colors justify-between"
         >

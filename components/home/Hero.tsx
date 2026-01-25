@@ -40,9 +40,6 @@ export function Hero() {
                 <ArrowRight size={20} />
               </Button>
             </Link>
-            <Button variant="outline" className="bg-white/10 backdrop-blur-md border-white/20 text-white px-8 py-6 rounded-md font-bold hover:bg-white/20 transition-all text-base border">
-              Our Impact
-            </Button>
           </div>
         </div>
       </div>
