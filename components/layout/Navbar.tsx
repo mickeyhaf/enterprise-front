@@ -39,8 +39,8 @@ export function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-20 items-center">
           {/* Logo */}
-          <Link 
-            href="/" 
+          <Link
+            href="/"
             className="flex items-center gap-3 group"
             onClick={(e) => {
               if (pathname === "/") {
@@ -54,10 +54,10 @@ export function Navbar() {
             </div>
             <div>
               <h1 className="text-xl font-display font-bold text-primary dark:text-white leading-tight uppercase tracking-tight">
-                MU Consultancy
+                Mekelle University
               </h1>
               <p className="text-[10px] text-slate-500 dark:text-slate-400 font-bold uppercase tracking-[0.2em]">
-                Business Enterprise
+                Consultancy & Business Enterprise
               </p>
             </div>
           </Link>
@@ -67,10 +67,10 @@ export function Navbar() {
             <NavLink href="/" active={isActive("/")}>Home</NavLink>
             <NavLink href="/about" active={isActive("/about")}>About Us</NavLink>
             <NavLink href="/services" active={isActive("/services")}>Services</NavLink>
-            
+
             {/* Trade Solutions Dropdown */}
             <div className="relative group">
-              <Link 
+              <Link
                 href="/trade"
                 onClick={(e) => {
                   if (pathname === "/trade") {
@@ -78,11 +78,10 @@ export function Navbar() {
                     window.scrollTo({ top: 0, behavior: "smooth" });
                   }
                 }}
-                className={`flex items-center gap-1 text-sm font-semibold transition-colors py-4 ${
-                  isTradeActive 
-                    ? "text-primary dark:text-white" 
+                className={`flex items-center gap-1 text-sm font-semibold transition-colors py-4 ${isTradeActive
+                    ? "text-primary dark:text-white"
                     : "text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white"
-                }`}
+                  }`}
               >
                 Trade Solutions <ChevronDown className="w-4 h-4 transition-transform group-hover:rotate-180" />
               </Link>
@@ -109,7 +108,7 @@ export function Navbar() {
 
             {/* Resources Dropdown */}
             <div className="relative group">
-              <Link 
+              <Link
                 href="/resources"
                 onClick={(e) => {
                   if (pathname === "/resources") {
@@ -117,11 +116,10 @@ export function Navbar() {
                     window.scrollTo({ top: 0, behavior: "smooth" });
                   }
                 }}
-                className={`flex items-center gap-1 text-sm font-semibold transition-colors py-4 ${
-                  pathname.startsWith("/resources")
-                    ? "text-primary dark:text-white" 
+                className={`flex items-center gap-1 text-sm font-semibold transition-colors py-4 ${pathname.startsWith("/resources")
+                    ? "text-primary dark:text-white"
                     : "text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white"
-                }`}
+                  }`}
               >
                 Resources <ChevronDown className="w-4 h-4 transition-transform group-hover:rotate-180" />
               </Link>
@@ -170,11 +168,10 @@ export function Navbar() {
                       setLanguage("EN");
                       setLanguageMenuOpen(false);
                     }}
-                    className={`w-full text-left px-4 py-3 text-sm font-semibold transition-colors ${
-                      language === "EN"
+                    className={`w-full text-left px-4 py-3 text-sm font-semibold transition-colors ${language === "EN"
                         ? "bg-slate-50 dark:bg-slate-800 text-primary"
                         : "text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
-                    }`}
+                      }`}
                   >
                     EN
                   </button>
@@ -185,11 +182,10 @@ export function Navbar() {
                       setLanguage("አማ");
                       setLanguageMenuOpen(false);
                     }}
-                    className={`w-full text-left px-4 py-3 text-sm font-semibold transition-colors ${
-                      language === "አማ"
+                    className={`w-full text-left px-4 py-3 text-sm font-semibold transition-colors ${language === "አማ"
                         ? "bg-slate-50 dark:bg-slate-800 text-primary"
                         : "text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
-                    }`}
+                      }`}
                   >
                     አማ
                   </button>
@@ -247,7 +243,7 @@ export function Navbar() {
             <MobileNavLink href="/news" onClick={closeMobileMenu} active={isActive("/news")}>
               News & Updates
             </MobileNavLink>
-            
+
             <MobileNavLink href="/resources" onClick={closeMobileMenu} active={isActive("/resources")}>
               Resources
             </MobileNavLink>
@@ -268,56 +264,54 @@ export function Navbar() {
             </div>
 
             <div className="pt-4 flex gap-4 justify-center border-t border-slate-100 dark:border-slate-800 mt-4">
-               <div className="relative" ref={languageMenuRef}>
-                 <button
-                   type="button"
-                   onClick={() => setLanguageMenuOpen((v) => !v)}
-                   className="h-11 px-5 rounded-xl border border-slate-300/70 dark:border-slate-700/80 bg-transparent text-slate-700 dark:text-slate-100 font-bold text-sm flex items-center gap-3 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors"
-                   aria-haspopup="menu"
-                   aria-expanded={languageMenuOpen}
-                 >
-                   <span>{language}</span>
-                   <ChevronDown className="w-4 h-4 text-slate-400" />
-                 </button>
+              <div className="relative" ref={languageMenuRef}>
+                <button
+                  type="button"
+                  onClick={() => setLanguageMenuOpen((v) => !v)}
+                  className="h-11 px-5 rounded-xl border border-slate-300/70 dark:border-slate-700/80 bg-transparent text-slate-700 dark:text-slate-100 font-bold text-sm flex items-center gap-3 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors"
+                  aria-haspopup="menu"
+                  aria-expanded={languageMenuOpen}
+                >
+                  <span>{language}</span>
+                  <ChevronDown className="w-4 h-4 text-slate-400" />
+                </button>
 
-                 {languageMenuOpen && (
-                   <div
-                     role="menu"
-                     className="absolute right-0 mt-2 w-40 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xl overflow-hidden"
-                   >
-                     <button
-                       role="menuitem"
-                       type="button"
-                       onClick={() => {
-                         setLanguage("EN");
-                         setLanguageMenuOpen(false);
-                       }}
-                       className={`w-full text-left px-4 py-3 text-sm font-semibold transition-colors ${
-                         language === "EN"
-                           ? "bg-slate-50 dark:bg-slate-800 text-primary"
-                           : "text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
-                       }`}
-                     >
-                       EN
-                     </button>
-                     <button
-                       role="menuitem"
-                       type="button"
-                       onClick={() => {
-                         setLanguage("አማ");
-                         setLanguageMenuOpen(false);
-                       }}
-                       className={`w-full text-left px-4 py-3 text-sm font-semibold transition-colors ${
-                         language === "አማ"
-                           ? "bg-slate-50 dark:bg-slate-800 text-primary"
-                           : "text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
-                       }`}
-                     >
-                       አማ
-                     </button>
-                   </div>
-                 )}
-               </div>
+                {languageMenuOpen && (
+                  <div
+                    role="menu"
+                    className="absolute right-0 mt-2 w-40 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xl overflow-hidden"
+                  >
+                    <button
+                      role="menuitem"
+                      type="button"
+                      onClick={() => {
+                        setLanguage("EN");
+                        setLanguageMenuOpen(false);
+                      }}
+                      className={`w-full text-left px-4 py-3 text-sm font-semibold transition-colors ${language === "EN"
+                          ? "bg-slate-50 dark:bg-slate-800 text-primary"
+                          : "text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
+                        }`}
+                    >
+                      EN
+                    </button>
+                    <button
+                      role="menuitem"
+                      type="button"
+                      onClick={() => {
+                        setLanguage("አማ");
+                        setLanguageMenuOpen(false);
+                      }}
+                      className={`w-full text-left px-4 py-3 text-sm font-semibold transition-colors ${language === "አማ"
+                          ? "bg-slate-50 dark:bg-slate-800 text-primary"
+                          : "text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
+                        }`}
+                    >
+                      አማ
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -340,11 +334,10 @@ function NavLink({ href, children, active }: { href: string; children: React.Rea
     <Link
       href={href}
       onClick={handleClick}
-      className={`text-sm font-semibold transition-colors ${
-        active 
-          ? "text-primary dark:text-white" 
+      className={`text-sm font-semibold transition-colors ${active
+          ? "text-primary dark:text-white"
           : "text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white"
-      }`}
+        }`}
     >
       {children}
     </Link>
@@ -365,11 +358,10 @@ function DropdownLink({ href, children, active }: { href: string; children: Reac
     <Link
       href={href}
       onClick={handleClick}
-      className={`px-4 py-3 text-sm rounded-lg transition-colors text-left ${
-        active
+      className={`px-4 py-3 text-sm rounded-lg transition-colors text-left ${active
           ? "bg-slate-50 dark:bg-slate-800 text-primary font-medium"
           : "text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-primary"
-      }`}
+        }`}
     >
       {children}
     </Link>
@@ -403,11 +395,10 @@ function MobileNavLink({
     <Link
       href={href}
       onClick={handleClick}
-      className={`block py-3 px-4 text-base font-medium rounded-md transition-colors ${
-        active
+      className={`block py-3 px-4 text-base font-medium rounded-md transition-colors ${active
           ? "bg-primary/5 text-primary dark:text-white"
           : "text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800"
-      } ${className}`}
+        } ${className}`}
     >
       {children}
     </Link>
