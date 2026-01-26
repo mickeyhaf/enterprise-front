@@ -3,8 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Building2, Menu, X, ChevronDown } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Menu, X, ChevronDown, Building2 } from "lucide-react";
 import { useUIStore } from "@/lib/store";
 
 export function Navbar() {
@@ -79,8 +78,8 @@ export function Navbar() {
                   }
                 }}
                 className={`flex items-center gap-1 text-sm font-semibold transition-colors py-4 ${isTradeActive
-                    ? "text-primary dark:text-white"
-                    : "text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white"
+                  ? "text-primary dark:text-white"
+                  : "text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white"
                   }`}
               >
                 Trade Solutions <ChevronDown className="w-4 h-4 transition-transform group-hover:rotate-180" />
@@ -103,7 +102,34 @@ export function Navbar() {
               </div>
             </div>
 
-            <NavLink href="/portfolio" active={isActive("/portfolio")}>Projects</NavLink>
+            {/* Projects Dropdown */}
+            <div className="relative group">
+              <Link
+                href="/portfolio"
+                onClick={(e) => {
+                  if (pathname === "/portfolio") {
+                    e.preventDefault();
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                  }
+                }}
+                className={`flex items-center gap-1 text-sm font-semibold transition-colors py-4 ${pathname.startsWith("/portfolio")
+                  ? "text-primary dark:text-white"
+                  : "text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white"
+                  }`}
+              >
+                Projects <ChevronDown className="w-4 h-4 transition-transform group-hover:rotate-180" />
+              </Link>
+              <div className="absolute top-full left-0 w-64 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-2 group-hover:translate-y-0">
+                <div className="bg-white dark:bg-slate-900 rounded-xl shadow-xl border border-slate-100 dark:border-slate-800 p-2 overflow-hidden flex flex-col">
+                  <DropdownLink href="/portfolio" active={isActive("/portfolio")}>
+                    Featured Projects
+                  </DropdownLink>
+                  <DropdownLink href="/portfolio/community-engagement" active={isActive("/portfolio/community-engagement")}>
+                    Community Engagement
+                  </DropdownLink>
+                </div>
+              </div>
+            </div>
             <NavLink href="/news" active={isActive("/news")}>News & Updates</NavLink>
 
             {/* Resources Dropdown */}
@@ -117,8 +143,8 @@ export function Navbar() {
                   }
                 }}
                 className={`flex items-center gap-1 text-sm font-semibold transition-colors py-4 ${pathname.startsWith("/resources")
-                    ? "text-primary dark:text-white"
-                    : "text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white"
+                  ? "text-primary dark:text-white"
+                  : "text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white"
                   }`}
               >
                 Resources <ChevronDown className="w-4 h-4 transition-transform group-hover:rotate-180" />
@@ -169,8 +195,8 @@ export function Navbar() {
                       setLanguageMenuOpen(false);
                     }}
                     className={`w-full text-left px-4 py-3 text-sm font-semibold transition-colors ${language === "EN"
-                        ? "bg-slate-50 dark:bg-slate-800 text-primary"
-                        : "text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
+                      ? "bg-slate-50 dark:bg-slate-800 text-primary"
+                      : "text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
                       }`}
                   >
                     EN
@@ -183,8 +209,8 @@ export function Navbar() {
                       setLanguageMenuOpen(false);
                     }}
                     className={`w-full text-left px-4 py-3 text-sm font-semibold transition-colors ${language === "አማ"
-                        ? "bg-slate-50 dark:bg-slate-800 text-primary"
-                        : "text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
+                      ? "bg-slate-50 dark:bg-slate-800 text-primary"
+                      : "text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
                       }`}
                   >
                     አማ
@@ -240,6 +266,15 @@ export function Navbar() {
             <MobileNavLink href="/portfolio" onClick={closeMobileMenu} active={isActive("/portfolio")}>
               Projects
             </MobileNavLink>
+            {/* Mobile Projects Submenu */}
+            <div className="pl-4 space-y-1 border-l-2 border-slate-100 dark:border-slate-800 ml-2">
+              <MobileNavLink href="/portfolio" onClick={closeMobileMenu} active={isActive("/portfolio")} className="text-sm py-2">
+                Featured Projects
+              </MobileNavLink>
+              <MobileNavLink href="/portfolio/community-engagement" onClick={closeMobileMenu} active={isActive("/portfolio/community-engagement")} className="text-sm py-2">
+                Community Engagement
+              </MobileNavLink>
+            </div>
             <MobileNavLink href="/news" onClick={closeMobileMenu} active={isActive("/news")}>
               News & Updates
             </MobileNavLink>
@@ -289,8 +324,8 @@ export function Navbar() {
                         setLanguageMenuOpen(false);
                       }}
                       className={`w-full text-left px-4 py-3 text-sm font-semibold transition-colors ${language === "EN"
-                          ? "bg-slate-50 dark:bg-slate-800 text-primary"
-                          : "text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
+                        ? "bg-slate-50 dark:bg-slate-800 text-primary"
+                        : "text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
                         }`}
                     >
                       EN
@@ -303,8 +338,8 @@ export function Navbar() {
                         setLanguageMenuOpen(false);
                       }}
                       className={`w-full text-left px-4 py-3 text-sm font-semibold transition-colors ${language === "አማ"
-                          ? "bg-slate-50 dark:bg-slate-800 text-primary"
-                          : "text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
+                        ? "bg-slate-50 dark:bg-slate-800 text-primary"
+                        : "text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
                         }`}
                     >
                       አማ
@@ -335,8 +370,8 @@ function NavLink({ href, children, active }: { href: string; children: React.Rea
       href={href}
       onClick={handleClick}
       className={`text-sm font-semibold transition-colors ${active
-          ? "text-primary dark:text-white"
-          : "text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white"
+        ? "text-primary dark:text-white"
+        : "text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white"
         }`}
     >
       {children}
@@ -359,8 +394,8 @@ function DropdownLink({ href, children, active }: { href: string; children: Reac
       href={href}
       onClick={handleClick}
       className={`px-4 py-3 text-sm rounded-lg transition-colors text-left ${active
-          ? "bg-slate-50 dark:bg-slate-800 text-primary font-medium"
-          : "text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-primary"
+        ? "bg-slate-50 dark:bg-slate-800 text-primary font-medium"
+        : "text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-primary"
         }`}
     >
       {children}
@@ -396,8 +431,8 @@ function MobileNavLink({
       href={href}
       onClick={handleClick}
       className={`block py-3 px-4 text-base font-medium rounded-md transition-colors ${active
-          ? "bg-primary/5 text-primary dark:text-white"
-          : "text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800"
+        ? "bg-primary/5 text-primary dark:text-white"
+        : "text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800"
         } ${className}`}
     >
       {children}
