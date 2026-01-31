@@ -1,7 +1,11 @@
+"use client";
+
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import Image from "next/image";
+import { useContent } from "@/lib/use-content";
+import type { PartnerItem } from "@/lib/api-client";
 
-const partners = [
+const DEFAULT_PARTNERS: PartnerItem[] = [
   {
     name: "Mekelle University",
     description: "Academic collaboration and applied research partnerships supporting innovation and capacity building.",
@@ -53,6 +57,9 @@ const partners = [
 ];
 
 export function Partners() {
+  const { data: content } = useContent<{ items?: PartnerItem[] }>("partners");
+  const partners = (content?.items?.length ? content.items : DEFAULT_PARTNERS) as PartnerItem[];
+
   return (
     <section className="py-24 bg-white dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -69,7 +76,7 @@ export function Partners() {
             >
               <div className="p-8 flex flex-col items-center text-center">
                 <div className="relative w-20 h-20 rounded-2xl overflow-hidden bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm mb-6">
-                  <Image src={partner.image} alt={partner.name} fill className="object-cover" />
+                  <Image src={partner.image ?? ""} alt={partner.name} fill className="object-cover" />
                 </div>
                 <h3 className="text-lg font-bold font-display text-slate-900 dark:text-white mb-2 group-hover:text-primary transition-colors">
                   {partner.name}

@@ -1,6 +1,7 @@
 "use client";
 
 import { use } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { getEngagementPostBySlug } from "@/lib/community-engagement";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
@@ -8,13 +9,29 @@ import { PageShell } from "@/components/layout/PageShell";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, Calendar, User, Users } from "lucide-react";
+import { ArrowLeft, Calendar, Users } from "lucide-react";
 
 export default function EngagementPostPage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = use(params);
-    const post = getEngagementPostBySlug(slug);
 
-    if (!post) {
+    const { data: post, isLoading, isError } = useQuery({
+        queryKey: ["engagement", slug],
+        queryFn: () => getEngagementPostBySlug(slug),
+    });
+
+    if (isLoading) {
+        return (
+            <PageShell>
+                <Navbar />
+                <div className="min-h-[60vh] flex items-center justify-center">
+                    <div className="animate-pulse text-slate-500">Loading...</div>
+                </div>
+                <Footer />
+            </PageShell>
+        );
+    }
+
+    if (isError || !post) {
         return (
             <PageShell>
                 <Navbar />
@@ -38,7 +55,7 @@ export default function EngagementPostPage({ params }: { params: Promise<{ slug:
             {/* Hero Section */}
             <div className="relative h-[65vh] min-h-[500px] w-full">
                 <Image
-                    src={post.image}
+                    src={post.image ?? ""}
                     alt={post.title}
                     fill
                     className="object-cover"
@@ -51,14 +68,14 @@ export default function EngagementPostPage({ params }: { params: Promise<{ slug:
                             <ArrowLeft className="w-4 h-4 mr-2" /> Back to Engagement
                         </Link>
                         <div className="inline-block bg-primary text-white text-[10px] font-bold px-3 py-1 rounded-full mb-6 uppercase tracking-widest shadow-lg">
-                            {post.category}
+                            {post.category ?? "Engagement"}
                         </div>
                         <h1 className="text-4xl md:text-6xl font-display font-extrabold mb-8 max-w-4xl leading-[1.1]">
                             {post.title}
                         </h1>
                         <div className="flex items-center gap-8 text-[11px] font-bold uppercase tracking-widest text-slate-300">
                             <span className="flex items-center gap-2">
-                                <Calendar size={16} className="text-accent" /> {post.date}
+                                <Calendar size={16} className="text-accent" /> {post.date ?? ""}
                             </span>
                             <span className="flex items-center gap-2">
                                 <Users size={16} className="text-accent" /> {post.author}
@@ -72,7 +89,7 @@ export default function EngagementPostPage({ params }: { params: Promise<{ slug:
             <article className="py-32 bg-white dark:bg-slate-900/50">
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="prose prose-lg dark:prose-invert max-w-none prose-headings:font-display prose-headings:font-extrabold prose-p:text-slate-600 dark:prose-p:text-slate-400 prose-p:font-light prose-p:leading-relaxed">
-                        {post.content.split('\n\n').map((paragraph, index) => {
+                        {(post.content ?? "").split('\n\n').filter((p) => p.trim()).map((paragraph, index) => {
                             // Check if it's a heading
                             if (paragraph.startsWith('## ')) {
                                 return (

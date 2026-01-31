@@ -2,20 +2,18 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { PageShell } from "@/components/layout/PageShell";
 import { SectionHeader } from "@/components/ui/SectionHeader";
-import { PRODUCTS, getProductBySlug } from "@/lib/products";
+import { getProductBySlug } from "@/lib/products";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, CheckCircle, Package } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { notFound } from "next/navigation";
 
-export function generateStaticParams() {
-  return PRODUCTS.map((p) => ({ slug: p.slug }));
-}
+export const dynamicParams = true;
 
 export default async function ProductDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const product = getProductBySlug(slug);
+  const product = await getProductBySlug(slug);
   if (!product) notFound();
 
   return (
@@ -81,7 +79,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                 Key Highlights
               </h2>
               <ul className="space-y-4 mb-10">
-                {product.highlights.map((item) => (
+                {(product.highlights ?? []).map((item) => (
                   <li key={item} className="flex items-start gap-3">
                     <CheckCircle className="w-5 h-5 text-primary mt-0.5 shrink-0" />
                     <span className="text-slate-700 dark:text-slate-300">{item}</span>

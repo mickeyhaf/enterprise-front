@@ -9,17 +9,20 @@ import { Globe, ArrowRight, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { QuoteModal } from "@/components/services/QuoteModal";
+import { useContent } from "@/lib/use-content";
+import type { TradeSectionContent } from "@/lib/api-client";
+
+const DEFAULT: TradeSectionContent = {
+  hero: { badge: "Global Trade Solutions", title: "Import & Export Services", description: "Navigating the complexities of international trade with precision." },
+  section: { title: "Connecting Global Markets", description: "Our import/export services are designed to streamline your international business operations.", items: ["Customs Clearance & Compliance", "Freight Forwarding & Logistics", "Market Entry Strategy", "Document Processing", "Trade Finance Assistance"] },
+  services: ["Customs Clearance & Compliance", "Freight Forwarding & Logistics", "Market Entry Strategy", "Document Processing", "Trade Finance Assistance"],
+};
 
 export default function ImportExportPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const tradeServices = [
-    "Customs Clearance & Compliance",
-    "Freight Forwarding & Logistics",
-    "Market Entry Strategy",
-    "Document Processing",
-    "Trade Finance Assistance"
-  ];
+  const { data: content } = useContent<TradeSectionContent>("trade_import_export");
+  const c = content ?? DEFAULT;
+  const services = c.services ?? c.section?.items ?? DEFAULT.services ?? [];
 
   return (
     <PageShell>
@@ -46,13 +49,14 @@ export default function ImportExportPage() {
           <div className="max-w-3xl">
             <div className="inline-flex items-center gap-2 bg-accent text-primary px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-6">
               <Globe size={16} />
-              Global Trade Solutions
+              {c.hero?.badge ?? "Global Trade Solutions"}
             </div>
             <h1 className="text-5xl md:text-7xl font-display font-extrabold mb-6 leading-[1.1]">
-              Import & Export <span className="text-accent italic">Services</span>
+              {c.hero?.title?.replace(/Services$/, "") ?? "Import & Export "}
+              <span className="text-accent italic">Services</span>
             </h1>
             <p className="text-lg text-slate-100 mb-8 max-w-xl font-light">
-              Navigating the complexities of international trade with precision. We connect markets through reliable import and export channels, ensuring compliance and efficiency.
+              {c.hero?.description ?? DEFAULT.hero.description}
             </p>
           </div>
         </div>
@@ -105,7 +109,7 @@ export default function ImportExportPage() {
         onClose={() => setIsModalOpen(false)}
         itemName="Import/Export Consultation"
         itemType="service"
-        interestOptions={tradeServices}
+        interestOptions={services}
       />
 
       <Footer />

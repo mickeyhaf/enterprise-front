@@ -9,10 +9,21 @@ import { Factory, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { QuoteModal } from "@/components/services/QuoteModal";
+import { useContent } from "@/lib/use-content";
+import type { TradeSectionContent } from "@/lib/api-client";
+
+const DEFAULT: TradeSectionContent = {
+  hero: { badge: "Sector Focus", title: "Industry-Specific Expertise", description: "Tailored consultancy and trade services for key economic sectors." },
+  section: { title: "Domain Excellence", description: "Generic solutions don't solve specific problems.", items: ["Manufacturing and industrial processing", "Agriculture and agro-processing", "Construction and infrastructure", "Research and development projects"] },
+  services: ["Manufacturing and industrial processing", "Agriculture and agro-processing", "Construction and infrastructure", "Research and development projects"],
+};
 
 export default function ExpertisePage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedIndustry, setSelectedIndustry] = useState("Industry Consultation");
+  const { data: content } = useContent<TradeSectionContent>("trade_expertise");
+  const c = content ?? DEFAULT;
+  const sectorOptions = c.services ?? c.section?.items ?? DEFAULT.services ?? [];
 
   const industries = [
     {
@@ -36,8 +47,6 @@ export default function ExpertisePage() {
       description: "Leveraging academic insights to solve commercial challenges and drive innovation."
     }
   ];
-
-  const sectorOptions = industries.map(i => i.title);
 
   const handleConnect = (industryTitle: string) => {
     setSelectedIndustry(industryTitle);
@@ -69,13 +78,14 @@ export default function ExpertisePage() {
           <div className="max-w-3xl">
             <div className="inline-flex items-center gap-2 bg-accent text-primary px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-6">
               <Factory size={16} />
-              Sector Focus
+              {c.hero?.badge ?? "Sector Focus"}
             </div>
             <h1 className="text-5xl md:text-7xl font-display font-extrabold mb-6 leading-[1.1]">
-              Industry-Specific <span className="text-accent italic">Expertise</span>
+              {c.hero?.title?.replace(/Expertise$/, "") ?? "Industry-Specific "}
+              <span className="text-accent italic">Expertise</span>
             </h1>
             <p className="text-lg text-slate-100 mb-8 max-w-xl font-light">
-              Deep domain knowledge across key economic sectors. We tailor our solutions to the unique challenges and opportunities of your industry.
+              {c.hero?.description ?? DEFAULT.hero.description}
             </p>
           </div>
         </div>
@@ -84,8 +94,8 @@ export default function ExpertisePage() {
       <section className="py-32 bg-white dark:bg-slate-900/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeader
-            title="Specialized Knowledge"
-            description="Our deep sector focus allows us to provide highly relevant, data-driven solutions that address the specific needs of your industry."
+            title={c.section?.title ?? "Specialized Knowledge"}
+            description={c.section?.description ?? DEFAULT.section.description}
             centered
             className="mb-20"
           />
@@ -130,7 +140,7 @@ export default function ExpertisePage() {
         onClose={() => setIsModalOpen(false)}
         itemName={selectedIndustry}
         itemType="service"
-        interestOptions={sectorOptions}
+        interestOptions={sectorOptions as string[]}
       />
 
       <Footer />

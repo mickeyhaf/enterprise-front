@@ -37,11 +37,11 @@ export function TeamList() {
     <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
       {teamMembers?.map((member) => (
         <TeamCard
-          key={member.id}
+          key={String(member.id)}
           name={member.name}
-          role={member.role}
-          description={member.description}
-          image={member.image}
+          role={member.role ?? ""}
+          description={member.description ?? ""}
+          image={member.image ?? ""}
         />
       ))}
     </div>

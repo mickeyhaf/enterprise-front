@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { PageShell } from "@/components/layout/PageShell";
@@ -9,9 +10,11 @@ import { ServicesHero } from "@/components/services/ServicesHero";
 import { ProductCard } from "@/components/services/ProductCard";
 import { ServiceOfferingCard } from "@/components/services/ServiceOfferingCard";
 import { QuoteModal } from "@/components/services/QuoteModal";
-import { PRODUCTS } from "@/lib/products";
+import { fetchProducts } from "@/lib/products";
+import { useContent } from "@/lib/use-content";
+import type { ServiceItem } from "@/lib/api-client";
 
-const SERVICES = [
+const DEFAULT_SERVICES: ServiceItem[] = [
   {
     title: "Engineering Consultancy",
     description: "Comprehensive design, supervision, and project management for civil and structural engineering works.",
@@ -48,8 +51,16 @@ export default function ServicesPage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<{ name: string; type: "product" | "service" }>({ name: "", type: "product" });
 
+  const { data: products = [], isLoading: productsLoading } = useQuery({
+    queryKey: ["products"],
+    queryFn: fetchProducts,
+  });
+
+  const { data: servicesContent } = useContent<{ items?: ServiceItem[] }>("services");
+  const SERVICES = (servicesContent?.items?.length ? servicesContent.items : DEFAULT_SERVICES) as ServiceItem[];
+
   const interestOptions = [
-    ...PRODUCTS.map((p) => p.title),
+    ...products.map((p) => p.title),
     ...SERVICES.map((s) => s.title),
   ];
 
@@ -72,16 +83,22 @@ export default function ServicesPage() {
             className="mb-20"
           />
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-10">
-            {PRODUCTS.map((product, index) => (
+            {productsLoading ? (
+              [...Array(4)].map((_, i) => (
+                <div key={i} className="bg-slate-50 dark:bg-slate-800/50 h-80 rounded-2xl animate-pulse" />
+              ))
+            ) : (
+            products.map((product) => (
               <ProductCard
-                key={index}
+                key={product.id}
                 title={product.title}
                 description={product.shortDescription}
                 image={product.image}
                 href={`/products/${product.slug}`}
                 onRequestQuote={(title) => handleRequestQuote(title, "product")}
               />
-            ))}
+            ))
+            )}
           </div>
         </div>
       </section>

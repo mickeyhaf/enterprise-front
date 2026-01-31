@@ -1,16 +1,21 @@
 "use client";
 
+import { useQuery } from "@tanstack/react-query";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { PageShell } from "@/components/layout/PageShell";
 import { SectionHeader } from "@/components/ui/SectionHeader";
-import { Users, Calendar, ArrowRight, ChevronLeft, ChevronRight, Newspaper } from "lucide-react";
+import { Users, Calendar, ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
-import { ENGAGEMENT_POSTS } from "@/lib/community-engagement";
+import { fetchEngagementPosts } from "@/lib/community-engagement";
 
 export default function CommunityEngagementPage() {
+    const { data: posts = [], isLoading } = useQuery({
+        queryKey: ["engagement"],
+        queryFn: fetchEngagementPosts,
+    });
     return (
         <PageShell>
             <Navbar />
@@ -58,8 +63,15 @@ export default function CommunityEngagementPage() {
                         className="mb-20"
                     />
 
+                    {isLoading ? (
+                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            {[1, 2, 3].map((i) => (
+                                <div key={i} className="h-96 bg-slate-100 dark:bg-slate-800 rounded-2xl animate-pulse" />
+                            ))}
+                        </div>
+                    ) : (
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {ENGAGEMENT_POSTS.map((item) => (
+                        {posts.map((item) => (
                             <div key={item.id} className="group bg-white dark:bg-slate-900 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 hover:shadow-2xl transition-all duration-500 flex flex-col h-full hover:-translate-y-1">
                                 <div className="relative h-64 w-full overflow-hidden">
                                     <Image
@@ -69,7 +81,7 @@ export default function CommunityEngagementPage() {
                                         className="object-cover group-hover:scale-110 transition-transform duration-700"
                                     />
                                     <div className="absolute top-4 left-4 bg-primary text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest shadow-lg">
-                                        {item.category}
+                                        {item.category ?? "Engagement"}
                                     </div>
                                 </div>
                                 <div className="p-8 flex flex-col flex-grow">
@@ -87,7 +99,9 @@ export default function CommunityEngagementPage() {
                             </div>
                         ))}
                     </div>
+                    )}
 
+                    {posts.length > 0 && (
                     <div className="mt-20 flex justify-center items-center gap-3">
                         <Button variant="outline" size="icon" className="w-12 h-12 rounded-xl border-slate-200 dark:border-slate-800" disabled>
                             <ChevronLeft className="w-5 h-5" />
@@ -99,6 +113,7 @@ export default function CommunityEngagementPage() {
                             <ChevronRight className="w-5 h-5" />
                         </Button>
                     </div>
+                    )}
                 </div>
             </section>
 

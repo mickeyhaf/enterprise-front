@@ -1,21 +1,39 @@
+"use client";
+
 import Link from "next/link";
 import { Building2, MapPin, Mail, Phone, Facebook, Twitter, Linkedin } from "lucide-react";
+import { useContent } from "@/lib/use-content";
+import type { FooterContact } from "@/lib/api-client";
+
+const DEFAULT_FOOTER: FooterContact = {
+  companyName: "MU CONSULTANCY & BUSINESS ENTERPRISE",
+  description:
+    "Mekelle, Ethiopia. Providing excellence in research, industrial consultancy, and trade solutions since 1993.",
+  address: "Main Campus, Mekelle, Tigray, Ethiopia",
+  email: "info.consultancy@mu.edu.et",
+  phone: "+251 344 40 40 05",
+};
 
 export function Footer() {
+  const { data: content } = useContent<FooterContact>("footer_contact");
+  const { companyName, description, address, email, phone } = content ?? DEFAULT_FOOTER;
+
+  const mailHref = `mailto:${email}`;
+  const telHref = `tel:${phone?.replace(/\s/g, "")}`;
+
   return (
     <footer className="bg-primary pt-20 pb-10 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
-          {/* Company Info */}
           <div>
             <div className="flex items-center gap-3 mb-6">
               <Building2 className="text-white w-8 h-8" />
               <h2 className="text-lg font-display font-bold leading-tight">
-                MU CONSULTANCY & BUSINESS ENTERPRISE
+                {companyName}
               </h2>
             </div>
             <p className="text-sm text-slate-300 leading-relaxed mb-8">
-              Mekelle, Ethiopia. Providing excellence in research, industrial consultancy, and trade solutions since 1993.
+              {description}
             </p>
             <div className="flex gap-4 mb-8">
               <Link href="#" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-accent hover:text-primary transition-all duration-300">
@@ -30,7 +48,6 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Quick Links */}
           <div>
             <h3 className="text-lg font-bold mb-6">Quick Links</h3>
             <ul className="space-y-4 text-sm text-slate-300">
@@ -83,35 +100,29 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Contact Us */}
           <div>
             <h3 className="text-lg font-bold mb-6">Contact Us</h3>
             <ul className="space-y-4 text-sm text-slate-300">
               <li className="flex items-start gap-3">
                 <MapPin className="text-accent w-5 h-5 shrink-0" />
-                <span>
-                  Main Campus, Mekelle,
-                  <br />
-                  Tigray, Ethiopia
-                </span>
+                <span>{address}</span>
               </li>
               <li className="flex items-center gap-3">
                 <Mail className="text-accent w-5 h-5 shrink-0" />
-                <a href="mailto:info.consultancy@mu.edu.et" className="hover:text-white transition-colors">
-                  info.consultancy@mu.edu.et
+                <a href={mailHref} className="hover:text-white transition-colors">
+                  {email}
                 </a>
               </li>
               <li className="flex items-center gap-3">
                 <Phone className="text-accent w-5 h-5 shrink-0" />
-                <a href="tel:+251344404005" className="hover:text-white transition-colors">
-                  +251 344 40 40 05
+                <a href={telHref} className="hover:text-white transition-colors">
+                  {phone}
                 </a>
               </li>
             </ul>
           </div>
         </div>
 
-        {/* Copyright */}
         <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] text-slate-400 font-bold uppercase tracking-wider">
           <p>© {new Date().getFullYear()} Mekelle University Business Enterprise. All rights reserved.</p>
           <div className="flex gap-6">

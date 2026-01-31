@@ -6,9 +6,10 @@ import { Calendar, User, ArrowRight, Newspaper, ChevronLeft, ChevronRight } from
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
-import { NEWS_ARTICLES } from "@/lib/news";
+import { fetchNews } from "@/lib/news";
 
-export default function NewsPage() {
+export default async function NewsPage() {
+  const articles = await fetchNews();
   return (
     <PageShell>
       <Navbar />
@@ -56,8 +57,13 @@ export default function NewsPage() {
             className="mb-20"
           />
 
+          {articles.length === 0 ? (
+            <div className="text-center py-16 text-slate-500">
+              No news articles yet. Check back soon.
+            </div>
+          ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {NEWS_ARTICLES.map((item) => (
+            {articles.map((item) => (
               <div key={item.id} className="group bg-white dark:bg-slate-900 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 hover:shadow-2xl transition-all duration-500 flex flex-col h-full hover:-translate-y-1">
                 <div className="relative h-64 w-full overflow-hidden">
                   <Image
@@ -67,7 +73,7 @@ export default function NewsPage() {
                     className="object-cover group-hover:scale-110 transition-transform duration-700"
                   />
                   <div className="absolute top-4 left-4 bg-primary text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest shadow-lg">
-                    {item.category}
+                    {item.category ?? "News"}
                   </div>
                 </div>
                 <div className="p-8 flex flex-col flex-grow">
@@ -76,7 +82,7 @@ export default function NewsPage() {
                   </div>
                   <h3 className="text-2xl font-bold font-display mb-4 group-hover:text-primary transition-colors line-clamp-2 leading-tight">{item.title}</h3>
                   <p className="text-slate-600 dark:text-slate-400 mb-8 text-base flex-grow leading-relaxed line-clamp-3 font-light">
-                    {item.excerpt}
+                    {item.excerpt ?? ""}
                   </p>
                   <Link href={`/news/${item.slug}`} className="inline-flex items-center text-primary font-bold text-sm hover:gap-3 transition-all group/link mt-auto">
                     Read Full Story <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover/link:translate-x-1" />
@@ -100,6 +106,7 @@ export default function NewsPage() {
               <ChevronRight className="w-5 h-5" />
             </Button>
           </div>
+          )}
         </div>
       </section>
 

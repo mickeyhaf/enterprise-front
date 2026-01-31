@@ -9,16 +9,23 @@ import { Truck, ArrowRight, Layers, Clock, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { QuoteModal } from "@/components/services/QuoteModal";
+import { useContent } from "@/lib/use-content";
+import { getIcon } from "@/lib/icon-map";
+import type { TradeSectionContent } from "@/lib/api-client";
+
+const DEFAULT: TradeSectionContent = {
+  hero: { badge: "Logistics Solutions", title: "Supply Chain Management", description: "End-to-end supply chain optimization." },
+  section: { title: "Optimized Logistics", description: "Comprehensive solutions for modern supply chain challenges.", items: ["Inventory Management", "Timely Distribution", "Risk Mitigation", "End-to-end Optimization"] },
+  services: ["Inventory Management", "Timely Distribution", "Risk Mitigation", "End-to-end Optimization"],
+  features: [{ icon: "Layers", title: "Inventory Management", description: "Real-time tracking and optimization of stock levels." }, { icon: "Clock", title: "Timely Distribution", description: "AI-driven efficient routing and scheduling." }, { icon: "ShieldCheck", title: "Risk Mitigation", description: "Proactive identification and expert management of supply chain disruptions." }],
+};
 
 export default function SupplyChainPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const logisticsServices = [
-    "Inventory Management",
-    "Timely Distribution",
-    "Risk Mitigation",
-    "End-to-end Optimization"
-  ];
+  const { data: content } = useContent<TradeSectionContent>("trade_supply_chain");
+  const c = content ?? DEFAULT;
+  const services = c.services ?? c.section?.items ?? DEFAULT.services ?? [];
+  const features = c.features ?? DEFAULT.features ?? [];
 
   return (
     <PageShell>
@@ -45,13 +52,14 @@ export default function SupplyChainPage() {
           <div className="max-w-3xl">
             <div className="inline-flex items-center gap-2 bg-accent text-primary px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-6">
               <Truck size={16} />
-              Logistics Solutions
+              {c.hero?.badge ?? "Logistics Solutions"}
             </div>
             <h1 className="text-5xl md:text-7xl font-display font-extrabold mb-6 leading-[1.1]">
-              Supply Chain <span className="text-accent italic">Management</span>
+              {c.hero?.title?.replace(/Management$/, "") ?? "Supply Chain "}
+              <span className="text-accent italic">Management</span>
             </h1>
             <p className="text-lg text-slate-100 mb-8 max-w-xl font-light">
-              End-to-end supply chain optimization. We ensure your products move efficiently from origin to destination with complete visibility and control.
+              {c.hero?.description ?? DEFAULT.hero.description}
             </p>
           </div>
         </div>
@@ -120,7 +128,7 @@ export default function SupplyChainPage() {
         onClose={() => setIsModalOpen(false)}
         itemName="Supply Chain Consultation"
         itemType="service"
-        interestOptions={logisticsServices}
+        interestOptions={services}
       />
 
       <Footer />

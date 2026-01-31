@@ -2,13 +2,16 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { PageShell } from "@/components/layout/PageShell";
 import { SectionHeader } from "@/components/ui/SectionHeader";
-import { ArrowRight, BarChart3, Globe } from "lucide-react";
+import { PortfolioStatsSection } from "@/components/portfolio/PortfolioStatsSection";
+import { TestimonialsSection } from "@/components/portfolio/TestimonialsSection";
+import { ArrowRight, BarChart3 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
-import { PROJECTS } from "@/lib/projects";
+import { fetchProjects } from "@/lib/projects";
 
-export default function PortfolioPage() {
+export default async function PortfolioPage() {
+  const projects = await fetchProjects();
   return (
     <PageShell>
       <Navbar />
@@ -53,29 +56,7 @@ export default function PortfolioPage() {
         </div>
       </header>
 
-      {/* Stats Section */}
-      <section className="bg-primary text-white py-12 border-b border-white/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            <div>
-              <div className="text-4xl font-bold font-display mb-2">150+</div>
-              <div className="text-sm opacity-80 uppercase tracking-widest">Projects Completed</div>
-            </div>
-            <div>
-              <div className="text-4xl font-bold font-display mb-2">30+</div>
-              <div className="text-sm opacity-80 uppercase tracking-widest">Years Experience</div>
-            </div>
-            <div>
-              <div className="text-4xl font-bold font-display mb-2">50+</div>
-              <div className="text-sm opacity-80 uppercase tracking-widest">Global Partners</div>
-            </div>
-            <div>
-              <div className="text-4xl font-bold font-display mb-2">2B+</div>
-              <div className="text-sm opacity-80 uppercase tracking-widest">ETB Value Generated</div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <PortfolioStatsSection />
 
       {/* Projects Grid */}
       <section className="py-32 bg-slate-50 dark:bg-slate-950">
@@ -88,8 +69,8 @@ export default function PortfolioPage() {
           />
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {PROJECTS.map((project, index) => (
-              <div key={index} className="group bg-white dark:bg-slate-900 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 hover:shadow-2xl transition-all duration-500 flex flex-col h-full hover:-translate-y-1">
+            {projects.map((project) => (
+              <div key={project.id} className="group bg-white dark:bg-slate-900 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 hover:shadow-2xl transition-all duration-500 flex flex-col h-full hover:-translate-y-1">
                 <div className="relative h-64 w-full overflow-hidden">
                   <Image
                     src={project.image}
@@ -98,7 +79,7 @@ export default function PortfolioPage() {
                     className="object-cover group-hover:scale-110 transition-transform duration-700"
                   />
                   <div className="absolute top-4 left-4 bg-white/95 dark:bg-slate-900/95 backdrop-blur shadow-lg text-[10px] font-bold px-3 py-1 rounded-full flex items-center gap-2 uppercase tracking-widest text-primary">
-                    <project.icon size={12} />
+                    <project.icon size={12} aria-hidden />
                     {project.category}
                   </div>
                 </div>
@@ -125,29 +106,7 @@ export default function PortfolioPage() {
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className="py-32 bg-white dark:bg-slate-900/50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionHeader title="Client Success Stories" centered description="What our partners say about working with MU Consultancy." />
-          <div className="grid md:grid-cols-3 gap-10 mt-16">
-            <TestimonialCard
-              quote="MU Consultancy delivered exceptional results for our infrastructure project. Their technical expertise coupled with local insight is unmatched."
-              author="Ato Kebede T."
-              role="CEO, Northern Construction Corp"
-            />
-            <TestimonialCard
-              quote="Professional, reliable, and innovative. They guided us through complex regulatory landscapes seamlessly."
-              author="Dr. Sarah Jones"
-              role="Director, NGO International"
-            />
-            <TestimonialCard
-              quote="Their trade solutions streamlined our supply chain significantly. We saw a 20% reduction in logistics costs."
-              author="Ms. Bethelhem A."
-              role="Ops Manager, Trans-Ethiopia Trading"
-            />
-          </div>
-        </div>
-      </section>
+      <TestimonialsSection />
 
       {/* Partners Logos */}
       <section className="py-20 bg-slate-50 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800">
@@ -166,22 +125,4 @@ export default function PortfolioPage() {
       <Footer />
     </PageShell>
   );
-}
-
-function TestimonialCard({ quote, author, role }: { quote: string; author: string; role: string }) {
-  return (
-    <div className="bg-slate-50 dark:bg-slate-800/50 p-8 rounded-2xl border border-slate-100 dark:border-slate-800 relative">
-      <div className="absolute top-6 left-6 text-6xl text-primary/20 font-serif leading-none">"</div>
-      <p className="text-slate-600 dark:text-slate-300 italic mb-6 relative z-10 pt-4 leading-relaxed">{quote}</p>
-      <div className="flex items-center gap-4">
-        <div className="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center font-bold text-slate-500">
-          {author.charAt(0)}
-        </div>
-        <div>
-          <div className="font-bold text-slate-900 dark:text-white">{author}</div>
-          <div className="text-xs font-bold uppercase tracking-wider text-primary">{role}</div>
-        </div>
-      </div>
-    </div>
-  )
 }

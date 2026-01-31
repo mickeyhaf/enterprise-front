@@ -1,51 +1,41 @@
-import { ShieldCheck, Sparkles, Medal, Handshake, Leaf, UserCheck } from "lucide-react";
-import { SectionHeader } from "@/components/ui/SectionHeader";
+"use client";
 
-const values = [
-  {
-    icon: ShieldCheck,
-    title: "Integrity",
-    description: "We uphold the highest standards of honesty and ethical behavior in all our dealings.",
-  },
-  {
-    icon: Sparkles,
-    title: "Innovation",
-    description: "We constantly seek creative solutions to complex challenges.",
-  },
-  {
-    icon: Medal,
-    title: "Excellence",
-    description: "We strive for superior quality in every project and service we deliver.",
-  },
-  {
-    icon: Handshake,
-    title: "Collaboration",
-    description: "We believe in the power of teamwork and strategic partnerships.",
-  },
-  {
-    icon: Leaf,
-    title: "Sustainability",
-    description: "We are committed to environmentally responsible and sustainable practices.",
-  },
-  {
-    icon: UserCheck,
-    title: "Customer Focus",
-    description: "Our clients' success is our top priority and drives everything we do.",
-  },
-];
+import { ShieldCheck, Sparkles, Medal, Handshake, Leaf, UserCheck, type LucideIcon } from "lucide-react";
+import { SectionHeader } from "@/components/ui/SectionHeader";
+import { useContent } from "@/lib/use-content";
+import type { ValuesContent } from "@/lib/api-client";
+
+const ICONS: LucideIcon[] = [ShieldCheck, Sparkles, Medal, Handshake, Leaf, UserCheck];
+
+const DEFAULT_VALUES: ValuesContent = {
+  title: "Our Core Values",
+  description: "The principles that guide our decisions and actions every day.",
+  items: [
+    { title: "Integrity", description: "We uphold the highest standards of honesty and ethical behavior in all our dealings." },
+    { title: "Innovation", description: "We constantly seek creative solutions to complex challenges." },
+    { title: "Excellence", description: "We strive for superior quality in every project and service we deliver." },
+    { title: "Collaboration", description: "We believe in the power of teamwork and strategic partnerships." },
+    { title: "Sustainability", description: "We are committed to environmentally responsible and sustainable practices." },
+    { title: "Customer Focus", description: "Our clients' success is our top priority and drives everything we do." },
+  ],
+};
 
 export function Values() {
+  const { data: content } = useContent<ValuesContent>("values");
+  const { title, description, items } = content ?? DEFAULT_VALUES;
+  const list = items ?? DEFAULT_VALUES.items;
+
   return (
     <section className="py-24 bg-slate-50 dark:bg-slate-950">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeader
-          title="Our Core Values"
-          description="The principles that guide our decisions and actions every day."
+          title={title}
+          description={description}
           centered
         />
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {values.map((value, index) => {
-            const Icon = value.icon;
+          {list.map((value, index) => {
+            const Icon = ICONS[index % ICONS.length];
             const borderColor = index % 2 === 0 ? "border-primary" : "border-accent";
             const iconBg = index % 2 === 0 ? "bg-primary/10" : "bg-accent/15";
             const iconColor = index % 2 === 0 ? "text-primary" : "text-accent";

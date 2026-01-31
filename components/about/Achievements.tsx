@@ -1,51 +1,49 @@
-import { Trophy, Calendar, Briefcase, Users } from "lucide-react";
+"use client";
+
+import { Trophy, Calendar, Briefcase, Users, type LucideIcon } from "lucide-react";
 import { SectionHeader } from "@/components/ui/SectionHeader";
+import { useContent } from "@/lib/use-content";
+import type { AchievementsContent } from "@/lib/api-client";
 
-const stats = [
-  { icon: Calendar, value: "30+", label: "Years of Excellence" },
-  { icon: Briefcase, value: "500+", label: "Projects Completed" },
-  { icon: Users, value: "1000+", label: "Professionals Engaged" },
-  { icon: Trophy, value: "15+", label: "Industry Awards" },
-];
+const STAT_ICONS: LucideIcon[] = [Calendar, Briefcase, Users, Trophy];
 
-const awards = [
-  {
-    year: "2024",
-    title: "Excellence in Innovation",
-    issuer: "Regional Chamber of Commerce",
-    description: "Awarded for the development of sustainable agricultural processing technologies.",
-  },
-  {
-    year: "2023",
-    title: "Best Consultancy Firm",
-    issuer: "Construction & Engineering Association",
-    description: "Recognized for outstanding project management in infrastructure development.",
-  },
-  {
-    year: "2021",
-    title: "Community Impact Award",
-    issuer: "Mekelle City Administration",
-    description: "Honored for creating significant employment opportunities for university graduates.",
-  },
-];
+const DEFAULT_ACHIEVEMENTS: AchievementsContent = {
+  title: "Awards & Milestones",
+  description: "A legacy of success built on dedication and quality.",
+  stats: [
+    { value: "30+", label: "Years of Excellence" },
+    { value: "500+", label: "Projects Completed" },
+    { value: "1000+", label: "Professionals Engaged" },
+    { value: "15+", label: "Industry Awards" },
+  ],
+  awards: [
+    { year: "2024", title: "Excellence in Innovation", issuer: "Regional Chamber of Commerce", description: "Awarded for the development of sustainable agricultural processing technologies." },
+    { year: "2023", title: "Best Consultancy Firm", issuer: "Construction & Engineering Association", description: "Recognized for outstanding project management in infrastructure development." },
+    { year: "2021", title: "Community Impact Award", issuer: "Mekelle City Administration", description: "Honored for creating significant employment opportunities for university graduates." },
+  ],
+};
 
 export function Achievements() {
+  const { data: content } = useContent<AchievementsContent>("achievements");
+  const { title, description, stats, awards } = content ?? DEFAULT_ACHIEVEMENTS;
+  const statsList = stats ?? DEFAULT_ACHIEVEMENTS.stats;
+  const awardsList = awards ?? DEFAULT_ACHIEVEMENTS.awards;
+
   return (
     <section className="py-24 bg-slate-50 dark:bg-slate-950">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-20">
           <SectionHeader
-            title="Awards & Milestones"
-            description="A legacy of success built on dedication and quality."
+            title={title}
+            description={description}
             centered
           />
         </div>
 
         <div className="grid lg:grid-cols-2 gap-16 items-start">
-           {/* Stats Section */}
            <div className="grid grid-cols-2 gap-6">
-            {stats.map((stat, index) => {
-              const Icon = stat.icon;
+            {statsList.map((stat, index) => {
+              const Icon = STAT_ICONS[index % STAT_ICONS.length];
               return (
                 <div key={index} className="bg-white dark:bg-slate-900 p-8 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow text-center">
                   <div className="w-12 h-12 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-4">
@@ -62,7 +60,7 @@ export function Achievements() {
           <div className="space-y-8">
              <h3 className="text-2xl font-display font-bold text-slate-900 dark:text-white mb-6">Recent Recognition</h3>
              <div className="space-y-6">
-                {awards.map((award, index) => (
+                {awardsList.map((award, index) => (
                   <div key={index} className="flex gap-6 bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-100 dark:border-slate-800 hover:border-primary/50 transition-colors group">
                     <div className="flex-shrink-0 w-16 h-16 bg-accent/10 rounded-xl flex items-center justify-center text-accent-foreground font-bold text-xl font-display group-hover:bg-accent group-hover:text-white transition-colors">
                       {award.year}

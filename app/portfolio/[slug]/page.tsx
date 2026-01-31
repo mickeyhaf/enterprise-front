@@ -1,6 +1,7 @@
 "use client";
 
 import { use, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { getProjectBySlug } from "@/lib/projects";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
@@ -13,10 +14,26 @@ import { QuoteModal } from "@/components/services/QuoteModal";
 
 export default function ProjectDetailPage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = use(params);
-    const project = getProjectBySlug(slug);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    if (!project) {
+    const { data: project, isLoading, isError } = useQuery({
+        queryKey: ["project", slug],
+        queryFn: () => getProjectBySlug(slug),
+    });
+
+    if (isLoading) {
+        return (
+            <PageShell>
+                <Navbar />
+                <div className="min-h-[60vh] flex items-center justify-center">
+                    <div className="animate-pulse text-slate-500">Loading...</div>
+                </div>
+                <Footer />
+            </PageShell>
+        );
+    }
+
+    if (isError || !project) {
         return (
             <PageShell>
                 <Navbar />

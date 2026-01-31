@@ -1,6 +1,3 @@
-"use client";
-
-import { use } from "react";
 import { getNewsArticleBySlug } from "@/lib/news";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
@@ -9,26 +6,14 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, Calendar, User } from "lucide-react";
+import { notFound } from "next/navigation";
 
-export default function NewsArticlePage({ params }: { params: Promise<{ slug: string }> }) {
-    const { slug } = use(params);
-    const article = getNewsArticleBySlug(slug);
+export default async function NewsArticlePage({ params }: { params: Promise<{ slug: string }> }) {
+    const { slug } = await params;
+    const article = await getNewsArticleBySlug(slug);
 
     if (!article) {
-        return (
-            <PageShell>
-                <Navbar />
-                <div className="min-h-[60vh] flex items-center justify-center">
-                    <div className="text-center">
-                        <h1 className="text-4xl font-bold mb-4">Article Not Found</h1>
-                        <Link href="/news">
-                            <Button>Return to News</Button>
-                        </Link>
-                    </div>
-                </div>
-                <Footer />
-            </PageShell>
-        );
+        notFound();
     }
 
     return (
@@ -38,7 +23,7 @@ export default function NewsArticlePage({ params }: { params: Promise<{ slug: st
             {/* Hero Section */}
             <div className="relative h-[65vh] min-h-[500px] w-full">
                 <Image
-                    src={article.image}
+                    src={article.image ?? ""}
                     alt={article.title}
                     fill
                     className="object-cover"
@@ -51,14 +36,14 @@ export default function NewsArticlePage({ params }: { params: Promise<{ slug: st
                             <ArrowLeft className="w-4 h-4 mr-2" /> Back to News
                         </Link>
                         <div className="inline-block bg-primary text-white text-[10px] font-bold px-3 py-1 rounded-full mb-6 uppercase tracking-widest shadow-lg">
-                            {article.category}
+                            {article.category ?? "News"}
                         </div>
                         <h1 className="text-4xl md:text-6xl font-display font-extrabold mb-8 max-w-4xl leading-[1.1]">
                             {article.title}
                         </h1>
                         <div className="flex items-center gap-8 text-[11px] font-bold uppercase tracking-widest text-slate-300">
                             <span className="flex items-center gap-2">
-                                <Calendar size={16} className="text-accent" /> {article.date}
+                                <Calendar size={16} className="text-accent" /> {article.date ?? ""}
                             </span>
                             <span className="flex items-center gap-2">
                                 <User size={16} className="text-accent" /> {article.author}
@@ -72,7 +57,7 @@ export default function NewsArticlePage({ params }: { params: Promise<{ slug: st
             <article className="py-32 bg-white dark:bg-slate-900/50">
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="prose prose-lg dark:prose-invert max-w-none prose-headings:font-display prose-headings:font-extrabold prose-p:text-slate-600 dark:prose-p:text-slate-400 prose-p:font-light prose-p:leading-relaxed">
-                        {article.content.split('\n\n').map((paragraph, index) => {
+                        {(article.content ?? "").split('\n\n').filter((p) => p.trim()).map((paragraph, index) => {
                             // Check if it's a heading
                             if (paragraph.startsWith('## ')) {
                                 return (
