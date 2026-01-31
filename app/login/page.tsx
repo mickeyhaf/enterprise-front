@@ -1,21 +1,34 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { PageShell } from "@/components/layout/PageShell";
 import { Button } from "@/components/ui/button";
 import { Mail, Lock, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { api } from "@/lib/api-client";
 
 export default function LoginPage() {
+    const router = useRouter();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [status, setStatus] = useState<"idle" | "submitting" | "error">("idle");
+    const [errorMessage, setErrorMessage] = useState("");
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        // TODO: Implement actual login logic
-        alert(`Login attempt with email: ${email}`);
+        setStatus("submitting");
+        setErrorMessage("");
+        try {
+            await api.login({ email, password });
+            router.push("/");
+            router.refresh();
+        } catch (err) {
+            setStatus("error");
+            setErrorMessage(err instanceof Error ? err.message : "Invalid email or password. Please try again.");
+        }
     };
 
     return (
@@ -36,6 +49,11 @@ export default function LoginPage() {
 
                         {/* Form */}
                         <form onSubmit={handleSubmit} className="p-8 space-y-6">
+                            {status === "error" && (
+                                <div className="p-4 rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-800 dark:text-red-200 text-sm">
+                                    {errorMessage}
+                                </div>
+                            )}
 
                             {/* Email Field */}
                             <div>
@@ -52,7 +70,8 @@ export default function LoginPage() {
                                         required
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
-                                        className="block w-full pl-12 pr-4 py-3 border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 transition-colors"
+                                        disabled={status === "submitting"}
+                                        className="block w-full pl-12 pr-4 py-3 border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 transition-colors disabled:opacity-60"
                                         placeholder="you@example.com"
                                     />
                                 </div>
@@ -73,7 +92,8 @@ export default function LoginPage() {
                                         required
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}
-                                        className="block w-full pl-12 pr-4 py-3 border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 transition-colors"
+                                        disabled={status === "submitting"}
+                                        className="block w-full pl-12 pr-4 py-3 border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 transition-colors disabled:opacity-60"
                                         placeholder="••••••••"
                                     />
                                 </div>
@@ -96,9 +116,10 @@ export default function LoginPage() {
                             {/* Submit Button */}
                             <Button
                                 type="submit"
-                                className="w-full h-14 bg-primary text-white font-bold hover:bg-primary/90 py-3 text-base rounded-xl shadow-lg shadow-primary/20"
+                                disabled={status === "submitting"}
+                                className="w-full h-14 bg-primary text-white font-bold hover:bg-primary/90 py-3 text-base rounded-xl shadow-lg shadow-primary/20 disabled:opacity-60"
                             >
-                                Sign In <ArrowRight className="ml-2 w-5 h-5" />
+                                {status === "submitting" ? "Signing in..." : "Sign In"} <ArrowRight className="ml-2 w-5 h-5" />
                             </Button>
                         </form>
                     </div>

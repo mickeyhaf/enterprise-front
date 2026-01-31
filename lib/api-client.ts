@@ -1,10 +1,16 @@
 const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3000/api/v1";
 
+const DEFAULT_OPTIONS: RequestInit = {
+  credentials: "include",
+  headers: { "Content-Type": "application/json" },
+};
+
 async function fetchApi<T>(path: string, options?: RequestInit): Promise<T> {
   const url = `${API_BASE}${path}`;
   const res = await fetch(url, {
+    ...DEFAULT_OPTIONS,
     ...options,
-    headers: { "Content-Type": "application/json", ...options?.headers },
+    headers: { ...DEFAULT_OPTIONS.headers, ...options?.headers } as HeadersInit,
   });
   if (!res.ok) {
     const err = await res.json().catch(() => ({ message: res.statusText }));
@@ -18,6 +24,24 @@ async function postApi<T>(path: string, body: unknown): Promise<T> {
     method: "POST",
     body: JSON.stringify(body),
   });
+}
+
+// Auth types
+export interface LoginRequest {
+  email: string;
+  password: string;
+}
+
+export interface AuthUser {
+  id: number;
+  email: string;
+  role: string;
+}
+
+export interface LoginResponse {
+  accessToken: string;
+  refreshToken: string;
+  user: AuthUser;
 }
 
 // Types matching backend
@@ -100,12 +124,24 @@ export interface AboutHistory {
   paragraphs: string[];
 }
 
+export interface FooterSocialLinks {
+  facebook?: string;
+  twitter?: string;
+  linkedin?: string;
+}
+
 export interface FooterContact {
   companyName: string;
   description: string;
   address: string;
   email: string;
   phone: string;
+}
+
+export interface ServicesHeroContent {
+  title: string;
+  description: string;
+  image: string;
 }
 
 export interface ContactInfo {
@@ -236,6 +272,12 @@ export interface ResourcesCategoriesContent {
   items: ResourcesCategoryItem[];
 }
 
+export interface ServicesHeroContent {
+  title: string;
+  description: string;
+  image: string;
+}
+
 export interface TradeSectionContent {
   hero: { badge?: string; title: string; description: string };
   section: { title: string; description: string; items: string[] };
@@ -308,4 +350,16 @@ export const api = {
     fetchApi<ResourceItem[]>(
       category ? `/resources?category=${encodeURIComponent(category)}` : "/resources"
     ),
+
+  // Auth
+  login: (dto: LoginRequest) =>
+    postApi<LoginResponse>("/auth/login", dto),
+  logout: () =>
+    postApi<{ message: string }>("/auth/logout", {}),
+  refresh: () =>
+    postApi<LoginResponse>("/auth/refresh", {}),
+  forgotPassword: (email: string) =>
+    postApi<{ message: string }>("/auth/forgot-password", { email }),
+  resetPassword: (token: string, newPassword: string) =>
+    postApi<{ message: string }>("/auth/reset-password", { token, newPassword }),
 };

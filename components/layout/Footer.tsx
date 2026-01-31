@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Building2, MapPin, Mail, Phone, Facebook, Twitter, Linkedin } from "lucide-react";
 import { useContent } from "@/lib/use-content";
-import type { FooterContact } from "@/lib/api-client";
+import type { FooterContact, FooterSocialLinks } from "@/lib/api-client";
 
 const DEFAULT_FOOTER: FooterContact = {
   companyName: "MU CONSULTANCY & BUSINESS ENTERPRISE",
@@ -16,7 +16,9 @@ const DEFAULT_FOOTER: FooterContact = {
 
 export function Footer() {
   const { data: content } = useContent<FooterContact>("footer_contact");
+  const { data: socialContent } = useContent<FooterSocialLinks>("footer_social");
   const { companyName, description, address, email, phone } = content ?? DEFAULT_FOOTER;
+  const social = socialContent ?? {};
 
   const mailHref = `mailto:${email}`;
   const telHref = `tel:${phone?.replace(/\s/g, "")}`;
@@ -35,17 +37,25 @@ export function Footer() {
             <p className="text-sm text-slate-300 leading-relaxed mb-8">
               {description}
             </p>
-            <div className="flex gap-4 mb-8">
-              <Link href="#" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-accent hover:text-primary transition-all duration-300">
-                <Facebook size={18} />
-              </Link>
-              <Link href="#" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-accent hover:text-primary transition-all duration-300">
-                <Twitter size={18} />
-              </Link>
-              <Link href="#" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-accent hover:text-primary transition-all duration-300">
-                <Linkedin size={18} />
-              </Link>
-            </div>
+            {(social.facebook || social.twitter || social.linkedin) && (
+              <div className="flex gap-4 mb-8">
+                {social.facebook && (
+                  <a href={social.facebook} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-accent hover:text-primary transition-all duration-300" aria-label="Facebook">
+                    <Facebook size={18} />
+                  </a>
+                )}
+                {social.twitter && (
+                  <a href={social.twitter} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-accent hover:text-primary transition-all duration-300" aria-label="Twitter">
+                    <Twitter size={18} />
+                  </a>
+                )}
+                {social.linkedin && (
+                  <a href={social.linkedin} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-accent hover:text-primary transition-all duration-300" aria-label="LinkedIn">
+                    <Linkedin size={18} />
+                  </a>
+                )}
+              </div>
+            )}
           </div>
 
           <div>

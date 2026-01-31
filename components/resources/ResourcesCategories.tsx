@@ -6,7 +6,7 @@ import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { useContent } from "@/lib/use-content";
 import { getIcon } from "@/lib/icon-map";
-import type { ResourcesCategoriesContent } from "@/lib/api-client";
+import type { ResourcesCategoriesContent, ResourcesCategoryItem } from "@/lib/api-client";
 
 const DEFAULT_CATEGORIES: ResourcesCategoryItem[] = [
   { title: "Brochures", description: "Download our latest corporate brochures and service catalogs.", icon: "Presentation", link: "/resources/brochures" },
