@@ -12,6 +12,9 @@ import { QuoteModal } from "@/components/services/QuoteModal";
 import { useContent } from "@/lib/use-content";
 import type { TradeMainContent } from "@/lib/api-client";
 
+const DEFAULT_HERO_IMAGE = "https://lh3.googleusercontent.com/aida-public/AB6AXuCy0CHoOaR_EuZN-cOReFWOt3iAsGtQeZ0grPlPurcIegBkZj7TQDqRT4Fndi1TEfYaV7fHQR-jggMj5fqBq6y-qI3BXKdchQk14OveuGngJPx8c12b0kqAGQhaCbRGLDnJDtby4IuGV42Oa_Vh1u2MSVbvvrTfFpriQ7c-RaIAZRcNk3NEFXkZiJikWYFVSEI2R8n43TOXo0qUWLFafKmoZ9TH1qH6MH5iJHzmN4l7XU8kgptPeRMpkXMOwjz4E4fLx81vA-Frlsuw";
+const DEFAULT_SECTION_IMAGE_ALT = "https://lh3.googleusercontent.com/aida-public/AB6AXuDuq25mY3vXtdcC6waRuuYWdh-edBAMgq6MdS_JXCUmLFWfLOoyvNpZoj_099FXdAgo9XaQ8KE8PLMnWwdiQ7MyBH8IGsagy-as-ltkMky2oJGuxvfaONJ99VOQReAmppFueZxJ47Ycar9VSmxPWdSXnw7WzSRmNzGz9fYWQM84mOzB0uRpiD6zNa5QAHqZND5H5k0IyHOohMJrcRfAw9nUa8zYUh0NNjbxcNf0XrtPydzrGQfxKG0nfWx0zSDgwyVglJ7HL0HJW3ir";
+
 const DEFAULT_TRADE_MAIN: TradeMainContent = {
   hero: {
     title: "Trade & Business Solutions",
@@ -47,7 +50,7 @@ export default function TradePage() {
       <header className="relative min-h-[calc(100vh-5rem)] flex items-center overflow-hidden">
         <div className="absolute inset-0 w-full h-full">
           <Image
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCy0CHoOaR_EuZN-cOReFWOt3iAsGtQeZ0grPlPurcIegBkZj7TQDqRT4Fndi1TEfYaV7fHQR-jggMj5fqBq6y-qI3BXKdchQk14OveuGngJPx8c12b0kqAGQhaCbRGLDnJDtby4IuGV42Oa_Vh1u2MSVbvvrTfFpriQ7c-RaIAZRcNk3NEFXkZiJikWYFVSEI2R8n43TOXo0qUWLFafKmoZ9TH1qH6MH5iJHzmN4l7XU8kgptPeRMpkXMOwjz4E4fLx81vA-Frlsuw"
+            src={c.hero?.image ?? DEFAULT_HERO_IMAGE}
             alt="Global trade background"
             fill
             className="object-cover grayscale-[20%]"
@@ -110,7 +113,7 @@ export default function TradePage() {
                 </div>
                 {!isImageLeft && (
                   <div className="relative h-[500px] rounded-2xl overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-800">
-                    <Image src="https://lh3.googleusercontent.com/aida-public/AB6AXuDuq25mY3vXtdcC6waRuuYWdh-edBAMgq6MdS_JXCUmLFWfLOoyvNpZoj_099FXdAgo9XaQ8KE8PLMnWwdiQ7MyBH8IGsagy-as-ltkMky2oJGuxvfaONJ99VOQReAmppFueZxJ47Ycar9VSmxPWdSXnw7WzSRmNzGz9fYWQM84mOzB0uRpiD6zNa5QAHqZND5H5k0IyHOohMJrcRfAw9nUa8zYUh0NNjbxcNf0XrtPydzrGQfxKG0nfWx0zSDgwyVglJ7HL0HJW3ir" alt={section.title} fill className="object-cover" />
+                    <Image src={section.image ?? DEFAULT_SECTION_IMAGE_ALT} alt={section.title} fill className="object-cover" />
                   </div>
                 )}
               </div>

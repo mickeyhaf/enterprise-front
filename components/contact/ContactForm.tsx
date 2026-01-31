@@ -4,10 +4,21 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { api } from "@/lib/api-client";
+import { useContent } from "@/lib/use-content";
+import type { ContactSubjectsContent } from "@/lib/api-client";
+
+const DEFAULT_SUBJECTS = [
+  { value: "General Inquiry", label: "General Inquiry" },
+  { value: "Request for Quote", label: "Request for Quote" },
+  { value: "Partnership Proposal", label: "Partnership Proposal" },
+  { value: "Careers", label: "Careers" },
+];
 
 export function ContactForm() {
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
+  const { data: subjectsContent } = useContent<ContactSubjectsContent>("contact_subjects");
+  const subjectItems = subjectsContent?.items?.length ? subjectsContent.items : DEFAULT_SUBJECTS;
 
   return (
     <div className="bg-white dark:bg-slate-900 p-8 md:p-10 rounded-3xl shadow-xl border border-slate-100 dark:border-slate-800 relative overflow-hidden">
@@ -131,10 +142,11 @@ export function ContactForm() {
             disabled={status === "submitting"}
             className="w-full p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all appearance-none disabled:opacity-60"
           >
-            <option value="General Inquiry">General Inquiry</option>
-            <option value="Request for Quote">Request for Quote</option>
-            <option value="Partnership Proposal">Partnership Proposal</option>
-            <option value="Careers">Careers</option>
+            {subjectItems.map((item) => (
+              <option key={item.value} value={item.value}>
+                {item.label}
+              </option>
+            ))}
           </select>
         </div>
         <div className="space-y-2">

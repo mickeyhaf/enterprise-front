@@ -168,8 +168,14 @@ export function Navbar() {
             </div>
           </div>
 
-          {/* Language Switcher */}
+          {/* Admin Login + Language Switcher */}
           <div className="hidden md:flex items-center gap-4">
+            <Link
+              href="/login"
+              className="text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-primary transition-colors"
+            >
+              Admin Login
+            </Link>
             <div className="relative" ref={languageMenuRef}>
               <button
                 type="button"
@@ -297,6 +303,10 @@ export function Navbar() {
                 Annual Reports
               </MobileNavLink>
             </div>
+
+            <MobileNavLink href="/login" onClick={closeMobileMenu} active={isActive("/login")}>
+              Admin Login
+            </MobileNavLink>
 
             <div className="pt-4 flex gap-4 justify-center border-t border-slate-100 dark:border-slate-800 mt-4">
               <div className="relative" ref={languageMenuRef}>

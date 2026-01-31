@@ -1,4 +1,4 @@
-import { Share2, Mail } from "lucide-react";
+import { Linkedin, Mail } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -7,9 +7,13 @@ interface TeamCardProps {
   role: string;
   description: string;
   image: string;
+  email?: string | null;
+  linkedin?: string | null;
 }
 
-export function TeamCard({ name, role, description, image }: TeamCardProps) {
+export function TeamCard({ name, role, description, image, email, linkedin }: TeamCardProps) {
+  const hasSocial = email || linkedin;
+
   return (
     <div className="bg-white dark:bg-slate-900 p-8 rounded-2xl border border-slate-200 dark:border-slate-800 text-center group hover:shadow-2xl hover:-translate-y-1 transition-all duration-500">
       <div className="relative mb-8 mx-auto w-36 h-36">
@@ -26,14 +30,30 @@ export function TeamCard({ name, role, description, image }: TeamCardProps) {
       <h3 className="font-bold text-2xl text-slate-900 dark:text-white font-display mb-2">{name}</h3>
       <p className="text-primary font-bold text-xs uppercase tracking-[0.2em] mb-4">{role}</p>
       <p className="text-base text-slate-600 dark:text-slate-400 mb-8 font-light leading-relaxed">{description}</p>
-      <div className="flex justify-center gap-5">
-        <Link href="#" className="w-10 h-10 rounded-full bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-primary hover:text-white transition-all duration-300">
-          <Share2 size={18} />
-        </Link>
-        <Link href="#" className="w-10 h-10 rounded-full bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-primary hover:text-white transition-all duration-300">
-          <Mail size={18} />
-        </Link>
-      </div>
+      {hasSocial && (
+        <div className="flex justify-center gap-5">
+          {linkedin && (
+            <a
+              href={linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-10 h-10 rounded-full bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-primary hover:text-white transition-all duration-300"
+              aria-label={`${name} on LinkedIn`}
+            >
+              <Linkedin size={18} />
+            </a>
+          )}
+          {email && (
+            <a
+              href={`mailto:${email}`}
+              className="w-10 h-10 rounded-full bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-primary hover:text-white transition-all duration-300"
+              aria-label={`Email ${name}`}
+            >
+              <Mail size={18} />
+            </a>
+          )}
+        </div>
+      )}
     </div>
   );
 }

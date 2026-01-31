@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Building2, MapPin, Mail, Phone, Facebook, Twitter, Linkedin } from "lucide-react";
 import { useContent } from "@/lib/use-content";
-import type { FooterContact, FooterSocialLinks } from "@/lib/api-client";
+import type { FooterContact, FooterSocialLinks, FooterLinksContent } from "@/lib/api-client";
 
 const DEFAULT_FOOTER: FooterContact = {
   companyName: "MU CONSULTANCY & BUSINESS ENTERPRISE",
@@ -17,8 +17,21 @@ const DEFAULT_FOOTER: FooterContact = {
 export function Footer() {
   const { data: content } = useContent<FooterContact>("footer_contact");
   const { data: socialContent } = useContent<FooterSocialLinks>("footer_social");
+  const { data: linksContent } = useContent<FooterLinksContent>("footer_links");
   const { companyName, description, address, email, phone } = content ?? DEFAULT_FOOTER;
   const social = socialContent ?? {};
+  const quickLinks = linksContent?.quickLinks ?? [
+    { label: "Service Catalog", href: "/services" },
+    { label: "Project Portfolio", href: "/portfolio" },
+    { label: "Request a Proposal", href: "/contact" },
+    { label: "Tender Announcements", href: "/news" },
+  ];
+  const resourceLinks = linksContent?.resourceLinks ?? [
+    { label: "Brochures", href: "/resources/brochures" },
+    { label: "Whitepapers", href: "/resources/whitepapers" },
+    { label: "Case Studies", href: "/resources/case-studies" },
+    { label: "Annual Reports", href: "/resources/reports" },
+  ];
 
   const mailHref = `mailto:${email}`;
   const telHref = `tel:${phone?.replace(/\s/g, "")}`;
@@ -61,52 +74,26 @@ export function Footer() {
           <div>
             <h3 className="text-lg font-bold mb-6">Quick Links</h3>
             <ul className="space-y-4 text-sm text-slate-300">
-              <li>
-                <Link href="/services" className="hover:text-accent transition-colors">
-                  Service Catalog
-                </Link>
-              </li>
-              <li>
-                <Link href="/portfolio" className="hover:text-accent transition-colors">
-                  Project Portfolio
-                </Link>
-              </li>
-              <li>
-                <Link href="/contact" className="hover:text-accent transition-colors">
-                  Request a Proposal
-                </Link>
-              </li>
-              <li>
-                <Link href="/news" className="hover:text-accent transition-colors">
-                  Tender Announcements
-                </Link>
-              </li>
+              {quickLinks.map((link) => (
+                <li key={link.href}>
+                  <Link href={link.href} className="hover:text-accent transition-colors">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
           <div>
             <h3 className="text-lg font-bold mb-6">Resource Center</h3>
             <ul className="space-y-4 text-sm text-slate-300">
-              <li>
-                <Link href="/resources/brochures" className="hover:text-accent transition-colors">
-                  Brochures
-                </Link>
-              </li>
-              <li>
-                <Link href="/resources/whitepapers" className="hover:text-accent transition-colors">
-                  Whitepapers
-                </Link>
-              </li>
-              <li>
-                <Link href="/resources/case-studies" className="hover:text-accent transition-colors">
-                  Case Studies
-                </Link>
-              </li>
-              <li>
-                <Link href="/resources/reports" className="hover:text-accent transition-colors">
-                  Annual Reports
-                </Link>
-              </li>
+              {resourceLinks.map((link) => (
+                <li key={link.href}>
+                  <Link href={link.href} className="hover:text-accent transition-colors">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 

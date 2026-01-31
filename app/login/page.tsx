@@ -22,8 +22,13 @@ export default function LoginPage() {
         setStatus("submitting");
         setErrorMessage("");
         try {
-            await api.login({ email, password });
-            router.push("/");
+            const res = await api.login({ email, password });
+            const role = res.user?.role;
+            if (role === "ADMIN" || role === "NEWS_MANAGER") {
+                router.push("/admin");
+            } else {
+                router.push("/");
+            }
             router.refresh();
         } catch (err) {
             setStatus("error");

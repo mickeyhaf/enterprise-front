@@ -10,43 +10,24 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { QuoteModal } from "@/components/services/QuoteModal";
 import { useContent } from "@/lib/use-content";
-import type { TradeSectionContent } from "@/lib/api-client";
+import type { TradeExpertiseExtended, TradeExpertiseIndustry } from "@/lib/api-client";
 
-const DEFAULT: TradeSectionContent = {
-  hero: { badge: "Sector Focus", title: "Industry-Specific Expertise", description: "Tailored consultancy and trade services for key economic sectors." },
-  section: { title: "Domain Excellence", description: "Generic solutions don't solve specific problems.", items: ["Manufacturing and industrial processing", "Agriculture and agro-processing", "Construction and infrastructure", "Research and development projects"] },
-  services: ["Manufacturing and industrial processing", "Agriculture and agro-processing", "Construction and infrastructure", "Research and development projects"],
-};
+const DEFAULT_HERO_IMAGE = "https://lh3.googleusercontent.com/aida-public/AB6AXuAAj2TqrSz5GqTnny1EaluHJdm8FZ2t59TX6BXKm7-wrKLO7cN7JYHthpE94yXx4ymfl6r4sxn50g5kYsAFepye2qDnBuUDbw-ypEtM-kjBQh0hTypufXvfeKveGZnAeWxBNEvJFc4ItvFDmsPIYMGstLGTIrCa_6q6GYz-ilZ-57QqqxJMPvWzweU3af0TvCpImFgCGlHza8TE7_ZvCm9BTlg8BCRFgVY1TmVwwo5qXXXn0jOPKTTQg2GmVVjbwXJ4oVP-AeolBVTm";
+
+const DEFAULT_INDUSTRIES: TradeExpertiseIndustry[] = [
+  { image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCy0CHoOaR_EuZN-cOReFWOt3iAsGtQeZ0grPlPurcIegBkZj7TQDqRT4Fndi1TEfYaV7fHQR-jggMj5fqBq6y-qI3BXKdchQk14OveuGngJPx8c12b0kqAGQhaCbRGLDnJDtby4IuGV42Oa_Vh1u2MSVbvvrTfFpriQ7c-RaIAZRcNk3NEFXkZiJikWYFVSEI2R8n43TOXo0qUWLFafKmoZ9TH1qH6MH5iJHzmN4l7XU8kgptPeRMpkXMOwjz4E4fLx81vA-Frlsuw", title: "Manufacturing Support", description: "Supporting industrial growth through machinery sourcing, process optimization, and quality control systems." },
+  { image: DEFAULT_HERO_IMAGE, title: "Agricultural Solutions", description: "Modernizing farming with advanced inputs, irrigation solutions, and value-chain enhancement." },
+  { image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDuq25mY3vXtdcC6waRuuYWdh-edBAMgq6MdS_JXCUmLFWfLOoyvNpZoj_099FXdAgo9XaQ8KE8PLMnWwdiQ7MyBH8IGsagy-as-ltkMky2oJGuxvfaONJ99VOQReAmppFueZxJ47Ycar9VSmxPWdSXnw7WzSRmNzGz9fYWQM84mOzB0uRpiD6zNa5QAHqZND5H5k0IyHOohMJrcRfAw9nUa8zYUh0NNjbxcNf0XrtPydzrGQfxKG0nfWx0zSDgwyVglJ7HL0HJW3ir", title: "Construction Consultancy", description: "Providing high-grade materials and engineering consultancy for infrastructure development." },
+  { image: "https://lh3.googleusercontent.com/aida-public/AB6AXuArZfHMXyLu6bE9DlN9LiX3kznR88dr2mhDOpHw0gvXhsxHPlaKa_lb3vpOWPa38-xxvHDwtsPx4ethSbFQKdDFuP86XQGUb5baDVtCWoovEwFD_1E1y1FV3pghTjgsP3RUAafZMG55UdLngpbe0CA1P85Z7nqVuzHKjV-yK954Et4dFvLeju_XwGkfJbRZBu5fix3mhgksBTyu1dvG4In6ssgP8yTv1NHeUAcxlJ2QT0iCRlzIs28nFTaDw5U73jj5CCOtJIt0lytN", title: "R&D Collaboration", description: "Leveraging academic insights to solve commercial challenges and drive innovation." },
+];
 
 export default function ExpertisePage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedIndustry, setSelectedIndustry] = useState("Industry Consultation");
-  const { data: content } = useContent<TradeSectionContent>("trade_expertise");
-  const c = content ?? DEFAULT;
-  const sectorOptions = c.services ?? c.section?.items ?? DEFAULT.services ?? [];
-
-  const industries = [
-    {
-      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCy0CHoOaR_EuZN-cOReFWOt3iAsGtQeZ0grPlPurcIegBkZj7TQDqRT4Fndi1TEfYaV7fHQR-jggMj5fqBq6y-qI3BXKdchQk14OveuGngJPx8c12b0kqAGQhaCbRGLDnJDtby4IuGV42Oa_Vh1u2MSVbvvrTfFpriQ7c-RaIAZRcNk3NEFXkZiJikWYFVSEI2R8n43TOXo0qUWLFafKmoZ9TH1qH6MH5iJHzmN4l7XU8kgptPeRMpkXMOwjz4E4fLx81vA-Frlsuw",
-      title: "Manufacturing Support",
-      description: "Supporting industrial growth through machinery sourcing, process optimization, and quality control systems."
-    },
-    {
-      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuAAj2TqrSz5GqTnny1EaluHJdm8FZ2t59TX6BXKm7-wrKLO7cN7JYHthpE94yXx4ymfl6r4sxn50g5kYsAFepye2qDnBuUDbw-ypEtM-kjBQh0hTypufXvfeKveGZnAeWxBNEvJFc4ItvFDmsPIYMGstLGTIrCa_6q6GYz-ilZ-57QqqxJMPvWzweU3af0TvCpImFgCGlHza8TE7_ZvCm9BTlg8BCRFgVY1TmVwwo5qXXXn0jOPKTTQg2GmVVjbwXJ4oVP-AeolBVTm",
-      title: "Agricultural Solutions",
-      description: "Modernizing farming with advanced inputs, irrigation solutions, and value-chain enhancement."
-    },
-    {
-      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDuq25mY3vXtdcC6waRuuYWdh-edBAMgq6MdS_JXCUmLFWfLOoyvNpZoj_099FXdAgo9XaQ8KE8PLMnWwdiQ7MyBH8IGsagy-as-ltkMky2oJGuxvfaONJ99VOQReAmppFueZxJ47Ycar9VSmxPWdSXnw7WzSRmNzGz9fYWQM84mOzB0uRpiD6zNa5QAHqZND5H5k0IyHOohMJrcRfAw9nUa8zYUh0NNjbxcNf0XrtPydzrGQfxKG0nfWx0zSDgwyVglJ7HL0HJW3ir",
-      title: "Construction Consultancy",
-      description: "Providing high-grade materials and engineering consultancy for infrastructure development."
-    },
-    {
-      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuArZfHMXyLu6bE9DlN9LiX3kznR88dr2mhDOpHw0gvXhsxHPlaKa_lb3vpOWPa38-xxvHDwtsPx4ethSbFQKdDFuP86XQGUb5baDVtCWoovEwFD_1E1y1FV3pghTjgsP3RUAafZMG55UdLngpbe0CA1P85Z7nqVuzHKjV-yK954Et4dFvLeju_XwGkfJbRZBu5fix3mhgksBTyu1dvG4In6ssgP8yTv1NHeUAcxlJ2QT0iCRlzIs28nFTaDw5U73jj5CCOtJIt0lytN",
-      title: "R&D Collaboration",
-      description: "Leveraging academic insights to solve commercial challenges and drive innovation."
-    }
-  ];
+  const { data: content } = useContent<TradeExpertiseExtended>("trade_expertise");
+  const c = content ?? {};
+  const sectorOptions = c.services ?? c.section?.items ?? DEFAULT_INDUSTRIES.map((i) => i.title);
+  const industries = c.industries?.length ? c.industries : DEFAULT_INDUSTRIES;
 
   const handleConnect = (industryTitle: string) => {
     setSelectedIndustry(industryTitle);
@@ -62,8 +43,8 @@ export default function ExpertisePage() {
         {/* Background Image */}
         <div className="absolute inset-0 w-full h-full">
           <Image
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAAj2TqrSz5GqTnny1EaluHJdm8FZ2t59TX6BXKm7-wrKLO7cN7JYHthpE94yXx4ymfl6r4sxn50g5kYsAFepye2qDnBuUDbw-ypEtM-kjBQh0hTypufXvfeKveGZnAeWxBNEvJFc4ItvFDmsPIYMGstLGTIrCa_6q6GYz-ilZ-57QqqxJMPvWzweU3af0TvCpImFgCGlHza8TE7_ZvCm9BTlg8BCRFgVY1TmVwwo5qXXXn0jOPKTTQg2GmVVjbwXJ4oVP-AeolBVTm"
-            alt="Agricultural expertise"
+            src={c.hero?.image ?? DEFAULT_HERO_IMAGE}
+            alt="Industry expertise"
             fill
             className="object-cover grayscale-[20%]"
             priority
@@ -85,7 +66,7 @@ export default function ExpertisePage() {
               <span className="text-accent italic">Expertise</span>
             </h1>
             <p className="text-lg text-slate-100 mb-8 max-w-xl font-light">
-              {c.hero?.description ?? DEFAULT.hero.description}
+              {c.hero?.description ?? "Tailored consultancy and trade services for key economic sectors, leveraging deep domain knowledge."}
             </p>
           </div>
         </div>
@@ -95,7 +76,7 @@ export default function ExpertisePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeader
             title={c.section?.title ?? "Specialized Knowledge"}
-            description={c.section?.description ?? DEFAULT.section.description}
+            description={c.section?.description ?? "Generic solutions don't solve specific problems. We offer tailored consultancy and trade services for key economic sectors, leveraging deep domain knowledge."}
             centered
             className="mb-20"
           />

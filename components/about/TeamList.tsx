@@ -42,6 +42,8 @@ export function TeamList() {
           role={member.role ?? ""}
           description={member.description ?? ""}
           image={member.image ?? ""}
+          email={member.email}
+          linkedin={member.linkedin}
         />
       ))}
     </div>
