@@ -7,10 +7,17 @@ const DEFAULT_OPTIONS: RequestInit = {
 
 async function fetchApi<T>(path: string, options?: RequestInit): Promise<T> {
   const url = `${API_BASE}${path}`;
+  const headers = { ...DEFAULT_OPTIONS.headers, ...options?.headers } as Record<string, string>;
+
+  // Don't set Content-Type if body is FormData (let the browser set it with boundary)
+  if (options?.body instanceof FormData) {
+    delete headers["Content-Type"];
+  }
+
   const res = await fetch(url, {
     ...DEFAULT_OPTIONS,
     ...options,
-    headers: { ...DEFAULT_OPTIONS.headers, ...options?.headers } as HeadersInit,
+    headers: headers as HeadersInit,
   });
   if (!res.ok) {
     const err = await res.json().catch(() => ({ message: res.statusText }));
@@ -638,5 +645,16 @@ export const api = {
     update: (id: number, body: Record<string, unknown>) =>
       patchApi<ResourceItem>(`/admin/resources/${id}`, body),
     delete: (id: number) => deleteApi(`/admin/resources/${id}`),
+  },
+  uploads: {
+    upload: (file: File) => {
+      const formData = new FormData();
+      formData.append("file", file);
+      return fetchApi<{ url: string }>("/uploads", {
+        method: "POST",
+        body: formData,
+        headers: {}, // Let fetch set the boundary and content-type
+      });
+    },
   },
 };

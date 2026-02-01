@@ -33,6 +33,7 @@ export function Hero() {
           fill
           className="object-cover grayscale-[20%]"
           priority
+          unoptimized
         />
       </div>
       <div className="absolute inset-0 bg-gradient-to-r from-primary/95 to-primary/40 pointer-events-none" />

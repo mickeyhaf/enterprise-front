@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Plus, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { FormField } from "./FormField";
+import { ImageUpload } from "./ImageUpload";
 import type { BlockFormSchema, FieldConfig } from "@/lib/content-block-schemas";
 
 function setAt(obj: Record<string, unknown>, path: (string | number)[], value: unknown): Record<string, unknown> {
@@ -77,10 +78,9 @@ export function ContentBlockForm({
     }
     if (field.type === "image") {
       return (
-        <FormField
+        <ImageUpload
           key={key}
-          label={`${field.label} (Image URL)`}
-          type="url"
+          label={field.label}
           value={String(val ?? "")}
           onChange={(v) => update(path, v)}
         />
