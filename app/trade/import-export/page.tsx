@@ -10,19 +10,26 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { QuoteModal } from "@/components/services/QuoteModal";
 import { useContent } from "@/lib/use-content";
-import type { TradeSectionContent } from "@/lib/api-client";
+import type { TradeSectionContent, QuoteLabelsContent } from "@/lib/api-client";
+
+const DEFAULT_HERO_IMAGE = "https://lh3.googleusercontent.com/aida-public/AB6AXuCy0CHoOaR_EuZN-cOReFWOt3iAsGtQeZ0grPlPurcIegBkZj7TQDqRT4Fndi1TEfYaV7fHQR-jggMj5fqBq6y-qI3BXKdchQk14OveuGngJPx8c12b0kqAGQhaCbRGLDnJDtby4IuGV42Oa_Vh1u2MSVbvvrTfFpriQ7c-RaIAZRcNk3NEFXkZiJikWYFVSEI2R8n43TOXo0qUWLFafKmoZ9TH1qH6MH5iJHzmN4l7XU8kgptPeRMpkXMOwjz4E4fLx81vA-Frlsuw";
+const DEFAULT_SECTION_IMAGE = "https://lh3.googleusercontent.com/aida-public/AB6AXuDuq25mY3vXtdcC6waRuuYWdh-edBAMgq6MdS_JXCUmLFWfLOoyvNpZoj_099FXdAgo9XaQ8KE8PLMnWwdiQ7MyBH8IGsagy-as-ltkMky2oJGuxvfaONJ99VOQReAmppFueZxJ47Ycar9VSmxPWdSXnw7WzSRmNzGz9fYWQM84mOzB0uRpiD6zNa5QAHqZND5H5k0IyHOohMJrcRfAw9nUa8zYUh0NNjbxcNf0XrtPydzrGQfxKG0nfWx0zSDgwyVglJ7HL0HJW3ir";
 
 const DEFAULT: TradeSectionContent = {
   hero: { badge: "Global Trade Solutions", title: "Import & Export Services", description: "Navigating the complexities of international trade with precision." },
-  section: { title: "Connecting Global Markets", description: "Our import/export services are designed to streamline your international business operations.", items: ["Customs Clearance & Compliance", "Freight Forwarding & Logistics", "Market Entry Strategy", "Document Processing", "Trade Finance Assistance"] },
+  section: { title: "Connecting Global Markets", description: "Our import/export services are designed to streamline your international business operations. From sourcing high-quality materials to reaching new customer bases abroad, we handle the logistics so you can focus on growth.", items: ["Customs Clearance & Compliance", "Freight Forwarding & Logistics", "Market Entry Strategy", "Document Processing", "Trade Finance Assistance"] },
   services: ["Customs Clearance & Compliance", "Freight Forwarding & Logistics", "Market Entry Strategy", "Document Processing", "Trade Finance Assistance"],
 };
 
 export default function ImportExportPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { data: content } = useContent<TradeSectionContent>("trade_import_export");
+  const { data: quoteLabels } = useContent<QuoteLabelsContent>("quote_labels");
   const c = content ?? DEFAULT;
   const services = c.services ?? c.section?.items ?? DEFAULT.services ?? [];
+  const heroImage = c.hero?.image || DEFAULT_HERO_IMAGE;
+  const sectionImage = c.section?.image || DEFAULT_SECTION_IMAGE;
+  const itemName = quoteLabels?.importExport ?? "Import/Export Consultation";
 
   return (
     <PageShell>
@@ -33,7 +40,7 @@ export default function ImportExportPage() {
         {/* Background Image */}
         <div className="absolute inset-0 w-full h-full">
           <Image
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCy0CHoOaR_EuZN-cOReFWOt3iAsGtQeZ0grPlPurcIegBkZj7TQDqRT4Fndi1TEfYaV7fHQR-jggMj5fqBq6y-qI3BXKdchQk14OveuGngJPx8c12b0kqAGQhaCbRGLDnJDtby4IuGV42Oa_Vh1u2MSVbvvrTfFpriQ7c-RaIAZRcNk3NEFXkZiJikWYFVSEI2R8n43TOXo0qUWLFafKmoZ9TH1qH6MH5iJHzmN4l7XU8kgptPeRMpkXMOwjz4E4fLx81vA-Frlsuw"
+            src={heroImage}
             alt="Global trade container ship"
             fill
             className="object-cover grayscale-[20%]"
@@ -67,13 +74,13 @@ export default function ImportExportPage() {
           <div className="grid md:grid-cols-2 gap-20 items-center">
             <div>
               <SectionHeader
-                title="Connecting Global Markets"
-                description="Our import/export services are designed to streamline your international business operations. From sourcing high-quality materials to reaching new customer bases abroad, we handle the logistics so you can focus on growth."
+                title={c.section?.title ?? "Connecting Global Markets"}
+                description={c.section?.description ?? "Our import/export services are designed to streamline your international business operations. From sourcing high-quality materials to reaching new customer bases abroad, we handle the logistics so you can focus on growth."}
                 className="mb-10"
               />
 
               <ul className="space-y-6 mb-12">
-                {tradeServices.map((item, i) => (
+                {services.map((item, i) => (
                   <li key={i} className="flex items-center gap-4 group">
                     <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
                       <CheckCircle size={14} className="text-primary" />
@@ -88,7 +95,7 @@ export default function ImportExportPage() {
                 className="h-14 px-10 rounded-xl font-bold bg-primary text-white hover:bg-primary/90 shadow-lg shadow-primary/20 transition-all text-base"
                 onClick={() => setIsModalOpen(true)}
               >
-                Request a Quote <ArrowRight className="ml-3 w-5 h-5" />
+                {quoteLabels?.requestQuote ?? "Request a Quote"} <ArrowRight className="ml-3 w-5 h-5" />
               </Button>
             </div>
 
@@ -107,7 +114,7 @@ export default function ImportExportPage() {
       <QuoteModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        itemName="Import/Export Consultation"
+        itemName={itemName}
         itemType="service"
         interestOptions={services}
       />

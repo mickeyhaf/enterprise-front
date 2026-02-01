@@ -12,6 +12,7 @@ import {
   FolderKanban,
   Package,
   MessageSquare,
+  BookOpen,
   LogOut,
   ExternalLink,
 } from "lucide-react";
@@ -29,6 +30,7 @@ const ADMIN_NAV = [
   { href: "/admin/projects", label: "Projects", icon: FolderKanban },
   { href: "/admin/products", label: "Products", icon: Package },
   { href: "/admin/engagement", label: "Community", icon: MessageSquare },
+  { href: "/admin/resources", label: "Resources", icon: BookOpen },
 ];
 
 const NEWS_MANAGER_NAV = [

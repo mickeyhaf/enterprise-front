@@ -11,7 +11,9 @@ import Image from "next/image";
 import { QuoteModal } from "@/components/services/QuoteModal";
 import { useContent } from "@/lib/use-content";
 import { getIcon } from "@/lib/icon-map";
-import type { TradeSectionContent } from "@/lib/api-client";
+import type { TradeSectionContent, QuoteLabelsContent } from "@/lib/api-client";
+
+const DEFAULT_HERO_IMAGE = "https://lh3.googleusercontent.com/aida-public/AB6AXuCy0CHoOaR_EuZN-cOReFWOt3iAsGtQeZ0grPlPurcIegBkZj7TQDqRT4Fndi1TEfYaV7fHQR-jggMj5fqBq6y-qI3BXKdchQk14OveuGngJPx8c12b0kqAGQhaCbRGLDnJDtby4IuGV42Oa_Vh1u2MSVbvvrTfFpriQ7c-RaIAZRcNk3NEFXkZiJikWYFVSEI2R8n43TOXo0qUWLFafKmoZ9TH1qH6MH5iJHzmN4l7XU8kgptPeRMpkXMOwjz4E4fLx81vA-Frlsuw";
 
 const DEFAULT: TradeSectionContent = {
   hero: { badge: "Strategic Alliances", title: "Partnerships & Collaborations", description: "Building lasting relationships with industry leaders." },
@@ -36,7 +38,7 @@ export default function PartnershipsPage() {
         {/* Background Image */}
         <div className="absolute inset-0 w-full h-full">
           <Image
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCy0CHoOaR_EuZN-cOReFWOt3iAsGtQeZ0grPlPurcIegBkZj7TQDqRT4Fndi1TEfYaV7fHQR-jggMj5fqBq6y-qI3BXKdchQk14OveuGngJPx8c12b0kqAGQhaCbRGLDnJDtby4IuGV42Oa_Vh1u2MSVbvvrTfFpriQ7c-RaIAZRcNk3NEFXkZiJikWYFVSEI2R8n43TOXo0qUWLFafKmoZ9TH1qH6MH5iJHzmN4l7XU8kgptPeRMpkXMOwjz4E4fLx81vA-Frlsuw"
+            src={heroImage}
             alt="Strategic partnership meeting"
             fill
             className="object-cover grayscale-[20%]"
@@ -71,7 +73,7 @@ export default function PartnershipsPage() {
             <div>
               <SectionHeader
                 title={c.section?.title ?? "Join Our Network"}
-                description={c.section?.description ?? DEFAULT.section.description}
+                description={c.section?.description ?? "We believe in the power of connection."}
                 className="mb-10"
               />
               <p className="text-lg text-slate-600 dark:text-slate-400 mb-10 leading-relaxed font-light">

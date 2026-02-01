@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Building2, MapPin, Mail, Phone, Facebook, Twitter, Linkedin } from "lucide-react";
 import { useContent } from "@/lib/use-content";
-import type { FooterContact, FooterSocialLinks, FooterLinksContent } from "@/lib/api-client";
+import type { FooterContact, FooterSocialLinks, FooterLinksContent, FooterCopyrightContent } from "@/lib/api-client";
 
 const DEFAULT_FOOTER: FooterContact = {
   companyName: "MU CONSULTANCY & BUSINESS ENTERPRISE",
@@ -18,7 +18,14 @@ export function Footer() {
   const { data: content } = useContent<FooterContact>("footer_contact");
   const { data: socialContent } = useContent<FooterSocialLinks>("footer_social");
   const { data: linksContent } = useContent<FooterLinksContent>("footer_links");
+  const { data: copyrightContent } = useContent<FooterCopyrightContent>("footer_copyright");
   const { companyName, description, address, email, phone } = content ?? DEFAULT_FOOTER;
+  const copyrightName = copyrightContent?.companyName ?? "Mekelle University Business Enterprise";
+  const copyrightLinks = copyrightContent?.links ?? [
+    { label: "Privacy Policy", href: "/privacy" },
+    { label: "Terms of Service", href: "/terms" },
+    { label: "Cookie Policy", href: "/cookies" },
+  ];
   const social = socialContent ?? {};
   const quickLinks = linksContent?.quickLinks ?? [
     { label: "Service Catalog", href: "/services" },
@@ -121,17 +128,13 @@ export function Footer() {
         </div>
 
         <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] text-slate-400 font-bold uppercase tracking-wider">
-          <p>© {new Date().getFullYear()} Mekelle University Business Enterprise. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} {copyrightName}. All rights reserved.</p>
           <div className="flex gap-6">
-            <Link href="/privacy" className="hover:text-white">
-              Privacy Policy
-            </Link>
-            <Link href="/terms" className="hover:text-white">
-              Terms of Service
-            </Link>
-            <Link href="/cookies" className="hover:text-white">
-              Cookie Policy
-            </Link>
+            {copyrightLinks.map((link) => (
+              <Link key={link.href} href={link.href} className="hover:text-white">
+                {link.label}
+              </Link>
+            ))}
           </div>
         </div>
       </div>

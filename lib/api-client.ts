@@ -37,6 +37,13 @@ async function deleteApi<T = void>(path: string): Promise<T> {
   return fetchApi<T>(path, { method: "DELETE" });
 }
 
+async function putApi<T>(path: string, body: unknown): Promise<T> {
+  return fetchApi<T>(path, {
+    method: "PUT",
+    body: JSON.stringify(body),
+  });
+}
+
 // Auth types
 export interface LoginRequest {
   email: string;
@@ -127,6 +134,29 @@ export interface SubmitQuoteRequest {
 }
 
 // Content block types
+export interface NavbarLinkItem {
+  label: string;
+  href: string;
+}
+
+export interface NavbarDropdown {
+  label: string;
+  href: string;
+  items: NavbarLinkItem[];
+}
+
+export interface NavbarContent {
+  siteName: string;
+  tagline: string;
+  mainLinks?: NavbarLinkItem[];
+  dropdowns?: NavbarDropdown[];
+  trailingLinks?: NavbarLinkItem[];
+  resourcesDropdown?: NavbarDropdown;
+  adminLoginHref?: string;
+  adminLoginLabel?: string;
+  languages?: string[];
+}
+
 export interface HomeHero {
   headline: string;
   tagline: string;
@@ -311,10 +341,81 @@ export interface ServicesHeroContent {
 }
 
 export interface TradeSectionContent {
-  hero: { badge?: string; title: string; description: string };
-  section: { title: string; description: string; items: string[] };
+  hero?: { badge?: string; title?: string; description?: string; image?: string };
+  section?: { title?: string; description?: string; items?: string[]; image?: string };
   services?: string[];
   features?: { icon: string; title: string; description: string }[];
+  cta?: { title?: string; description?: string; buttonText?: string };
+}
+
+export interface LegalSectionCard {
+  title: string;
+  description: string;
+}
+
+export interface LegalSection {
+  heading: string;
+  paragraphs?: string[];
+  content?: string;
+  cards?: LegalSectionCard[];
+}
+
+export interface CookiesPolicyContent {
+  lastUpdated?: string;
+  badge?: string;
+  title?: string;
+  subtitle?: string;
+  dateLabel?: string;
+  infoRight?: string;
+  sections?: LegalSection[];
+  note?: { heading?: string; content?: string };
+  contactEmail?: string;
+}
+
+export interface PrivacyPolicyContent {
+  lastUpdated?: string;
+  badge?: string;
+  title?: string;
+  subtitle?: string;
+  dateLabel?: string;
+  version?: string;
+  infoRight?: string;
+  sections?: LegalSection[];
+  contactBlock?: { companyName?: string; address?: string; email?: string };
+}
+
+export interface TermsOfServiceContent {
+  lastUpdated?: string;
+  badge?: string;
+  title?: string;
+  subtitle?: string;
+  dateLabel?: string;
+  infoRight?: string;
+  sections?: LegalSection[];
+  callouts?: { heading?: string; content?: string; variant?: string }[];
+}
+
+export interface DownloadsHeroContent {
+  title?: string;
+  description?: string;
+}
+
+export interface FooterCopyrightContent {
+  companyName?: string;
+  links?: { label: string; href: string }[];
+}
+
+export interface AboutSectionsContent {
+  historyTitle?: string;
+  leadershipTitle?: string;
+  leadershipDescription?: string;
+}
+
+export interface QuoteLabelsContent {
+  importExport?: string;
+  supplyChain?: string;
+  partnerships?: string;
+  requestQuote?: string;
 }
 
 export interface TradeMainSection {
@@ -524,5 +625,15 @@ export const api = {
     update: (id: number, body: Record<string, unknown>) =>
       patchApi<EngagementPost>(`/admin/community-engagement/${id}`, body),
     delete: (id: number) => deleteApi(`/admin/community-engagement/${id}`),
+  },
+
+  adminResources: {
+    list: () => fetchApi<ResourceItem[]>("/admin/resources"),
+    get: (id: number) => fetchApi<ResourceItem>(`/admin/resources/${id}`),
+    create: (body: Record<string, unknown>) =>
+      postApi<ResourceItem>("/admin/resources", body),
+    update: (id: number, body: Record<string, unknown>) =>
+      patchApi<ResourceItem>(`/admin/resources/${id}`, body),
+    delete: (id: number) => deleteApi(`/admin/resources/${id}`),
   },
 };

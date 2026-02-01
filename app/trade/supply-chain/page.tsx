@@ -5,13 +5,15 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { PageShell } from "@/components/layout/PageShell";
 import { SectionHeader } from "@/components/ui/SectionHeader";
-import { Truck, ArrowRight, Layers, Clock, ShieldCheck } from "lucide-react";
+import { Truck, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { QuoteModal } from "@/components/services/QuoteModal";
 import { useContent } from "@/lib/use-content";
 import { getIcon } from "@/lib/icon-map";
-import type { TradeSectionContent } from "@/lib/api-client";
+import type { TradeSectionContent, QuoteLabelsContent } from "@/lib/api-client";
+
+const DEFAULT_HERO_IMAGE = "https://lh3.googleusercontent.com/aida-public/AB6AXuDuq25mY3vXtdcC6waRuuYWdh-edBAMgq6MdS_JXCUmLFWfLOoyvNpZoj_099FXdAgo9XaQ8KE8PLMnWwdiQ7MyBH8IGsagy-as-ltkMky2oJGuxvfaONJ99VOQReAmppFueZxJ47Ycar9VSmxPWdSXnw7WzSRmNzGz9fYWQM84mOzB0uRpiD6zNa5QAHqZND5H5k0IyHOohMJrcRfAw9nUa8zYUh0NNjbxcNf0XrtPydzrGQfxKG0nfWx0zSDgwyVglJ7HL0HJW3ir";
 
 const DEFAULT: TradeSectionContent = {
   hero: { badge: "Logistics Solutions", title: "Supply Chain Management", description: "End-to-end supply chain optimization." },
@@ -36,7 +38,7 @@ export default function SupplyChainPage() {
         {/* Background Image */}
         <div className="absolute inset-0 w-full h-full">
           <Image
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDuq25mY3vXtdcC6waRuuYWdh-edBAMgq6MdS_JXCUmLFWfLOoyvNpZoj_099FXdAgo9XaQ8KE8PLMnWwdiQ7MyBH8IGsagy-as-ltkMky2oJGuxvfaONJ99VOQReAmppFueZxJ47Ycar9VSmxPWdSXnw7WzSRmNzGz9fYWQM84mOzB0uRpiD6zNa5QAHqZND5H5k0IyHOohMJrcRfAw9nUa8zYUh0NNjbxcNf0XrtPydzrGQfxKG0nfWx0zSDgwyVglJ7HL0HJW3ir"
+            src={heroImage}
             alt="Supply chain warehouse"
             fill
             className="object-cover grayscale-[20%]"
@@ -68,38 +70,25 @@ export default function SupplyChainPage() {
       <section className="py-32 bg-white dark:bg-slate-900/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeader
-            title="Optimized Logistics"
-            description="Comprehensive solutions for modern supply chain challenges, ensuring seamless operations across the globe."
+            title={c.section?.title ?? "Optimized Logistics"}
+            description={c.section?.description ?? "Comprehensive solutions for modern supply chain challenges, ensuring seamless operations across the globe."}
             centered
             className="mb-20"
           />
 
           <div className="grid md:grid-cols-3 gap-10 mb-20">
-            {[
-              {
-                icon: Layers,
-                title: "Inventory Management",
-                description: "Real-time tracking and optimization of stock levels to reduce holding costs and maximize warehouse efficiency."
-              },
-              {
-                icon: Clock,
-                title: "Timely Distribution",
-                description: "AI-driven efficient routing and scheduling to ensure on-time delivery commitments with precision tracking."
-              },
-              {
-                icon: ShieldCheck,
-                title: "Risk Mitigation",
-                description: "Proactive identification and expert management of potential supply chain disruptions and regulatory changes."
-              }
-            ].map((feature, i) => (
-              <div key={i} className="p-10 rounded-2xl bg-slate-50 dark:bg-slate-950/50 border border-slate-200 dark:border-slate-800 hover:shadow-2xl transition-all duration-500 hover:-translate-y-1">
-                <div className="w-16 h-16 rounded-xl bg-primary/10 flex items-center justify-center mb-8">
-                  <feature.icon className="w-8 h-8 text-primary" />
+            {features.map((feature, i) => {
+              const Icon = getIcon(feature.icon);
+              return (
+                <div key={i} className="p-10 rounded-2xl bg-slate-50 dark:bg-slate-950/50 border border-slate-200 dark:border-slate-800 hover:shadow-2xl transition-all duration-500 hover:-translate-y-1">
+                  <div className="w-16 h-16 rounded-xl bg-primary/10 flex items-center justify-center mb-8">
+                    <Icon className="w-8 h-8 text-primary" />
+                  </div>
+                  <h3 className="text-2xl font-bold font-display mb-4 text-slate-900 dark:text-white leading-tight">{feature.title}</h3>
+                  <p className="text-slate-600 dark:text-slate-400 font-light leading-relaxed">{feature.description}</p>
                 </div>
-                <h3 className="text-2xl font-bold font-display mb-4 text-slate-900 dark:text-white leading-tight">{feature.title}</h3>
-                <p className="text-slate-600 dark:text-slate-400 font-light leading-relaxed">{feature.description}</p>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           <div className="bg-primary rounded-3xl p-16 text-center relative overflow-hidden shadow-2xl">
@@ -107,16 +96,16 @@ export default function SupplyChainPage() {
             <div className="absolute bottom-0 left-0 w-80 h-80 bg-accent/20 rounded-full blur-[80px] translate-y-1/2 -track-x-1/2"></div>
 
             <div className="relative z-10 max-w-3xl mx-auto">
-              <h2 className="text-4xl md:text-5xl font-display font-extrabold text-white mb-8 leading-tight">Ready to Optimize Your Logistics?</h2>
+              <h2 className="text-4xl md:text-5xl font-display font-extrabold text-white mb-8 leading-tight">{c.cta?.title ?? "Ready to Optimize Your Logistics?"}</h2>
               <p className="text-slate-100 text-lg mb-10 font-light leading-relaxed">
-                Let us analyze your current supply chain and propose data-driven efficiency improvements that save time and reduce operational costs.
+                {c.cta?.description ?? "Let us analyze your current supply chain and propose data-driven efficiency improvements that save time and reduce operational costs."}
               </p>
               <Button
                 size="lg"
                 className="h-14 px-10 rounded-xl bg-accent text-primary font-bold hover:bg-white transition-all shadow-lg shadow-accent/10 text-base"
                 onClick={() => setIsModalOpen(true)}
               >
-                Analyze My Supply Chain <ArrowRight className="ml-3 w-5 h-5" />
+                {c.cta?.buttonText ?? quoteLabels?.requestQuote ?? "Analyze My Supply Chain"} <ArrowRight className="ml-3 w-5 h-5" />
               </Button>
             </div>
           </div>

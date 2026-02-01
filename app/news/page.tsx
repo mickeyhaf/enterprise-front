@@ -62,6 +62,7 @@ export default async function NewsPage() {
               No news articles yet. Check back soon.
             </div>
           ) : (
+          <>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {articles.map((item) => (
               <div key={item.id} className="group bg-white dark:bg-slate-900 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 hover:shadow-2xl transition-all duration-500 flex flex-col h-full hover:-translate-y-1">
@@ -106,6 +107,7 @@ export default async function NewsPage() {
               <ChevronRight className="w-5 h-5" />
             </Button>
           </div>
+          </>
           )}
         </div>
       </section>

@@ -5,16 +5,64 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X, ChevronDown, Building2 } from "lucide-react";
 import { useUIStore } from "@/lib/store";
+import { useContent } from "@/lib/use-content";
+import type { NavbarContent } from "@/lib/api-client";
+
+const DEFAULT_NAVBAR: NavbarContent = {
+  siteName: "Mekelle University",
+  tagline: "Consultancy & Business Enterprise",
+  mainLinks: [
+    { label: "Home", href: "/" },
+    { label: "About Us", href: "/about" },
+    { label: "Services", href: "/services" },
+  ],
+  dropdowns: [
+    {
+      label: "Trade Solutions",
+      href: "/trade",
+      items: [
+        { label: "Import/Export Services", href: "/trade/import-export" },
+        { label: "Supply Chain Management", href: "/trade/supply-chain" },
+        { label: "Partnerships & Collaborations", href: "/trade/partnerships" },
+        { label: "Industry-Specific Expertise", href: "/trade/expertise" },
+      ],
+    },
+    {
+      label: "Projects",
+      href: "/portfolio",
+      items: [
+        { label: "Featured Projects", href: "/portfolio" },
+        { label: "Community Engagement", href: "/portfolio/community-engagement" },
+      ],
+    },
+  ],
+  trailingLinks: [{ label: "News & Updates", href: "/news" }],
+  resourcesDropdown: {
+    label: "Resources",
+    href: "/resources",
+    items: [
+      { label: "Brochures", href: "/resources/brochures" },
+      { label: "Whitepapers", href: "/resources/whitepapers" },
+      { label: "Case Studies", href: "/resources/case-studies" },
+      { label: "Annual Reports", href: "/resources/reports" },
+    ],
+  },
+  adminLoginHref: "/login",
+  adminLoginLabel: "Admin Login",
+  languages: ["EN", "አማ"],
+};
 
 export function Navbar() {
   const { isMobileMenuOpen, toggleMobileMenu, closeMobileMenu } = useUIStore();
   const pathname = usePathname();
+  const { data: navContent } = useContent<NavbarContent>("navbar");
+  const nav = navContent ?? DEFAULT_NAVBAR;
   const [languageMenuOpen, setLanguageMenuOpen] = useState(false);
-  const [language, setLanguage] = useState<"EN" | "አማ">("EN");
+  const languages = nav.languages ?? DEFAULT_NAVBAR.languages ?? ["EN", "አማ"];
+  const [language, setLanguage] = useState<string>(languages[0] ?? "EN");
   const languageMenuRef = useRef<HTMLDivElement | null>(null);
 
   const isActive = (path: string) => pathname === path;
-  const isTradeActive = pathname.startsWith("/trade");
 
   useEffect(() => {
     if (!languageMenuOpen) return;
@@ -53,128 +101,97 @@ export function Navbar() {
             </div>
             <div>
               <h1 className="text-xl font-display font-bold text-primary dark:text-white leading-tight uppercase tracking-tight">
-                Mekelle University
+                {nav.siteName ?? DEFAULT_NAVBAR.siteName}
               </h1>
               <p className="text-[10px] text-slate-500 dark:text-slate-400 font-bold uppercase tracking-[0.2em]">
-                Consultancy & Business Enterprise
+                {nav.tagline ?? DEFAULT_NAVBAR.tagline}
               </p>
             </div>
           </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
-            <NavLink href="/" active={isActive("/")}>Home</NavLink>
-            <NavLink href="/about" active={isActive("/about")}>About Us</NavLink>
-            <NavLink href="/services" active={isActive("/services")}>Services</NavLink>
+            {(nav.mainLinks ?? DEFAULT_NAVBAR.mainLinks)?.map((item) => (
+              <NavLink key={item.href} href={item.href} active={isActive(item.href)}>
+                {item.label}
+              </NavLink>
+            ))}
 
-            {/* Trade Solutions Dropdown */}
-            <div className="relative group">
-              <Link
-                href="/trade"
-                onClick={(e) => {
-                  if (pathname === "/trade") {
-                    e.preventDefault();
-                    window.scrollTo({ top: 0, behavior: "smooth" });
-                  }
-                }}
-                className={`flex items-center gap-1 text-sm font-semibold transition-colors py-4 ${isTradeActive
-                  ? "text-primary dark:text-white"
-                  : "text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white"
-                  }`}
-              >
-                Trade Solutions <ChevronDown className="w-4 h-4 transition-transform group-hover:rotate-180" />
-              </Link>
-              <div className="absolute top-full left-0 w-64 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-2 group-hover:translate-y-0">
-                <div className="bg-white dark:bg-slate-900 rounded-xl shadow-xl border border-slate-100 dark:border-slate-800 p-2 overflow-hidden flex flex-col">
-                  <DropdownLink href="/trade/import-export" active={isActive("/trade/import-export")}>
-                    Import/Export Services
-                  </DropdownLink>
-                  <DropdownLink href="/trade/supply-chain" active={isActive("/trade/supply-chain")}>
-                    Supply Chain Management
-                  </DropdownLink>
-                  <DropdownLink href="/trade/partnerships" active={isActive("/trade/partnerships")}>
-                    Partnerships & Collaborations
-                  </DropdownLink>
-                  <DropdownLink href="/trade/expertise" active={isActive("/trade/expertise")}>
-                    Industry-Specific Expertise
-                  </DropdownLink>
+            {(nav.dropdowns ?? DEFAULT_NAVBAR.dropdowns)?.map((d) => (
+              <div key={d.href} className="relative group">
+                <Link
+                  href={d.href}
+                  onClick={(e) => {
+                    if (pathname === d.href) {
+                      e.preventDefault();
+                      window.scrollTo({ top: 0, behavior: "smooth" });
+                    }
+                  }}
+                  className={`flex items-center gap-1 text-sm font-semibold transition-colors py-4 ${pathname.startsWith(d.href)
+                    ? "text-primary dark:text-white"
+                    : "text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white"
+                    }`}
+                >
+                  {d.label} <ChevronDown className="w-4 h-4 transition-transform group-hover:rotate-180" />
+                </Link>
+                <div className="absolute top-full left-0 w-64 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-2 group-hover:translate-y-0">
+                  <div className="bg-white dark:bg-slate-900 rounded-xl shadow-xl border border-slate-100 dark:border-slate-800 p-2 overflow-hidden flex flex-col">
+                    {d.items?.map((item) => (
+                      <DropdownLink key={item.href} href={item.href} active={isActive(item.href)}>
+                        {item.label}
+                      </DropdownLink>
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
+            ))}
 
-            {/* Projects Dropdown */}
-            <div className="relative group">
-              <Link
-                href="/portfolio"
-                onClick={(e) => {
-                  if (pathname === "/portfolio") {
-                    e.preventDefault();
-                    window.scrollTo({ top: 0, behavior: "smooth" });
-                  }
-                }}
-                className={`flex items-center gap-1 text-sm font-semibold transition-colors py-4 ${pathname.startsWith("/portfolio")
-                  ? "text-primary dark:text-white"
-                  : "text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white"
-                  }`}
-              >
-                Projects <ChevronDown className="w-4 h-4 transition-transform group-hover:rotate-180" />
-              </Link>
-              <div className="absolute top-full left-0 w-64 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-2 group-hover:translate-y-0">
-                <div className="bg-white dark:bg-slate-900 rounded-xl shadow-xl border border-slate-100 dark:border-slate-800 p-2 overflow-hidden flex flex-col">
-                  <DropdownLink href="/portfolio" active={isActive("/portfolio")}>
-                    Featured Projects
-                  </DropdownLink>
-                  <DropdownLink href="/portfolio/community-engagement" active={isActive("/portfolio/community-engagement")}>
-                    Community Engagement
-                  </DropdownLink>
-                </div>
-              </div>
-            </div>
-            <NavLink href="/news" active={isActive("/news")}>News & Updates</NavLink>
+            {(nav.trailingLinks ?? DEFAULT_NAVBAR.trailingLinks)?.map((item) => (
+              <NavLink key={item.href} href={item.href} active={isActive(item.href)}>
+                {item.label}
+              </NavLink>
+            ))}
 
-            {/* Resources Dropdown */}
-            <div className="relative group">
-              <Link
-                href="/resources"
-                onClick={(e) => {
-                  if (pathname === "/resources") {
-                    e.preventDefault();
-                    window.scrollTo({ top: 0, behavior: "smooth" });
-                  }
-                }}
-                className={`flex items-center gap-1 text-sm font-semibold transition-colors py-4 ${pathname.startsWith("/resources")
-                  ? "text-primary dark:text-white"
-                  : "text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white"
-                  }`}
-              >
-                Resources <ChevronDown className="w-4 h-4 transition-transform group-hover:rotate-180" />
-              </Link>
-              <div className="absolute top-full left-0 w-64 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-2 group-hover:translate-y-0">
-                <div className="bg-white dark:bg-slate-900 rounded-xl shadow-xl border border-slate-100 dark:border-slate-800 p-2 overflow-hidden flex flex-col">
-                  <DropdownLink href="/resources/brochures" active={isActive("/resources/brochures")}>
-                    Brochures
-                  </DropdownLink>
-                  <DropdownLink href="/resources/whitepapers" active={isActive("/resources/whitepapers")}>
-                    Whitepapers
-                  </DropdownLink>
-                  <DropdownLink href="/resources/case-studies" active={isActive("/resources/case-studies")}>
-                    Case Studies
-                  </DropdownLink>
-                  <DropdownLink href="/resources/reports" active={isActive("/resources/reports")}>
-                    Annual Reports
-                  </DropdownLink>
+            {(nav.resourcesDropdown ?? DEFAULT_NAVBAR.resourcesDropdown) && (() => {
+              const rd = nav.resourcesDropdown ?? DEFAULT_NAVBAR.resourcesDropdown!;
+              return (
+                <div key="resources" className="relative group">
+                  <Link
+                    href={rd.href}
+                    onClick={(e) => {
+                      if (pathname === rd.href) {
+                        e.preventDefault();
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                      }
+                    }}
+                    className={`flex items-center gap-1 text-sm font-semibold transition-colors py-4 ${pathname.startsWith(rd.href)
+                      ? "text-primary dark:text-white"
+                      : "text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white"
+                      }`}
+                  >
+                    {rd.label} <ChevronDown className="w-4 h-4 transition-transform group-hover:rotate-180" />
+                  </Link>
+                  <div className="absolute top-full left-0 w-64 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-2 group-hover:translate-y-0">
+                    <div className="bg-white dark:bg-slate-900 rounded-xl shadow-xl border border-slate-100 dark:border-slate-800 p-2 overflow-hidden flex flex-col">
+                      {rd.items?.map((item) => (
+                        <DropdownLink key={item.href} href={item.href} active={isActive(item.href)}>
+                          {item.label}
+                        </DropdownLink>
+                      ))}
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
+              );
+            })()}
           </div>
 
           {/* Admin Login + Language Switcher */}
           <div className="hidden md:flex items-center gap-4">
             <Link
-              href="/login"
+              href={nav.adminLoginHref ?? "/login"}
               className="text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-primary transition-colors"
             >
-              Admin Login
+              {nav.adminLoginLabel ?? "Admin Login"}
             </Link>
             <div className="relative" ref={languageMenuRef}>
               <button
@@ -193,34 +210,23 @@ export function Navbar() {
                   role="menu"
                   className="absolute right-0 mt-2 w-40 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xl overflow-hidden"
                 >
-                  <button
-                    role="menuitem"
-                    type="button"
-                    onClick={() => {
-                      setLanguage("EN");
-                      setLanguageMenuOpen(false);
-                    }}
-                    className={`w-full text-left px-4 py-3 text-sm font-semibold transition-colors ${language === "EN"
-                      ? "bg-slate-50 dark:bg-slate-800 text-primary"
-                      : "text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
-                      }`}
-                  >
-                    EN
-                  </button>
-                  <button
-                    role="menuitem"
-                    type="button"
-                    onClick={() => {
-                      setLanguage("አማ");
-                      setLanguageMenuOpen(false);
-                    }}
-                    className={`w-full text-left px-4 py-3 text-sm font-semibold transition-colors ${language === "አማ"
-                      ? "bg-slate-50 dark:bg-slate-800 text-primary"
-                      : "text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
-                      }`}
-                  >
-                    አማ
-                  </button>
+                  {languages.map((lang) => (
+                    <button
+                      key={lang}
+                      role="menuitem"
+                      type="button"
+                      onClick={() => {
+                        setLanguage(lang);
+                        setLanguageMenuOpen(false);
+                      }}
+                      className={`w-full text-left px-4 py-3 text-sm font-semibold transition-colors ${language === lang
+                        ? "bg-slate-50 dark:bg-slate-800 text-primary"
+                        : "text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
+                        }`}
+                    >
+                      {lang}
+                    </button>
+                  ))}
                 </div>
               )}
             </div>
@@ -242,72 +248,50 @@ export function Navbar() {
       {isMobileMenuOpen && (
         <div className="md:hidden border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
           <div className="px-4 pt-2 pb-6 space-y-2">
-            <MobileNavLink href="/" onClick={closeMobileMenu} active={isActive("/")}>
-              Home
+            {(nav.mainLinks ?? DEFAULT_NAVBAR.mainLinks)?.map((item) => (
+              <MobileNavLink key={item.href} href={item.href} onClick={closeMobileMenu} active={isActive(item.href)}>
+                {item.label}
+              </MobileNavLink>
+            ))}
+            {(nav.dropdowns ?? DEFAULT_NAVBAR.dropdowns)?.map((d) => (
+              <div key={d.href}>
+                <MobileNavLink href={d.href} onClick={closeMobileMenu} active={isActive(d.href)}>
+                  {d.label}
+                </MobileNavLink>
+                <div className="pl-4 space-y-1 border-l-2 border-slate-100 dark:border-slate-800 ml-2">
+                  {d.items?.map((item) => (
+                    <MobileNavLink key={item.href} href={item.href} onClick={closeMobileMenu} active={isActive(item.href)} className="text-sm py-2">
+                      {item.label}
+                    </MobileNavLink>
+                  ))}
+                </div>
+              </div>
+            ))}
+            {(nav.trailingLinks ?? DEFAULT_NAVBAR.trailingLinks)?.map((item) => (
+              <MobileNavLink key={item.href} href={item.href} onClick={closeMobileMenu} active={isActive(item.href)}>
+                {item.label}
+              </MobileNavLink>
+            ))}
+            {(nav.resourcesDropdown ?? DEFAULT_NAVBAR.resourcesDropdown) && (() => {
+              const rd = nav.resourcesDropdown ?? DEFAULT_NAVBAR.resourcesDropdown!;
+              return (
+                <div key="resources">
+                  <MobileNavLink href={rd.href} onClick={closeMobileMenu} active={isActive(rd.href)}>
+                    {rd.label}
+                  </MobileNavLink>
+                  <div className="pl-4 space-y-1 border-l-2 border-slate-100 dark:border-slate-800 ml-2">
+                    {rd.items?.map((item) => (
+                      <MobileNavLink key={item.href} href={item.href} onClick={closeMobileMenu} active={isActive(item.href)} className="text-sm py-2">
+                        {item.label}
+                      </MobileNavLink>
+                    ))}
+                  </div>
+                </div>
+              );
+            })()}
+            <MobileNavLink href={nav.adminLoginHref ?? "/login"} onClick={closeMobileMenu} active={isActive(nav.adminLoginHref ?? "/login")}>
+              {nav.adminLoginLabel ?? "Admin Login"}
             </MobileNavLink>
-            <MobileNavLink href="/about" onClick={closeMobileMenu} active={isActive("/about")}>
-              About Us
-            </MobileNavLink>
-            <MobileNavLink href="/services" onClick={closeMobileMenu} active={isActive("/services")}>
-              Services
-            </MobileNavLink>
-            <MobileNavLink href="/trade" onClick={closeMobileMenu} active={isActive("/trade")}>
-              Trade Solutions
-            </MobileNavLink>
-            {/* Mobile Submenu */}
-            <div className="pl-4 space-y-1 border-l-2 border-slate-100 dark:border-slate-800 ml-2">
-              <MobileNavLink href="/trade/import-export" onClick={closeMobileMenu} active={isActive("/trade/import-export")} className="text-sm py-2">
-                Import/Export
-              </MobileNavLink>
-              <MobileNavLink href="/trade/supply-chain" onClick={closeMobileMenu} active={isActive("/trade/supply-chain")} className="text-sm py-2">
-                Supply Chain
-              </MobileNavLink>
-              <MobileNavLink href="/trade/partnerships" onClick={closeMobileMenu} active={isActive("/trade/partnerships")} className="text-sm py-2">
-                Partnerships
-              </MobileNavLink>
-              <MobileNavLink href="/trade/expertise" onClick={closeMobileMenu} active={isActive("/trade/expertise")} className="text-sm py-2">
-                Industry Expertise
-              </MobileNavLink>
-            </div>
-            <MobileNavLink href="/portfolio" onClick={closeMobileMenu} active={isActive("/portfolio")}>
-              Projects
-            </MobileNavLink>
-            {/* Mobile Projects Submenu */}
-            <div className="pl-4 space-y-1 border-l-2 border-slate-100 dark:border-slate-800 ml-2">
-              <MobileNavLink href="/portfolio" onClick={closeMobileMenu} active={isActive("/portfolio")} className="text-sm py-2">
-                Featured Projects
-              </MobileNavLink>
-              <MobileNavLink href="/portfolio/community-engagement" onClick={closeMobileMenu} active={isActive("/portfolio/community-engagement")} className="text-sm py-2">
-                Community Engagement
-              </MobileNavLink>
-            </div>
-            <MobileNavLink href="/news" onClick={closeMobileMenu} active={isActive("/news")}>
-              News & Updates
-            </MobileNavLink>
-
-            <MobileNavLink href="/resources" onClick={closeMobileMenu} active={isActive("/resources")}>
-              Resources
-            </MobileNavLink>
-            {/* Mobile Resources Submenu */}
-            <div className="pl-4 space-y-1 border-l-2 border-slate-100 dark:border-slate-800 ml-2">
-              <MobileNavLink href="/resources/brochures" onClick={closeMobileMenu} active={isActive("/resources/brochures")} className="text-sm py-2">
-                Brochures
-              </MobileNavLink>
-              <MobileNavLink href="/resources/whitepapers" onClick={closeMobileMenu} active={isActive("/resources/whitepapers")} className="text-sm py-2">
-                Whitepapers
-              </MobileNavLink>
-              <MobileNavLink href="/resources/case-studies" onClick={closeMobileMenu} active={isActive("/resources/case-studies")} className="text-sm py-2">
-                Case Studies
-              </MobileNavLink>
-              <MobileNavLink href="/resources/reports" onClick={closeMobileMenu} active={isActive("/resources/reports")} className="text-sm py-2">
-                Annual Reports
-              </MobileNavLink>
-            </div>
-
-            <MobileNavLink href="/login" onClick={closeMobileMenu} active={isActive("/login")}>
-              Admin Login
-            </MobileNavLink>
-
             <div className="pt-4 flex gap-4 justify-center border-t border-slate-100 dark:border-slate-800 mt-4">
               <div className="relative" ref={languageMenuRef}>
                 <button
@@ -320,40 +304,28 @@ export function Navbar() {
                   <span>{language}</span>
                   <ChevronDown className="w-4 h-4 text-slate-400" />
                 </button>
-
                 {languageMenuOpen && (
                   <div
                     role="menu"
                     className="absolute right-0 mt-2 w-40 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xl overflow-hidden"
                   >
-                    <button
-                      role="menuitem"
-                      type="button"
-                      onClick={() => {
-                        setLanguage("EN");
-                        setLanguageMenuOpen(false);
-                      }}
-                      className={`w-full text-left px-4 py-3 text-sm font-semibold transition-colors ${language === "EN"
-                        ? "bg-slate-50 dark:bg-slate-800 text-primary"
-                        : "text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
-                        }`}
-                    >
-                      EN
-                    </button>
-                    <button
-                      role="menuitem"
-                      type="button"
-                      onClick={() => {
-                        setLanguage("አማ");
-                        setLanguageMenuOpen(false);
-                      }}
-                      className={`w-full text-left px-4 py-3 text-sm font-semibold transition-colors ${language === "አማ"
-                        ? "bg-slate-50 dark:bg-slate-800 text-primary"
-                        : "text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
-                        }`}
-                    >
-                      አማ
-                    </button>
+                    {languages.map((lang) => (
+                      <button
+                        key={lang}
+                        role="menuitem"
+                        type="button"
+                        onClick={() => {
+                          setLanguage(lang);
+                          setLanguageMenuOpen(false);
+                        }}
+                        className={`w-full text-left px-4 py-3 text-sm font-semibold transition-colors ${language === lang
+                          ? "bg-slate-50 dark:bg-slate-800 text-primary"
+                          : "text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
+                          }`}
+                      >
+                        {lang}
+                      </button>
+                    ))}
                   </div>
                 )}
               </div>

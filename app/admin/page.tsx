@@ -2,12 +2,13 @@
 
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
-import { Newspaper, ShoppingCart, FileText, Users, FolderKanban, Package, MessageSquare, ArrowRight } from "lucide-react";
+import { Newspaper, ShoppingCart, FileText, Users, FolderKanban, Package, MessageSquare, BookOpen, ArrowRight } from "lucide-react";
 import { api } from "@/lib/api-client";
 
 const ADMIN_CARDS = [
   { href: "/admin/news", label: "News Articles", icon: Newspaper, key: "news" },
   { href: "/admin/orders", label: "Quote Requests", icon: ShoppingCart, key: "orders" },
+  { href: "/admin/resources", label: "Resources", icon: BookOpen, key: "resources" },
   { href: "/admin/content", label: "Content Blocks", icon: FileText, key: "content" },
   { href: "/admin/team", label: "Team Members", icon: Users, key: "team" },
   { href: "/admin/projects", label: "Projects", icon: FolderKanban, key: "projects" },
@@ -35,10 +36,17 @@ export default function AdminDashboardPage() {
     select: (list) => list.length,
     enabled: isAdmin,
   });
+  const { data: resourcesCount } = useQuery({
+    queryKey: ["admin", "resources", "count"],
+    queryFn: () => api.adminResources.list(),
+    select: (list) => list.length,
+    enabled: isAdmin,
+  });
 
   const counts: Record<string, number> = {};
   if (newsCount !== undefined) counts.news = newsCount;
   if (ordersCount !== undefined) counts.orders = ordersCount;
+  if (resourcesCount !== undefined) counts.resources = resourcesCount;
 
   return (
     <div>

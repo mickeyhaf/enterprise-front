@@ -10,7 +10,13 @@ import { Achievements } from "@/components/about/Achievements";
 import { ContactCTA } from "@/components/about/ContactCTA";
 import { AboutHero } from "@/components/about/AboutHero";
 import { fetchContentByKey } from "@/lib/content";
-import type { AboutHistory } from "@/lib/api-client";
+import type { AboutHistory, AboutSectionsContent } from "@/lib/api-client";
+
+const DEFAULT_SECTIONS: AboutSectionsContent = {
+  historyTitle: "Our History",
+  leadershipTitle: "Leadership Team",
+  leadershipDescription: "Meet the experts leading our organization toward digital transformation and regional excellence.",
+};
 
 const DEFAULT_HISTORY: AboutHistory = {
   paragraphs: [
@@ -21,8 +27,10 @@ const DEFAULT_HISTORY: AboutHistory = {
 
 export default async function AboutPage() {
   const content = await fetchContentByKey<AboutHistory>("about_history");
+  const sectionsContent = await fetchContentByKey<AboutSectionsContent>("about_sections");
   const { paragraphs } = content ?? DEFAULT_HISTORY;
   const list = paragraphs ?? DEFAULT_HISTORY.paragraphs;
+  const sections = sectionsContent ?? DEFAULT_SECTIONS;
 
   return (
     <PageShell>
@@ -50,8 +58,8 @@ export default async function AboutPage() {
       <section className="py-32 bg-slate-50 dark:bg-slate-950">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeader
-            title="Leadership Team"
-            description="Meet the experts leading our organization toward digital transformation and regional excellence."
+            title={sections.leadershipTitle ?? DEFAULT_SECTIONS.leadershipTitle}
+            description={sections.leadershipDescription ?? DEFAULT_SECTIONS.leadershipDescription}
             centered
           />
           <TeamList />
