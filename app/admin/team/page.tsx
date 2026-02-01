@@ -2,10 +2,11 @@
 
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Plus, Pencil, Trash2 } from "lucide-react";
+import { Plus, Pencil, Trash2, X } from "lucide-react";
 import { api } from "@/lib/api-client";
 import type { TeamMember } from "@/lib/api-client";
 import { Button } from "@/components/ui/button";
+import { ImageUpload } from "@/components/admin/ImageUpload";
 
 export default function AdminTeamPage() {
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -58,19 +59,59 @@ export default function AdminTeamPage() {
         <Button onClick={() => { resetForm(); setIsFormOpen(true); }} className="gap-2"><Plus className="w-5 h-5" /> Add Member</Button>
       </div>
       {isFormOpen && (
-        <form onSubmit={handleSubmit} className="mb-8 p-6 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 space-y-4">
-          <h2 className="text-lg font-semibold">{editing ? "Edit" : "New"} Member</h2>
-          <div className="grid sm:grid-cols-2 gap-4">
-            <div><label className="block text-sm font-medium mb-1">Name</label><input type="text" required value={form.name} onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))} className="w-full px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800" /></div>
-            <div><label className="block text-sm font-medium mb-1">Role</label><input type="text" value={form.role} onChange={(e) => setForm((f) => ({ ...f, role: e.target.value }))} className="w-full px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800" /></div>
+        <form onSubmit={handleSubmit} className="mb-8 p-8 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xl space-y-8 animate-in fade-in slide-in-from-top-4 duration-300">
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl font-bold">{editing ? "Edit" : "New"} Team Member</h2>
+            <Button type="button" variant="ghost" size="icon" onClick={resetForm}><X className="w-5 h-5" /></Button>
           </div>
-          <div className="grid sm:grid-cols-2 gap-4">
-            <div><label className="block text-sm font-medium mb-1">Email</label><input type="email" value={form.email} onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))} className="w-full px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800" /></div>
-            <div><label className="block text-sm font-medium mb-1">LinkedIn URL</label><input type="url" value={form.linkedin} onChange={(e) => setForm((f) => ({ ...f, linkedin: e.target.value }))} className="w-full px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800" /></div>
+
+          <div className="grid lg:grid-cols-3 gap-8">
+            {/* Left: Image Upload */}
+            <div className="lg:col-span-1">
+              <ImageUpload
+                label="Profile Picture"
+                value={form.image}
+                onChange={(url) => setForm(f => ({ ...f, image: url }))}
+              />
+            </div>
+
+            {/* Right: Info fields */}
+            <div className="lg:col-span-2 space-y-6">
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-widest text-slate-500 mb-1.5">Full Name</label>
+                  <input type="text" required value={form.name} onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))} className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 focus:ring-2 focus:ring-primary/20 outline-none transition-all" placeholder="John Doe" />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-widest text-slate-500 mb-1.5">Role / Position</label>
+                  <input type="text" value={form.role} onChange={(e) => setForm((f) => ({ ...f, role: e.target.value }))} className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 focus:ring-2 focus:ring-primary/20 outline-none transition-all" placeholder="CEO" />
+                </div>
+              </div>
+
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-widest text-slate-500 mb-1.5">Email Address</label>
+                  <input type="email" value={form.email} onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))} className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 focus:ring-2 focus:ring-primary/20 outline-none transition-all" placeholder="john@example.com" />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-widest text-slate-500 mb-1.5">LinkedIn Profile URL</label>
+                  <input type="url" value={form.linkedin} onChange={(e) => setForm((f) => ({ ...f, linkedin: e.target.value }))} className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 focus:ring-2 focus:ring-primary/20 outline-none transition-all" placeholder="https://linkedin.com/in/..." />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-widest text-slate-500 mb-1.5">Biography / Description</label>
+                <textarea value={form.description} onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))} rows={4} className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 focus:ring-2 focus:ring-primary/20 outline-none transition-all resize-none" placeholder="Enter a brief bio..." />
+              </div>
+            </div>
           </div>
-          <div><label className="block text-sm font-medium mb-1">Description</label><textarea value={form.description} onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))} rows={3} className="w-full px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800" /></div>
-          <div><label className="block text-sm font-medium mb-1">Image URL</label><input type="url" value={form.image} onChange={(e) => setForm((f) => ({ ...f, image: e.target.value }))} className="w-full px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800" /></div>
-          <div className="flex gap-2"><Button type="submit" disabled={createMutation.isPending || updateMutation.isPending}>{editing ? "Update" : "Create"}</Button><Button type="button" variant="outline" onClick={resetForm}>Cancel</Button></div>
+
+          <div className="flex justify-end gap-3 pt-4 border-t border-slate-100 dark:border-slate-800">
+            <Button type="button" variant="ghost" onClick={resetForm}>Cancel</Button>
+            <Button type="submit" className="px-8 shadow-lg shadow-primary/20" disabled={createMutation.isPending || updateMutation.isPending}>
+              {editing ? "Save Changes" : "Create Member"}
+            </Button>
+          </div>
         </form>
       )}
       {isLoading ? <div className="text-slate-500">Loading...</div> : (

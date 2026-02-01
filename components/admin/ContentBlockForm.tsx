@@ -5,6 +5,7 @@ import { Plus, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { FormField } from "./FormField";
 import { ImageUpload } from "./ImageUpload";
+import { IconPicker } from "./IconPicker";
 import type { BlockFormSchema, FieldConfig } from "@/lib/content-block-schemas";
 
 function setAt(obj: Record<string, unknown>, path: (string | number)[], value: unknown): Record<string, unknown> {
@@ -76,6 +77,17 @@ export function ContentBlockForm({
         />
       );
     }
+    if (field.type === "icon") {
+      return (
+        <IconPicker
+          key={key}
+          label={field.label}
+          value={String(val ?? "")}
+          onChange={(v) => update(path, v)}
+        />
+      );
+    }
+
     if (field.type === "image") {
       return (
         <ImageUpload

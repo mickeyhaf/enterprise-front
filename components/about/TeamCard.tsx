@@ -19,10 +19,11 @@ export function TeamCard({ name, role, description, image, email, linkedin }: Te
       <div className="relative mb-8 mx-auto w-36 h-36">
         <div className="relative w-full h-full rounded-full overflow-hidden border-4 border-slate-50 dark:border-slate-800 shadow-inner">
           <Image
-            src={image}
+            src={image || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"}
             alt={name}
             fill
             className="object-cover group-hover:scale-110 transition-transform duration-700"
+            unoptimized
           />
         </div>
         <div className="absolute inset-0 rounded-full border-2 border-primary scale-110 opacity-0 group-hover:opacity-100 transition-all duration-500 pointer-events-none"></div>

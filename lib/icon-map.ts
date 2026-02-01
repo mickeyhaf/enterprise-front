@@ -21,6 +21,15 @@ import {
   Calculator,
   Microscope,
   Scale,
+  Verified,
+  Star,
+  Zap,
+  Heart,
+  TrendingUp,
+  Target,
+  Shield,
+  CheckCircle,
+  Home,
   type LucideIcon,
 } from "lucide-react";
 
@@ -47,6 +56,15 @@ export const ICON_MAP: Record<string, LucideIcon> = {
   Calculator,
   Microscope,
   Scale,
+  Verified,
+  Star,
+  Zap,
+  Heart,
+  TrendingUp,
+  Target,
+  Shield,
+  CheckCircle,
+  Home,
 };
 
 export function getIcon(name: string): LucideIcon {

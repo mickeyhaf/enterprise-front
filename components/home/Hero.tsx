@@ -5,10 +5,12 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
 import { useContent } from "@/lib/use-content";
+import { getIcon } from "@/lib/icon-map";
 import type { HomeHero } from "@/lib/api-client";
 
 const DEFAULT_HERO: HomeHero = {
   badge: "Est. 1993",
+  badgeIcon: "Verified",
   headline: "Pioneering Excellence in Industry.",
   tagline:
     "Mekelle University Consultancy and Business Enterprise serves as the bridge between academic rigor and practical industrial solutions.",
@@ -19,10 +21,12 @@ const DEFAULT_HERO: HomeHero = {
 
 export function Hero() {
   const { data: content } = useContent<HomeHero>("home_hero");
-  const { badge, headline, tagline, image: heroImage, ctaText, ctaLink } = content ?? DEFAULT_HERO;
+  const { badge, badgeIcon, headline, tagline, image: heroImage, ctaText, ctaLink } = content ?? DEFAULT_HERO;
   const currentHeadline = headline || DEFAULT_HERO.headline;
   const headlineParts = currentHeadline.split("Excellence");
   const hasExcellence = headlineParts.length === 2;
+
+  const BadgeIcon = getIcon(badgeIcon || DEFAULT_HERO.badgeIcon || "Verified");
 
   return (
     <header className="relative min-h-[calc(100vh-5rem)] flex items-center overflow-hidden">
@@ -41,7 +45,7 @@ export function Hero() {
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full text-white">
         <div className="max-w-3xl animate-in fade-in slide-in-from-left-8 duration-1000">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent text-accent-foreground font-bold text-xs uppercase tracking-widest mb-6 shadow-lg shadow-accent/20">
-            <Verified className="w-4 h-4" />
+            <BadgeIcon className="w-4 h-4" />
             {badge || DEFAULT_HERO.badge}
           </div>
 

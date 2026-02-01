@@ -60,7 +60,13 @@ export function HeritageSection() {
           </div>
           <div className="relative overflow-hidden lg:overflow-visible">
             <div className="relative h-[500px] w-full rounded-2xl overflow-hidden shadow-2xl z-10">
-              <Image src={c.image ?? DEFAULT_IMAGE} alt="Team meeting" fill className="object-cover" />
+              <Image
+                src={c.image ?? DEFAULT_IMAGE}
+                alt="Team meeting"
+                fill
+                className="object-cover"
+                unoptimized
+              />
             </div>
             {c.badge && (
               <div className="absolute -bottom-8 -left-8 bg-primary text-white p-10 rounded-2xl shadow-xl z-20 hidden md:block">

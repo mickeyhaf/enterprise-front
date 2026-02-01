@@ -5,6 +5,18 @@ const DEFAULT_OPTIONS: RequestInit = {
   headers: { "Content-Type": "application/json" },
 };
 
+let isRefreshing = false;
+let refreshSubscribers: ((token: string) => void)[] = [];
+
+function subscribeTokenRefresh(cb: (token: string) => void) {
+  refreshSubscribers.push(cb);
+}
+
+function onRefreshed(token: string) {
+  refreshSubscribers.map((cb) => cb(token));
+  refreshSubscribers = [];
+}
+
 async function fetchApi<T>(path: string, options?: RequestInit): Promise<T> {
   const url = `${API_BASE}${path}`;
   const headers = { ...DEFAULT_OPTIONS.headers, ...options?.headers } as Record<string, string>;
@@ -19,6 +31,39 @@ async function fetchApi<T>(path: string, options?: RequestInit): Promise<T> {
     ...options,
     headers: headers as HeadersInit,
   });
+
+  if (res.status === 401 && !path.includes("/auth/login") && !path.includes("/auth/refresh")) {
+    if (!isRefreshing) {
+      isRefreshing = true;
+      try {
+        const refreshRes = await fetch(`${API_BASE}/auth/refresh`, {
+          method: "POST",
+          ...DEFAULT_OPTIONS,
+        });
+        if (refreshRes.ok) {
+          const data = await refreshRes.json();
+          onRefreshed(data.accessToken);
+          isRefreshing = false;
+          // Retry the original request
+          return fetchApi<T>(path, options);
+        } else {
+          onRefreshed(""); // Release others even if it failed
+        }
+      } catch (err) {
+        onRefreshed("");
+      } finally {
+        isRefreshing = false;
+      }
+    } else {
+      // Wait for refresh to complete then retry
+      return new Promise((resolve) => {
+        subscribeTokenRefresh(() => {
+          resolve(fetchApi<T>(path, options));
+        });
+      });
+    }
+  }
+
   if (!res.ok) {
     const err = await res.json().catch(() => ({ message: res.statusText }));
     throw new Error((err as { message?: string }).message ?? res.statusText);
@@ -168,6 +213,7 @@ export interface HomeHero {
   headline: string;
   tagline: string;
   badge: string;
+  badgeIcon?: string;
   image?: string;
   ctaText?: string;
   ctaLink?: string;

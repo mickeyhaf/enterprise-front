@@ -1,4 +1,4 @@
-export type FieldType = "text" | "textarea" | "image" | "repeater" | "group" | "stringList";
+export type FieldType = "text" | "textarea" | "image" | "repeater" | "group" | "stringList" | "icon";
 
 export interface FieldConfig {
   key: string;
@@ -66,6 +66,7 @@ export const CONTENT_BLOCK_SCHEMAS: Record<string, BlockFormSchema> = {
     category: "Home Page",
     fields: [
       { key: "badge", label: "Badge", type: "text" },
+      { key: "badgeIcon", label: "Select Badge Icon", type: "icon" },
       { key: "headline", label: "Headline", type: "text" },
       { key: "tagline", label: "Tagline", type: "textarea" },
       { key: "image", label: "Hero Image URL", type: "image" },
@@ -89,7 +90,7 @@ export const CONTENT_BLOCK_SCHEMAS: Record<string, BlockFormSchema> = {
       { key: "description", label: "Description", type: "textarea" },
       {
         key: "badges", label: "Trust badges", type: "repeater", itemFields: [
-          { key: "icon", label: "Icon name", type: "text" },
+          { key: "icon", label: "Select Icon", type: "icon" },
           { key: "label", label: "Label", type: "text" },
           { key: "value", label: "Value", type: "text" },
         ]
@@ -107,14 +108,14 @@ export const CONTENT_BLOCK_SCHEMAS: Record<string, BlockFormSchema> = {
         key: "mission", label: "Mission", type: "group", fields: [
           { key: "title", label: "Title", type: "text" },
           { key: "description", label: "Description", type: "textarea" },
-          { key: "icon", label: "Icon name", type: "text" },
+          { key: "icon", label: "Select Icon", type: "icon" },
         ]
       },
       {
         key: "vision", label: "Vision", type: "group", fields: [
           { key: "title", label: "Title", type: "text" },
           { key: "description", label: "Description", type: "textarea" },
-          { key: "icon", label: "Icon name", type: "text" },
+          { key: "icon", label: "Select Icon", type: "icon" },
         ]
       },
       {
@@ -254,7 +255,7 @@ export const CONTENT_BLOCK_SCHEMAS: Record<string, BlockFormSchema> = {
         key: "items", label: "Categories", type: "repeater", itemFields: [
           { key: "title", label: "Title", type: "text" },
           { key: "description", label: "Description", type: "textarea" },
-          { key: "icon", label: "Icon name", type: "text" },
+          { key: "icon", label: "Select Icon", type: "icon" },
           { key: "link", label: "Link", type: "text" },
         ]
       },
@@ -317,7 +318,7 @@ export const CONTENT_BLOCK_SCHEMAS: Record<string, BlockFormSchema> = {
       { key: "description", label: "Description", type: "textarea" },
       {
         key: "departments", label: "Departments", type: "repeater", itemFields: [
-          { key: "icon", label: "Icon name", type: "text" },
+          { key: "icon", label: "Select Icon", type: "icon" },
           { key: "name", label: "Name", type: "text" },
           { key: "description", label: "Description", type: "textarea" },
         ]
@@ -446,7 +447,7 @@ export const CONTENT_BLOCK_SCHEMAS: Record<string, BlockFormSchema> = {
       { key: "services", label: "Services (one per line)", type: "stringList" },
       {
         key: "features", label: "Features", type: "repeater", itemFields: [
-          { key: "icon", label: "Icon name", type: "text" },
+          { key: "icon", label: "Select Icon", type: "icon" },
           { key: "title", label: "Title", type: "text" },
           { key: "description", label: "Description", type: "textarea" },
         ]
@@ -480,7 +481,7 @@ export const CONTENT_BLOCK_SCHEMAS: Record<string, BlockFormSchema> = {
       { key: "services", label: "Services (one per line)", type: "stringList" },
       {
         key: "features", label: "Features", type: "repeater", itemFields: [
-          { key: "icon", label: "Icon name", type: "text" },
+          { key: "icon", label: "Select Icon", type: "icon" },
           { key: "title", label: "Title", type: "text" },
           { key: "description", label: "Description", type: "textarea" },
         ]
