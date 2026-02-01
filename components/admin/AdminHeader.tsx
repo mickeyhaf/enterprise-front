@@ -44,9 +44,14 @@ export function AdminHeader({
   const initials = user.email?.slice(0, 2).toUpperCase() ?? "AD";
 
   const handleLogout = async () => {
-    const { api } = await import("@/lib/api-client");
-    await api.logout();
-    window.location.href = "/login";
+    try {
+      const { api } = await import("@/lib/api-client");
+      await api.logout();
+    } catch (err) {
+      console.warn("Logout request failed (likely session already expired), proceeding with local logout.");
+    } finally {
+      window.location.href = "/login";
+    }
   };
 
   return (

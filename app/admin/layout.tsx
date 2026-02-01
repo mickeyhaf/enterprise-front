@@ -51,7 +51,7 @@ export default function AdminLayout({
       {/* Sidebar */}
       <Suspense
         fallback={
-          <aside className="w-56 shrink-0 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 animate-pulse hidden lg:block" />
+          <aside className="w-72 shrink-0 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 animate-pulse hidden lg:block" />
         }
       >
         <AdminSidebar

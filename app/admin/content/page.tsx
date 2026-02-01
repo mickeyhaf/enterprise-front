@@ -3,7 +3,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState, useEffect, useMemo } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { Plus, ChevronDown, ChevronUp, ChevronRight } from "lucide-react";
+import { Plus, Pencil, ChevronDown, ChevronUp, ChevronRight, Building2 } from "lucide-react";
 import { api } from "@/lib/api-client";
 import { Button } from "@/components/ui/button";
 import { ContentBlockForm } from "@/components/admin/ContentBlockForm";
@@ -15,8 +15,17 @@ import {
 export default function AdminContentPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const queryClient = useQueryClient();
+  const groupedSchemas = useMemo(() => getGroupedBlockSchemas(), []);
+
   const blockParam = searchParams.get("block");
   const [selectedKey, setSelectedKey] = useState<string | null>(blockParam);
+  const [isEditing, setIsEditing] = useState(false);
+
+  useEffect(() => {
+    setIsEditing(false);
+  }, [selectedKey]);
+
   const [showCreate, setShowCreate] = useState(false);
   const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set());
 
@@ -44,23 +53,24 @@ export default function AdminContentPage() {
     setSelectedKey(key);
     setShowJsonMode(false);
     setJsonValue("");
+    setIsEditing(false);
     router.replace(`/admin/content?block=${key}`, { scroll: false });
   };
   const [newBlockType, setNewBlockType] = useState("");
   const [showJsonMode, setShowJsonMode] = useState(false);
   const [jsonValue, setJsonValue] = useState("");
   const [showSchema, setShowSchema] = useState(false);
-  const queryClient = useQueryClient();
 
   const { data: content, isLoading } = useQuery({
     queryKey: ["admin", "content"],
     queryFn: () => api.adminContent.getAll(),
   });
 
-  const { data: block } = useQuery({
+  const { data: block, isError, error } = useQuery({
     queryKey: ["admin", "content", selectedKey],
     queryFn: () => api.adminContent.getByKey(selectedKey!),
     enabled: !!selectedKey,
+    retry: false,
   });
 
   const updateMutation = useMutation({
@@ -73,13 +83,13 @@ export default function AdminContentPage() {
           queryKey: ["admin", "content", selectedKey],
         });
       }
+      setIsEditing(false);
     },
   });
 
   const keys = content ? Object.keys(content) : [];
   const keysSet = new Set(keys);
   const schema = selectedKey ? getBlockSchema(selectedKey) : null;
-  const groupedSchemas = useMemo(() => getGroupedBlockSchemas(), []);
   const blockData =
     block !== undefined && block !== null && typeof block === "object"
       ? (block as Record<string, unknown>)
@@ -123,6 +133,7 @@ export default function AdminContentPage() {
     setSelectedKey(key);
     setShowCreate(false);
     setNewBlockType("");
+    setIsEditing(true);
     router.replace(`/admin/content?block=${key}`, { scroll: false });
   };
 
@@ -259,11 +270,10 @@ export default function AdminContentPage() {
                             <button
                               key={key}
                               onClick={() => selectBlock(key)}
-                              className={`block w-full text-left px-2 py-1.5 rounded text-sm ${
-                                selectedKey === key
-                                  ? "bg-primary text-white"
-                                  : "hover:bg-slate-100 dark:hover:bg-slate-800"
-                              }`}
+                              className={`block w-full text-left px-2 py-1.5 rounded text-sm ${selectedKey === key
+                                ? "bg-primary text-white"
+                                : "hover:bg-slate-100 dark:hover:bg-slate-800"
+                                }`}
                             >
                               {label}
                             </button>
@@ -273,24 +283,6 @@ export default function AdminContentPage() {
                     </div>
                   );
                 })}
-                {keys.filter((k) => !Object.values(groupedSchemas).some((b) => b.some((x) => x.key === k))).length > 0 && (
-                  <div className="pt-2 border-t border-slate-200 dark:border-slate-700">
-                    <p className="px-2 py-1 text-xs font-medium text-slate-500 dark:text-slate-400">Uncategorized</p>
-                    {keys
-                      .filter((k) => !Object.values(groupedSchemas).some((b) => b.some((x) => x.key === k)))
-                      .map((k) => (
-                        <button
-                          key={k}
-                          onClick={() => selectBlock(k)}
-                          className={`block w-full text-left px-2 py-1.5 rounded text-sm ${
-                            selectedKey === k ? "bg-primary text-white" : "hover:bg-slate-100 dark:hover:bg-slate-800"
-                          }`}
-                        >
-                          {k}
-                        </button>
-                      ))}
-                  </div>
-                )}
               </div>
             )}
           </div>
@@ -298,65 +290,192 @@ export default function AdminContentPage() {
 
         <div className="flex-1">
           {selectedKey && (
-            <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="font-semibold">
-                  {schema?.label ?? selectedKey}
-                </h2>
-                {schema && (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setShowJsonMode((v) => !v);
-                      if (!showJsonMode) setJsonValue(displayJson);
-                    }}
-                    className="text-xs text-slate-500 hover:text-primary"
+            <div className="space-y-6">
+              {isError && (
+                <div className="p-4 rounded-lg bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-900">
+                  <p className="font-semibold">Error loading content</p>
+                  <p className="text-sm">{error instanceof Error ? error.message : "Unknown error occurred"}</p>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="mt-2 bg-white dark:bg-slate-900"
+                    onClick={() => queryClient.invalidateQueries({ queryKey: ["admin", "content", selectedKey] })}
                   >
-                    {showJsonMode ? "Switch to form" : "Advanced: Edit as JSON"}
-                  </button>
-                )}
+                    Retry
+                  </Button>
+                </div>
+              )}
+
+              <div className="flex items-center gap-2 text-sm text-slate-500 mb-6">
+                <button onClick={() => setSelectedKey(null)} className="hover:text-primary transition-colors">Admin</button>
+                <ChevronRight className="w-4 h-4" />
+                <button onClick={() => setSelectedKey(null)} className="hover:text-primary transition-colors">Content</button>
+                <ChevronRight className="w-4 h-4" />
+                <span className="text-slate-900 dark:text-white font-medium">{schema?.label ?? selectedKey}</span>
               </div>
 
-              {showJsonMode || !schema ? (
-                <div>
-                  <textarea
-                    value={showJsonMode ? jsonValue : displayJson}
-                    onChange={(e) => setJsonValue(e.target.value)}
-                    readOnly={!showJsonMode}
-                    rows={16}
-                    className="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 font-mono text-sm text-slate-900 dark:text-white"
-                  />
-                  <div className="mt-4">
-                    <Button
-                      onClick={handleJsonSave}
-                      disabled={updateMutation.isPending || !showJsonMode}
-                    >
-                      Save
-                    </Button>
-                    {updateMutation.isError && (
-                      <span className="ml-4 text-sm text-red-600">
-                        {updateMutation.error instanceof Error
-                          ? updateMutation.error.message
-                          : "Failed"}
-                      </span>
+              <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden shadow-sm">
+                {!isEditing && (
+                  <div className="bg-slate-50 dark:bg-slate-900/50 p-10 border-b border-slate-200 dark:border-slate-800 relative overflow-hidden">
+                    <div className="absolute top-0 right-0 p-8 opacity-5">
+                      <Building2 className="w-32 h-32" />
+                    </div>
+                    <div className="relative z-10 flex items-center justify-between">
+                      <div>
+                        <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-primary mb-3">
+                          <span className="w-8 h-px bg-primary" />
+                          {schema?.category ?? "General Content"}
+                        </div>
+                        <h1 className="text-4xl font-display font-black text-slate-900 dark:text-white tracking-tight">
+                          {schema?.label ?? selectedKey}
+                        </h1>
+                        <p className="text-slate-500 dark:text-slate-400 mt-2 text-lg">
+                          Manage and update the information for this section.
+                        </p>
+                      </div>
+                      <Button onClick={() => setIsEditing(true)} className="gap-2 shadow-lg shadow-primary/20">
+                        <Pencil className="w-4 h-4" /> Edit Section
+                      </Button>
+                    </div>
+                  </div>
+                )}
+
+                <div className="p-10">
+                  <div className="flex items-center justify-between mb-8">
+                    <h2 className="font-bold text-xl text-slate-900 dark:text-white">
+                      {isEditing ? "Editing Details" : "Detailed Information"}
+                    </h2>
+                    {schema && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setShowJsonMode((v) => !v);
+                          if (!showJsonMode) {
+                            setJsonValue(displayJson);
+                            setIsEditing(true);
+                          }
+                        }}
+                        className="text-xs font-bold uppercase tracking-widest text-slate-400 hover:text-primary transition-colors"
+                      >
+                        {showJsonMode ? "Switch to form" : "Advanced JSON Mode"}
+                      </button>
                     )}
                   </div>
+
+                  {updateMutation.isError && (
+                    <div className="mb-6 p-4 rounded-lg bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-900 text-sm">
+                      <p className="font-semibold">Save failed</p>
+                      <p>{updateMutation.error instanceof Error ? updateMutation.error.message : "Unknown error"}</p>
+                    </div>
+                  )}
+
+                  {isEditing ? (
+                    showJsonMode || !schema ? (
+                      <div>
+                        <textarea
+                          value={showJsonMode ? jsonValue : displayJson}
+                          onChange={(e) => setJsonValue(e.target.value)}
+                          readOnly={!showJsonMode}
+                          rows={16}
+                          className="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 font-mono text-sm text-slate-900 dark:text-white"
+                        />
+                        <div className="mt-4">
+                          <Button
+                            onClick={handleJsonSave}
+                            disabled={updateMutation.isPending || !showJsonMode}
+                          >
+                            Save
+                          </Button>
+                        </div>
+                      </div>
+                    ) : (
+                      <ContentBlockForm
+                        schema={schema}
+                        data={blockData}
+                        onSave={handleFormSave}
+                        isSaving={updateMutation.isPending}
+                      />
+                    )
+                  ) : (
+                    <div className="space-y-12 animate-in fade-in slide-in-from-bottom-2 duration-500">
+                      <div className="relative group overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50">
+                        <div className="p-8">
+                          <div className="grid sm:grid-cols-2 gap-10">
+                            {schema?.fields.filter(f => f.type === "text").map((field) => {
+                              const value = blockData?.[field.key];
+                              return (
+                                <div key={field.key} className="space-y-1">
+                                  <p className="text-xs font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500">
+                                    {field.label}
+                                  </p>
+                                  <p className="text-lg text-slate-900 dark:text-white font-medium">
+                                    {value ? String(value) : "—"}
+                                  </p>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      </div>
+
+                      {schema?.fields.filter(f => f.type !== "text").map((field) => {
+                        const value = blockData?.[field.key];
+                        return (
+                          <div key={field.key} className="space-y-4">
+                            <div className="flex items-center gap-4">
+                              <h3 className="text-sm font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500 shrink-0">
+                                {field.label}
+                              </h3>
+                              <div className="h-px w-full bg-slate-100 dark:bg-slate-800" />
+                            </div>
+
+                            {field.type === "image" && value ? (
+                              <div className="relative w-full max-w-4xl aspect-[21/9] rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-800 shadow-sm group">
+                                <img src={value as string} alt={field.label} className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+                              </div>
+                            ) : field.type === "repeater" ? (
+                              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                                {((value as unknown[]) ?? []).length > 0 ? (
+                                  (value as any[]).map((item, idx) => (
+                                    <div key={idx} className="p-5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm hover:shadow-md transition-shadow">
+                                      {item.image && (
+                                        <div className="mb-4 h-12 w-12 rounded-lg bg-slate-50 dark:bg-slate-800 overflow-hidden flex items-center justify-center border border-slate-100 dark:border-slate-700">
+                                          <img src={item.image} alt={item.name} className="h-full w-full object-contain p-2" />
+                                        </div>
+                                      )}
+                                      <p className="font-bold text-slate-900 dark:text-white">{item.name || item.title || item.label || `Item ${idx + 1}`}</p>
+                                      <p className="text-xs text-slate-500 mt-1 line-clamp-2">{item.description || item.value || ""}</p>
+                                    </div>
+                                  ))
+                                ) : (
+                                  <div className="col-span-full py-8 text-center rounded-xl border border-dashed border-slate-200 dark:border-slate-800 text-slate-400 text-sm">
+                                    No items configured. Click edit to add items.
+                                  </div>
+                                )}
+                              </div>
+                            ) : field.type === "stringList" ? (
+                              <div className="flex flex-wrap gap-2">
+                                {(value as string[])?.map((s, i) => (
+                                  <span key={i} className="px-4 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-xs font-semibold text-slate-600 dark:text-slate-400 border border-slate-200/50 dark:border-slate-700/50">
+                                    {s}
+                                  </span>
+                                ))}
+                              </div>
+                            ) : (
+                              <div className="prose dark:prose-invert max-w-none">
+                                <p className="text-slate-700 dark:text-slate-300 font-medium whitespace-pre-wrap leading-relaxed">
+                                  {value ? String(value) : "—"}
+                                </p>
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
                 </div>
-              ) : (
-                <ContentBlockForm
-                  schema={schema}
-                  data={blockData}
-                  onSave={handleFormSave}
-                  isSaving={updateMutation.isPending}
-                />
-              )}
-              {updateMutation.isError && !showJsonMode && (
-                <div className="mt-4 text-sm text-red-600">
-                  {updateMutation.error instanceof Error
-                    ? updateMutation.error.message
-                    : "Failed to save"}
-                </div>
-              )}
+              </div>
             </div>
           )}
           {!selectedKey && (

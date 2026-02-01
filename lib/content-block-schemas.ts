@@ -49,11 +49,13 @@ export const CONTENT_BLOCK_SCHEMAS: Record<string, BlockFormSchema> = {
       { key: "mainLinks", label: "Main navigation links", type: "repeater", itemFields: linkItemFields },
       { key: "dropdowns", label: "Dropdown menus", type: "repeater", itemFields: dropdownItemFields },
       { key: "trailingLinks", label: "Trailing links", type: "repeater", itemFields: linkItemFields },
-      { key: "resourcesDropdown", label: "Resources dropdown", type: "group", fields: [
-        { key: "label", label: "Label", type: "text" },
-        { key: "href", label: "Link", type: "text" },
-        { key: "items", label: "Menu items", type: "repeater", itemFields: linkItemFields },
-      ]},
+      {
+        key: "resourcesDropdown", label: "Resources dropdown", type: "group", fields: [
+          { key: "label", label: "Label", type: "text" },
+          { key: "href", label: "Link", type: "text" },
+          { key: "items", label: "Menu items", type: "repeater", itemFields: linkItemFields },
+        ]
+      },
       { key: "adminLoginHref", label: "Admin login link", type: "text" },
       { key: "adminLoginLabel", label: "Admin login label", type: "text" },
       { key: "languages", label: "Language codes (one per line)", type: "stringList" },
@@ -61,10 +63,14 @@ export const CONTENT_BLOCK_SCHEMAS: Record<string, BlockFormSchema> = {
   },
   home_hero: {
     label: "Home Hero",
+    category: "Home Page",
     fields: [
       { key: "badge", label: "Badge", type: "text" },
       { key: "headline", label: "Headline", type: "text" },
       { key: "tagline", label: "Tagline", type: "textarea" },
+      { key: "image", label: "Hero Image URL", type: "image" },
+      { key: "ctaText", label: "CTA Button Text", type: "text" },
+      { key: "ctaLink", label: "CTA Button Link", type: "text" },
     ],
   },
   home_leadership: {
@@ -77,14 +83,17 @@ export const CONTENT_BLOCK_SCHEMAS: Record<string, BlockFormSchema> = {
   },
   home_trust: {
     label: "Home Trust Section",
+    category: "Home Page",
     fields: [
       { key: "title", label: "Title", type: "text" },
       { key: "description", label: "Description", type: "textarea" },
-      { key: "badges", label: "Trust badges", type: "repeater", itemFields: [
-        { key: "icon", label: "Icon name", type: "text" },
-        { key: "label", label: "Label", type: "text" },
-        { key: "value", label: "Value", type: "text" },
-      ]},
+      {
+        key: "badges", label: "Trust badges", type: "repeater", itemFields: [
+          { key: "icon", label: "Icon name", type: "text" },
+          { key: "label", label: "Label", type: "text" },
+          { key: "value", label: "Value", type: "text" },
+        ]
+      },
     ],
   },
   home_heritage: {
@@ -94,20 +103,26 @@ export const CONTENT_BLOCK_SCHEMAS: Record<string, BlockFormSchema> = {
       { key: "sectionTitle", label: "Section title", type: "text" },
       { key: "sectionDescription", label: "Section description", type: "textarea" },
       { key: "image", label: "Image URL", type: "image" },
-      { key: "mission", label: "Mission", type: "group", fields: [
-        { key: "title", label: "Title", type: "text" },
-        { key: "description", label: "Description", type: "textarea" },
-        { key: "icon", label: "Icon name", type: "text" },
-      ]},
-      { key: "vision", label: "Vision", type: "group", fields: [
-        { key: "title", label: "Title", type: "text" },
-        { key: "description", label: "Description", type: "textarea" },
-        { key: "icon", label: "Icon name", type: "text" },
-      ]},
-      { key: "badge", label: "Badge", type: "group", fields: [
-        { key: "value", label: "Value", type: "text" },
-        { key: "label", label: "Label", type: "text" },
-      ]},
+      {
+        key: "mission", label: "Mission", type: "group", fields: [
+          { key: "title", label: "Title", type: "text" },
+          { key: "description", label: "Description", type: "textarea" },
+          { key: "icon", label: "Icon name", type: "text" },
+        ]
+      },
+      {
+        key: "vision", label: "Vision", type: "group", fields: [
+          { key: "title", label: "Title", type: "text" },
+          { key: "description", label: "Description", type: "textarea" },
+          { key: "icon", label: "Icon name", type: "text" },
+        ]
+      },
+      {
+        key: "badge", label: "Badge", type: "group", fields: [
+          { key: "value", label: "Value", type: "text" },
+          { key: "label", label: "Label", type: "text" },
+        ]
+      },
     ],
   },
   about_hero: {
@@ -158,10 +173,12 @@ export const CONTENT_BLOCK_SCHEMAS: Record<string, BlockFormSchema> = {
     label: "Contact Form Subjects",
     category: "Contact Page",
     fields: [
-      { key: "items", label: "Subject options", type: "repeater", itemFields: [
-        { key: "value", label: "Value", type: "text" },
-        { key: "label", label: "Label", type: "text" },
-      ]},
+      {
+        key: "items", label: "Subject options", type: "repeater", itemFields: [
+          { key: "value", label: "Value", type: "text" },
+          { key: "label", label: "Label", type: "text" },
+        ]
+      },
     ],
   },
   footer_contact: {
@@ -211,11 +228,13 @@ export const CONTENT_BLOCK_SCHEMAS: Record<string, BlockFormSchema> = {
     label: "Services List",
     category: "Services Page",
     fields: [
-      { key: "items", label: "Services", type: "repeater", itemFields: [
-        { key: "title", label: "Title", type: "text" },
-        { key: "description", label: "Description", type: "textarea" },
-        { key: "image", label: "Image URL", type: "image" },
-      ]},
+      {
+        key: "items", label: "Services", type: "repeater", itemFields: [
+          { key: "title", label: "Title", type: "text" },
+          { key: "description", label: "Description", type: "textarea" },
+          { key: "image", label: "Image URL", type: "image" },
+        ]
+      },
     ],
   },
   resources_hero: {
@@ -231,12 +250,14 @@ export const CONTENT_BLOCK_SCHEMAS: Record<string, BlockFormSchema> = {
     label: "Resources Categories",
     category: "Resources Page",
     fields: [
-      { key: "items", label: "Categories", type: "repeater", itemFields: [
-        { key: "title", label: "Title", type: "text" },
-        { key: "description", label: "Description", type: "textarea" },
-        { key: "icon", label: "Icon name", type: "text" },
-        { key: "link", label: "Link", type: "text" },
-      ]},
+      {
+        key: "items", label: "Categories", type: "repeater", itemFields: [
+          { key: "title", label: "Title", type: "text" },
+          { key: "description", label: "Description", type: "textarea" },
+          { key: "icon", label: "Icon name", type: "text" },
+          { key: "link", label: "Link", type: "text" },
+        ]
+      },
     ],
   },
   values: {
@@ -245,10 +266,12 @@ export const CONTENT_BLOCK_SCHEMAS: Record<string, BlockFormSchema> = {
     fields: [
       { key: "title", label: "Title", type: "text" },
       { key: "description", label: "Description", type: "textarea" },
-      { key: "items", label: "Value items", type: "repeater", itemFields: [
-        { key: "title", label: "Title", type: "text" },
-        { key: "description", label: "Description", type: "textarea" },
-      ]},
+      {
+        key: "items", label: "Value items", type: "repeater", itemFields: [
+          { key: "title", label: "Title", type: "text" },
+          { key: "description", label: "Description", type: "textarea" },
+        ]
+      },
     ],
   },
   achievements: {
@@ -257,26 +280,33 @@ export const CONTENT_BLOCK_SCHEMAS: Record<string, BlockFormSchema> = {
     fields: [
       { key: "title", label: "Title", type: "text" },
       { key: "description", label: "Description", type: "textarea" },
-      { key: "stats", label: "Statistics", type: "repeater", itemFields: [
-        { key: "value", label: "Value", type: "text" },
-        { key: "label", label: "Label", type: "text" },
-      ]},
-      { key: "awards", label: "Awards", type: "repeater", itemFields: [
-        { key: "year", label: "Year", type: "text" },
-        { key: "title", label: "Title", type: "text" },
-        { key: "issuer", label: "Issuer", type: "text" },
-        { key: "description", label: "Description", type: "textarea" },
-      ]},
+      {
+        key: "stats", label: "Statistics", type: "repeater", itemFields: [
+          { key: "value", label: "Value", type: "text" },
+          { key: "label", label: "Label", type: "text" },
+        ]
+      },
+      {
+        key: "awards", label: "Awards", type: "repeater", itemFields: [
+          { key: "year", label: "Year", type: "text" },
+          { key: "title", label: "Title", type: "text" },
+          { key: "issuer", label: "Issuer", type: "text" },
+          { key: "description", label: "Description", type: "textarea" },
+        ]
+      },
     ],
   },
   partners: {
     label: "Partners",
+    category: "Home Page",
     fields: [
-      { key: "items", label: "Partners", type: "repeater", itemFields: [
-        { key: "name", label: "Name", type: "text" },
-        { key: "description", label: "Description", type: "textarea" },
-        { key: "image", label: "Image URL", type: "image" },
-      ]},
+      {
+        key: "items", label: "Partners", type: "repeater", itemFields: [
+          { key: "name", label: "Name", type: "text" },
+          { key: "image", label: "Logo URL", type: "image" },
+          { key: "description", label: "Description (optional)", type: "textarea" },
+        ]
+      },
     ],
   },
   org_structure: {
@@ -285,14 +315,18 @@ export const CONTENT_BLOCK_SCHEMAS: Record<string, BlockFormSchema> = {
     fields: [
       { key: "title", label: "Title", type: "text" },
       { key: "description", label: "Description", type: "textarea" },
-      { key: "departments", label: "Departments", type: "repeater", itemFields: [
-        { key: "icon", label: "Icon name", type: "text" },
-        { key: "name", label: "Name", type: "text" },
-        { key: "description", label: "Description", type: "textarea" },
-      ]},
-      { key: "hierarchy", label: "Hierarchy", type: "repeater", itemFields: [
-        { key: "label", label: "Label", type: "text" },
-      ]},
+      {
+        key: "departments", label: "Departments", type: "repeater", itemFields: [
+          { key: "icon", label: "Icon name", type: "text" },
+          { key: "name", label: "Name", type: "text" },
+          { key: "description", label: "Description", type: "textarea" },
+        ]
+      },
+      {
+        key: "hierarchy", label: "Hierarchy", type: "repeater", itemFields: [
+          { key: "label", label: "Label", type: "text" },
+        ]
+      },
     ],
   },
   portfolio_stats: {
@@ -308,70 +342,86 @@ export const CONTENT_BLOCK_SCHEMAS: Record<string, BlockFormSchema> = {
     label: "Testimonials",
     category: "Portfolio Page",
     fields: [
-      { key: "items", label: "Testimonials", type: "repeater", itemFields: [
-        { key: "quote", label: "Quote", type: "textarea" },
-        { key: "author", label: "Author", type: "text" },
-        { key: "role", label: "Role", type: "text" },
-      ]},
+      {
+        key: "items", label: "Testimonials", type: "repeater", itemFields: [
+          { key: "quote", label: "Quote", type: "textarea" },
+          { key: "author", label: "Author", type: "text" },
+          { key: "role", label: "Role", type: "text" },
+        ]
+      },
     ],
   },
   trade_main: {
     label: "Trade Main Page",
     category: "Trade Pages",
     fields: [
-      { key: "hero", label: "Hero section", type: "group", fields: [
-        { key: "title", label: "Title", type: "text" },
-        { key: "description", label: "Description", type: "textarea" },
-        { key: "image", label: "Image URL", type: "image" },
-      ]},
-      { key: "sections", label: "Sections", type: "repeater", itemFields: [
-        { key: "id", label: "ID", type: "text" },
-        { key: "badge", label: "Badge", type: "text" },
-        { key: "title", label: "Title", type: "text" },
-        { key: "description", label: "Description", type: "textarea" },
-        { key: "bulletItems", label: "Bullet items (one per line)", type: "stringList" },
-        { key: "link", label: "Link", type: "text" },
-        { key: "image", label: "Image URL", type: "image" },
-      ]},
+      {
+        key: "hero", label: "Hero section", type: "group", fields: [
+          { key: "title", label: "Title", type: "text" },
+          { key: "description", label: "Description", type: "textarea" },
+          { key: "image", label: "Image URL", type: "image" },
+        ]
+      },
+      {
+        key: "sections", label: "Sections", type: "repeater", itemFields: [
+          { key: "id", label: "ID", type: "text" },
+          { key: "badge", label: "Badge", type: "text" },
+          { key: "title", label: "Title", type: "text" },
+          { key: "description", label: "Description", type: "textarea" },
+          { key: "bulletItems", label: "Bullet items (one per line)", type: "stringList" },
+          { key: "link", label: "Link", type: "text" },
+          { key: "image", label: "Image URL", type: "image" },
+        ]
+      },
     ],
   },
   trade_expertise: {
     label: "Trade Expertise",
     fields: [
-      { key: "hero", label: "Hero", type: "group", fields: [
-        { key: "badge", label: "Badge", type: "text" },
-        { key: "title", label: "Title", type: "text" },
-        { key: "description", label: "Description", type: "textarea" },
-        { key: "image", label: "Image URL", type: "image" },
-      ]},
-      { key: "section", label: "Section", type: "group", fields: [
-        { key: "title", label: "Title", type: "text" },
-        { key: "description", label: "Description", type: "textarea" },
-        { key: "items", label: "Items (one per line)", type: "stringList" },
-      ]},
+      {
+        key: "hero", label: "Hero", type: "group", fields: [
+          { key: "badge", label: "Badge", type: "text" },
+          { key: "title", label: "Title", type: "text" },
+          { key: "description", label: "Description", type: "textarea" },
+          { key: "image", label: "Image URL", type: "image" },
+        ]
+      },
+      {
+        key: "section", label: "Section", type: "group", fields: [
+          { key: "title", label: "Title", type: "text" },
+          { key: "description", label: "Description", type: "textarea" },
+          { key: "items", label: "Items (one per line)", type: "stringList" },
+        ]
+      },
       { key: "services", label: "Services (one per line)", type: "stringList" },
-      { key: "industries", label: "Industries", type: "repeater", itemFields: [
-        { key: "image", label: "Image URL", type: "image" },
-        { key: "title", label: "Title", type: "text" },
-        { key: "description", label: "Description", type: "textarea" },
-      ]},
+      {
+        key: "industries", label: "Industries", type: "repeater", itemFields: [
+          { key: "image", label: "Image URL", type: "image" },
+          { key: "title", label: "Title", type: "text" },
+          { key: "description", label: "Description", type: "textarea" },
+        ]
+      },
     ],
   },
   trade_import_export: {
     label: "Trade Import/Export",
     category: "Trade Pages",
     fields: [
-      { key: "hero", label: "Hero", type: "group", fields: [
-        { key: "badge", label: "Badge", type: "text" },
-        { key: "title", label: "Title", type: "text" },
-        { key: "description", label: "Description", type: "textarea" },
-        { key: "image", label: "Image URL", type: "image" },
-      ]},
-      { key: "section", label: "Section", type: "group", fields: [
-        { key: "title", label: "Title", type: "text" },
-        { key: "description", label: "Description", type: "textarea" },
-        { key: "image", label: "Image URL", type: "image" },
-      ]},
+      {
+        key: "hero", label: "Hero", type: "group", fields: [
+          { key: "badge", label: "Badge", type: "text" },
+          { key: "title", label: "Title", type: "text" },
+          { key: "description", label: "Description", type: "textarea" },
+          { key: "image", label: "Image URL", type: "image" },
+        ]
+      },
+      {
+        key: "section", label: "Section", type: "group", fields: [
+          { key: "title", label: "Title", type: "text" },
+          { key: "description", label: "Description", type: "textarea" },
+          { key: "image", label: "Image URL", type: "image" },
+        ]
+      },
       { key: "services", label: "Services (one per line)", type: "stringList" },
     ],
   },
@@ -379,48 +429,62 @@ export const CONTENT_BLOCK_SCHEMAS: Record<string, BlockFormSchema> = {
     label: "Trade Supply Chain",
     category: "Trade Pages",
     fields: [
-      { key: "hero", label: "Hero", type: "group", fields: [
-        { key: "badge", label: "Badge", type: "text" },
-        { key: "title", label: "Title", type: "text" },
-        { key: "description", label: "Description", type: "textarea" },
-        { key: "image", label: "Image URL", type: "image" },
-      ]},
-      { key: "section", label: "Section", type: "group", fields: [
-        { key: "title", label: "Title", type: "text" },
-        { key: "description", label: "Description", type: "textarea" },
-      ]},
+      {
+        key: "hero", label: "Hero", type: "group", fields: [
+          { key: "badge", label: "Badge", type: "text" },
+          { key: "title", label: "Title", type: "text" },
+          { key: "description", label: "Description", type: "textarea" },
+          { key: "image", label: "Image URL", type: "image" },
+        ]
+      },
+      {
+        key: "section", label: "Section", type: "group", fields: [
+          { key: "title", label: "Title", type: "text" },
+          { key: "description", label: "Description", type: "textarea" },
+        ]
+      },
       { key: "services", label: "Services (one per line)", type: "stringList" },
-      { key: "features", label: "Features", type: "repeater", itemFields: [
-        { key: "icon", label: "Icon name", type: "text" },
-        { key: "title", label: "Title", type: "text" },
-        { key: "description", label: "Description", type: "textarea" },
-      ]},
-      { key: "cta", label: "Call to action", type: "group", fields: [
-        { key: "title", label: "Title", type: "text" },
-        { key: "description", label: "Description", type: "textarea" },
-        { key: "buttonText", label: "Button text", type: "text" },
-      ]},
+      {
+        key: "features", label: "Features", type: "repeater", itemFields: [
+          { key: "icon", label: "Icon name", type: "text" },
+          { key: "title", label: "Title", type: "text" },
+          { key: "description", label: "Description", type: "textarea" },
+        ]
+      },
+      {
+        key: "cta", label: "Call to action", type: "group", fields: [
+          { key: "title", label: "Title", type: "text" },
+          { key: "description", label: "Description", type: "textarea" },
+          { key: "buttonText", label: "Button text", type: "text" },
+        ]
+      },
     ],
   },
   trade_partnerships: {
     label: "Trade Partnerships",
     fields: [
-      { key: "hero", label: "Hero", type: "group", fields: [
-        { key: "badge", label: "Badge", type: "text" },
-        { key: "title", label: "Title", type: "text" },
-        { key: "description", label: "Description", type: "textarea" },
-        { key: "image", label: "Image URL", type: "image" },
-      ]},
-      { key: "section", label: "Section", type: "group", fields: [
-        { key: "title", label: "Title", type: "text" },
-        { key: "description", label: "Description", type: "textarea" },
-      ]},
+      {
+        key: "hero", label: "Hero", type: "group", fields: [
+          { key: "badge", label: "Badge", type: "text" },
+          { key: "title", label: "Title", type: "text" },
+          { key: "description", label: "Description", type: "textarea" },
+          { key: "image", label: "Image URL", type: "image" },
+        ]
+      },
+      {
+        key: "section", label: "Section", type: "group", fields: [
+          { key: "title", label: "Title", type: "text" },
+          { key: "description", label: "Description", type: "textarea" },
+        ]
+      },
       { key: "services", label: "Services (one per line)", type: "stringList" },
-      { key: "features", label: "Features", type: "repeater", itemFields: [
-        { key: "icon", label: "Icon name", type: "text" },
-        { key: "title", label: "Title", type: "text" },
-        { key: "description", label: "Description", type: "textarea" },
-      ]},
+      {
+        key: "features", label: "Features", type: "repeater", itemFields: [
+          { key: "icon", label: "Icon name", type: "text" },
+          { key: "title", label: "Title", type: "text" },
+          { key: "description", label: "Description", type: "textarea" },
+        ]
+      },
     ],
   },
   cookies_policy: {
@@ -433,18 +497,24 @@ export const CONTENT_BLOCK_SCHEMAS: Record<string, BlockFormSchema> = {
       { key: "subtitle", label: "Subtitle", type: "textarea" },
       { key: "dateLabel", label: "Date label", type: "text" },
       { key: "infoRight", label: "Info right text", type: "text" },
-      { key: "sections", label: "Sections", type: "repeater", itemFields: [
-        { key: "heading", label: "Heading", type: "text" },
-        { key: "paragraphs", label: "Paragraphs (one per line)", type: "stringList" },
-        { key: "cards", label: "Cards", type: "repeater", itemFields: [
-          { key: "title", label: "Title", type: "text" },
-          { key: "description", label: "Description", type: "textarea" },
-        ]},
-      ]},
-      { key: "note", label: "Note", type: "group", fields: [
-        { key: "heading", label: "Heading", type: "text" },
-        { key: "content", label: "Content", type: "textarea" },
-      ]},
+      {
+        key: "sections", label: "Sections", type: "repeater", itemFields: [
+          { key: "heading", label: "Heading", type: "text" },
+          { key: "paragraphs", label: "Paragraphs (one per line)", type: "stringList" },
+          {
+            key: "cards", label: "Cards", type: "repeater", itemFields: [
+              { key: "title", label: "Title", type: "text" },
+              { key: "description", label: "Description", type: "textarea" },
+            ]
+          },
+        ]
+      },
+      {
+        key: "note", label: "Note", type: "group", fields: [
+          { key: "heading", label: "Heading", type: "text" },
+          { key: "content", label: "Content", type: "textarea" },
+        ]
+      },
       { key: "contactEmail", label: "Contact email", type: "text" },
     ],
   },
@@ -457,15 +527,19 @@ export const CONTENT_BLOCK_SCHEMAS: Record<string, BlockFormSchema> = {
       { key: "subtitle", label: "Subtitle", type: "textarea" },
       { key: "dateLabel", label: "Date label", type: "text" },
       { key: "version", label: "Version", type: "text" },
-      { key: "sections", label: "Sections", type: "repeater", itemFields: [
-        { key: "heading", label: "Heading", type: "text" },
-        { key: "content", label: "Content", type: "textarea" },
-      ]},
-      { key: "contactBlock", label: "Contact block", type: "group", fields: [
-        { key: "companyName", label: "Company name", type: "text" },
-        { key: "address", label: "Address", type: "textarea" },
-        { key: "email", label: "Email", type: "text" },
-      ]},
+      {
+        key: "sections", label: "Sections", type: "repeater", itemFields: [
+          { key: "heading", label: "Heading", type: "text" },
+          { key: "content", label: "Content", type: "textarea" },
+        ]
+      },
+      {
+        key: "contactBlock", label: "Contact block", type: "group", fields: [
+          { key: "companyName", label: "Company name", type: "text" },
+          { key: "address", label: "Address", type: "textarea" },
+          { key: "email", label: "Email", type: "text" },
+        ]
+      },
     ],
   },
   terms_of_service: {
@@ -478,15 +552,19 @@ export const CONTENT_BLOCK_SCHEMAS: Record<string, BlockFormSchema> = {
       { key: "subtitle", label: "Subtitle", type: "textarea" },
       { key: "dateLabel", label: "Date label", type: "text" },
       { key: "infoRight", label: "Info right", type: "text" },
-      { key: "sections", label: "Sections", type: "repeater", itemFields: [
-        { key: "heading", label: "Heading", type: "text" },
-        { key: "content", label: "Content", type: "textarea" },
-      ]},
-      { key: "callouts", label: "Callouts", type: "repeater", itemFields: [
-        { key: "heading", label: "Heading", type: "text" },
-        { key: "content", label: "Content", type: "textarea" },
-        { key: "variant", label: "Variant (amber/primary)", type: "text" },
-      ]},
+      {
+        key: "sections", label: "Sections", type: "repeater", itemFields: [
+          { key: "heading", label: "Heading", type: "text" },
+          { key: "content", label: "Content", type: "textarea" },
+        ]
+      },
+      {
+        key: "callouts", label: "Callouts", type: "repeater", itemFields: [
+          { key: "heading", label: "Heading", type: "text" },
+          { key: "content", label: "Content", type: "textarea" },
+          { key: "variant", label: "Variant (amber/primary)", type: "text" },
+        ]
+      },
     ],
   },
   downloads_hero: {

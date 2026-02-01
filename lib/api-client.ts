@@ -161,6 +161,9 @@ export interface HomeHero {
   headline: string;
   tagline: string;
   badge: string;
+  image?: string;
+  ctaText?: string;
+  ctaLink?: string;
 }
 
 export interface AboutHistory {
