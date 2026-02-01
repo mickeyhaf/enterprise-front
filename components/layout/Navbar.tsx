@@ -47,8 +47,6 @@ const DEFAULT_NAVBAR: NavbarContent = {
       { label: "Annual Reports", href: "/resources/reports" },
     ],
   },
-  adminLoginHref: "/login",
-  adminLoginLabel: "Admin Login",
   languages: ["EN", "አማ"],
 };
 
@@ -185,51 +183,43 @@ export function Navbar() {
             })()}
           </div>
 
-          {/* Admin Login + Language Switcher */}
-          <div className="hidden md:flex items-center gap-4">
-            <Link
-              href={nav.adminLoginHref ?? "/login"}
-              className="text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-primary transition-colors"
-            >
-              {nav.adminLoginLabel ?? "Admin Login"}
-            </Link>
-            <div className="relative" ref={languageMenuRef}>
-              <button
-                type="button"
-                onClick={() => setLanguageMenuOpen((v) => !v)}
-                className="h-11 px-5 rounded-xl border border-slate-300/70 dark:border-slate-700/80 bg-transparent text-slate-700 dark:text-slate-100 font-bold text-sm flex items-center gap-3 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors"
-                aria-haspopup="menu"
-                aria-expanded={languageMenuOpen}
-              >
-                <span>{language}</span>
-                <ChevronDown className="w-4 h-4 text-slate-400" />
-              </button>
 
-              {languageMenuOpen && (
-                <div
-                  role="menu"
-                  className="absolute right-0 mt-2 w-40 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xl overflow-hidden"
-                >
-                  {languages.map((lang) => (
-                    <button
-                      key={lang}
-                      role="menuitem"
-                      type="button"
-                      onClick={() => {
-                        setLanguage(lang);
-                        setLanguageMenuOpen(false);
-                      }}
-                      className={`w-full text-left px-4 py-3 text-sm font-semibold transition-colors ${language === lang
-                        ? "bg-slate-50 dark:bg-slate-800 text-primary"
-                        : "text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
-                        }`}
-                    >
-                      {lang}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
+          <div className="relative" ref={languageMenuRef}>
+            <button
+              type="button"
+              onClick={() => setLanguageMenuOpen((v) => !v)}
+              className="h-11 px-5 rounded-xl border border-slate-300/70 dark:border-slate-700/80 bg-transparent text-slate-700 dark:text-slate-100 font-bold text-sm flex items-center gap-3 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors"
+              aria-haspopup="menu"
+              aria-expanded={languageMenuOpen}
+            >
+              <span>{language}</span>
+              <ChevronDown className="w-4 h-4 text-slate-400" />
+            </button>
+
+            {languageMenuOpen && (
+              <div
+                role="menu"
+                className="absolute right-0 mt-2 w-40 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xl overflow-hidden"
+              >
+                {languages.map((lang) => (
+                  <button
+                    key={lang}
+                    role="menuitem"
+                    type="button"
+                    onClick={() => {
+                      setLanguage(lang);
+                      setLanguageMenuOpen(false);
+                    }}
+                    className={`w-full text-left px-4 py-3 text-sm font-semibold transition-colors ${language === lang
+                      ? "bg-slate-50 dark:bg-slate-800 text-primary"
+                      : "text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
+                      }`}
+                  >
+                    {lang}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -289,9 +279,7 @@ export function Navbar() {
                 </div>
               );
             })()}
-            <MobileNavLink href={nav.adminLoginHref ?? "/login"} onClick={closeMobileMenu} active={isActive(nav.adminLoginHref ?? "/login")}>
-              {nav.adminLoginLabel ?? "Admin Login"}
-            </MobileNavLink>
+
             <div className="pt-4 flex gap-4 justify-center border-t border-slate-100 dark:border-slate-800 mt-4">
               <div className="relative" ref={languageMenuRef}>
                 <button
@@ -332,8 +320,9 @@ export function Navbar() {
             </div>
           </div>
         </div>
-      )}
-    </nav>
+      )
+      }
+    </nav >
   );
 }
 

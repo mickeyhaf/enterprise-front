@@ -204,8 +204,6 @@ export interface NavbarContent {
   dropdowns?: NavbarDropdown[];
   trailingLinks?: NavbarLinkItem[];
   resourcesDropdown?: NavbarDropdown;
-  adminLoginHref?: string;
-  adminLoginLabel?: string;
   languages?: string[];
 }
 

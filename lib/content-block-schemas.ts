@@ -56,8 +56,6 @@ export const CONTENT_BLOCK_SCHEMAS: Record<string, BlockFormSchema> = {
           { key: "items", label: "Menu items", type: "repeater", itemFields: linkItemFields },
         ]
       },
-      { key: "adminLoginHref", label: "Admin login link", type: "text" },
-      { key: "adminLoginLabel", label: "Admin login label", type: "text" },
       { key: "languages", label: "Language codes (one per line)", type: "stringList" },
     ],
   },
