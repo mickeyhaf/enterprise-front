@@ -35,20 +35,20 @@ export function Hero() {
           priority
         />
       </div>
-      <div className="absolute inset-0 bg-gradient-to-r from-slate-900/90 via-slate-900/40 to-transparent pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-r from-primary/95 to-primary/40 pointer-events-none" />
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32 w-full">
-        <div className="max-w-3xl space-y-8 animate-in fade-in slide-in-from-left-8 duration-1000">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/20 backdrop-blur-md border border-primary/30 text-primary font-bold text-xs uppercase tracking-widest">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full text-white">
+        <div className="max-w-3xl animate-in fade-in slide-in-from-left-8 duration-1000">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent text-accent-foreground font-bold text-xs uppercase tracking-widest mb-6 shadow-lg shadow-accent/20">
             <Verified className="w-4 h-4" />
             {badge || DEFAULT_HERO.badge}
           </div>
 
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-display font-black text-white leading-[1.1] tracking-tight">
+          <h1 className="text-5xl md:text-7xl font-display font-extrabold leading-[1.1] tracking-tight mb-6">
             {hasExcellence ? (
               <>
                 {headlineParts[0]}
-                <span className="text-secondary italic font-serif">Excellence</span>
+                <span className="text-accent italic">Excellence</span>
                 {headlineParts[1]}
               </>
             ) : (
@@ -56,12 +56,12 @@ export function Hero() {
             )}
           </h1>
 
-          <p className="text-xl md:text-2xl text-slate-200 font-light leading-relaxed max-w-2xl">
+          <p className="text-lg text-slate-100 mb-8 max-w-xl font-light leading-relaxed">
             {tagline || DEFAULT_HERO.tagline}
           </p>
 
           <div className="flex flex-col sm:flex-row items-center gap-4 pt-4">
-            <Button asChild size="lg" className="h-14 px-8 rounded-full text-lg shadow-xl shadow-primary/20 group">
+            <Button asChild size="lg" className="h-14 px-8 rounded-full text-lg shadow-xl shadow-accent/20 bg-accent hover:bg-accent/90 text-accent-foreground font-bold group border-none">
               <Link href={ctaLink || "/contact"} className="gap-3">
                 {ctaText || "Contact Us"}
                 <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
