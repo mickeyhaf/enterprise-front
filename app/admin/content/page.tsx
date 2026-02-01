@@ -1,55 +1,54 @@
 "use client";
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
-import { Plus, ChevronDown, ChevronUp } from "lucide-react";
+import { useState, useEffect, useMemo } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
+import { Plus, ChevronDown, ChevronUp, ChevronRight } from "lucide-react";
 import { api } from "@/lib/api-client";
 import { Button } from "@/components/ui/button";
-
-const BLOCK_SCHEMA: Record<string, string> = {
-  navbar: '{"siteName":"","tagline":"","mainLinks":[],"dropdowns":[],"trailingLinks":[],"resourcesDropdown":{},"adminLoginHref":"","adminLoginLabel":"","languages":[]}',
-  home_hero: '{"headline":"","tagline":"","badge":""}',
-  home_heritage: '{"sectionTitle":"","sectionDescription":"","mission":{},"vision":{},"image":"","badge":{}}',
-  home_leadership: '{"title":"","description":""}',
-  home_trust: '{"title":"","description":"","badges":[]}',
-  about_hero: '{"title":"","description":""}',
-  about_history: '{"paragraphs":[]}',
-  contact_info: '{"address":"","email":"","supportEmail":"","phone":"","hours":""}',
-  contact_cta: '{"title":"","description":"","primaryButtonText":"","secondaryButtonText":"","secondaryLink":""}',
-  contact_subjects: '{"items":[{"value":"","label":""}]}',
-  footer_contact: '{"companyName":"","description":"","address":"","email":"","phone":""}',
-  footer_social: '{"facebook":"","twitter":"","linkedin":""}',
-  footer_links: '{"quickLinks":[],"resourceLinks":[]}',
-  services_hero: '{"title":"","description":"","image":""}',
-  services: '{"items":[{"title":"","description":"","image":""}]}',
-  resources_hero: '{"badge":"","title":"","description":"","image":""}',
-  resources_categories: '{"items":[{"title":"","description":"","icon":"","link":""}]}',
-  values: '{"title":"","description":"","items":[]}',
-  achievements: '{"title":"","description":"","stats":[],"awards":[]}',
-  partners: '{"items":[{"name":"","description":"","image":""}]}',
-  org_structure: '{"title":"","description":"","departments":[],"hierarchy":[]}',
-  portfolio_stats: '{"projectsCompleted":"","yearsExperience":"","globalPartners":"","valueGenerated":""}',
-  testimonials: '{"items":[{"quote":"","author":"","role":""}]}',
-  trade_main: '{"hero":{},"sections":[]}',
-  trade_expertise: '{"hero":{},"section":{},"services":[],"industries":[]}',
-  trade_import_export: '{"hero":{"badge":"","title":"","description":"","image":""},"section":{"title":"","description":"","image":""},"services":[]}',
-  trade_supply_chain: '{"hero":{"badge":"","title":"","description":"","image":""},"section":{"title":"","description":""},"services":[],"features":[{"icon":"","title":"","description":""}],"cta":{"title":"","description":"","buttonText":""}}',
-  trade_partnerships: '{"hero":{"badge":"","title":"","description":"","image":""},"section":{"title":"","description":""},"services":[],"features":[{"icon":"","title":"","description":""}]}',
-  cookies_policy: '{"lastUpdated":"","badge":"","title":"","subtitle":"","dateLabel":"","infoRight":"","sections":[{"heading":"","paragraphs":[],"cards":[{"title":"","description":""}]}],"note":{"heading":"","content":""},"contactEmail":""}',
-  privacy_policy: '{"lastUpdated":"","badge":"","title":"","subtitle":"","dateLabel":"","version":"","sections":[{"heading":"","content":""}],"contactBlock":{"companyName":"","address":"","email":""}}',
-  terms_of_service: '{"lastUpdated":"","badge":"","title":"","subtitle":"","dateLabel":"","infoRight":"","sections":[{"heading":"","content":""}],"callouts":[]}',
-  downloads_hero: '{"title":"","description":""}',
-  footer_copyright: '{"companyName":"","links":[{"label":"","href":""}]}',
-  about_sections: '{"historyTitle":"","leadershipTitle":"","leadershipDescription":""}',
-  quote_labels: '{"importExport":"","supplyChain":"","partnerships":"","requestQuote":""}',
-};
+import { ContentBlockForm } from "@/components/admin/ContentBlockForm";
+import {
+  getBlockSchema,
+  getGroupedBlockSchemas,
+} from "@/lib/content-block-schemas";
 
 export default function AdminContentPage() {
-  const [selectedKey, setSelectedKey] = useState<string | null>(null);
-  const [editValue, setEditValue] = useState("");
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const blockParam = searchParams.get("block");
+  const [selectedKey, setSelectedKey] = useState<string | null>(blockParam);
   const [showCreate, setShowCreate] = useState(false);
-  const [newKey, setNewKey] = useState("");
-  const [newContent, setNewContent] = useState("{}");
+  const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set());
+
+  useEffect(() => {
+    if (blockParam) setSelectedKey(blockParam);
+  }, [blockParam]);
+
+  useEffect(() => {
+    if (selectedKey) {
+      for (const [category, blocks] of Object.entries(groupedSchemas)) {
+        if (blocks.some((b) => b.key === selectedKey)) {
+          setExpandedCategories((prev) => {
+            if (prev.has(category)) return prev;
+            const next = new Set(prev);
+            next.add(category);
+            return next;
+          });
+          break;
+        }
+      }
+    }
+  }, [selectedKey, groupedSchemas]);
+
+  const selectBlock = (key: string) => {
+    setSelectedKey(key);
+    setShowJsonMode(false);
+    setJsonValue("");
+    router.replace(`/admin/content?block=${key}`, { scroll: false });
+  };
+  const [newBlockType, setNewBlockType] = useState("");
+  const [showJsonMode, setShowJsonMode] = useState(false);
+  const [jsonValue, setJsonValue] = useState("");
   const [showSchema, setShowSchema] = useState(false);
   const queryClient = useQueryClient();
 
@@ -78,23 +77,61 @@ export default function AdminContentPage() {
   });
 
   const keys = content ? Object.keys(content) : [];
-  const displayValue =
+  const keysSet = new Set(keys);
+  const schema = selectedKey ? getBlockSchema(selectedKey) : null;
+  const groupedSchemas = useMemo(() => getGroupedBlockSchemas(), []);
+  const blockData =
+    block !== undefined && block !== null && typeof block === "object"
+      ? (block as Record<string, unknown>)
+      : null;
+
+  const handleFormSave = (formContent: Record<string, unknown>) => {
+    if (!selectedKey) return;
+    updateMutation.mutate({ key: selectedKey, content: formContent });
+  };
+
+  const handleJsonSave = () => {
+    if (!selectedKey) return;
+    try {
+      const parsed = JSON.parse(jsonValue);
+      updateMutation.mutate({ key: selectedKey, content: parsed });
+    } catch {
+      alert("Invalid JSON");
+    }
+  };
+
+  const handleCreateBlock = async () => {
+    if (!newBlockType.trim()) return;
+    const key = newBlockType.trim();
+    const blockSchema = getBlockSchema(key);
+    const defaultContent: Record<string, unknown> = {};
+    if (blockSchema) {
+      for (const field of blockSchema.fields) {
+        if (field.type === "repeater") {
+          defaultContent[field.key] = [];
+        } else if (field.type === "group") {
+          defaultContent[field.key] = {};
+        } else if (field.type === "stringList") {
+          defaultContent[field.key] = [];
+        } else {
+          defaultContent[field.key] = "";
+        }
+      }
+    }
+    await api.adminContent.set(key, Object.keys(defaultContent).length > 0 ? defaultContent : {});
+    queryClient.invalidateQueries({ queryKey: ["admin", "content"] });
+    setSelectedKey(key);
+    setShowCreate(false);
+    setNewBlockType("");
+    router.replace(`/admin/content?block=${key}`, { scroll: false });
+  };
+
+  const displayJson =
     selectedKey && block !== undefined
       ? typeof block === "string"
         ? block
         : JSON.stringify(block, null, 2)
       : "";
-
-  const handleSave = () => {
-    if (!selectedKey) return;
-    try {
-      const parsed = JSON.parse(editValue);
-      updateMutation.mutate({ key: selectedKey, content: parsed });
-    } catch {
-      updateMutation.mutate({ key: selectedKey, content: editValue });
-    }
-    setEditValue("");
-  };
 
   return (
     <div>
@@ -102,7 +139,7 @@ export default function AdminContentPage() {
         Content Blocks
       </h1>
       <p className="text-slate-600 dark:text-slate-400 mb-6">
-        Edit site content blocks (JSON). Create new blocks or edit existing.
+        Edit site content. Use the form fields below or switch to JSON for custom blocks.
       </p>
 
       <div className="mb-6 space-y-4">
@@ -112,16 +149,25 @@ export default function AdminContentPage() {
           className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400 hover:text-primary"
         >
           {showSchema ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-          Block schema reference
+          Block type reference
         </button>
         {showSchema && (
           <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 p-4 text-sm">
-            <p className="mb-3 text-slate-600 dark:text-slate-400">Known keys and starter JSON. Use as template when creating blocks.</p>
-            <div className="grid sm:grid-cols-2 gap-2 max-h-48 overflow-y-auto">
-              {Object.entries(BLOCK_SCHEMA).map(([k, v]) => (
-                <div key={k} className="font-mono text-xs">
-                  <span className="text-primary font-semibold">{k}</span>
-                  <pre className="mt-1 text-slate-500 truncate">{v.slice(0, 60)}...</pre>
+            <p className="mb-3 text-slate-600 dark:text-slate-400">
+              Known content block types. Select one when creating a new block.
+            </p>
+            <div className="space-y-3 max-h-48 overflow-y-auto">
+              {Object.entries(groupedSchemas).map(([category, blocks]) => (
+                <div key={category}>
+                  <p className="font-semibold text-slate-700 dark:text-slate-300">{category}</p>
+                  <div className="grid sm:grid-cols-2 gap-2 mt-1">
+                    {blocks.map(({ key, label }) => (
+                      <div key={key} className="text-sm">
+                        <span className="text-primary font-medium">{key}</span>
+                        <span className="text-slate-500 dark:text-slate-400 ml-2">{label}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               ))}
             </div>
@@ -134,64 +180,117 @@ export default function AdminContentPage() {
           <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4">
             <div className="flex items-center justify-between mb-3">
               <h2 className="font-semibold">Blocks</h2>
-              <Button size="sm" variant="outline" onClick={() => setShowCreate(true)} className="gap-1"><Plus className="w-4 h-4" /> New</Button>
+              <Button size="sm" variant="outline" onClick={() => setShowCreate(true)} className="gap-1">
+                <Plus className="w-4 h-4" /> New
+              </Button>
             </div>
             {showCreate && (
               <div className="mb-4 p-3 rounded-lg border border-slate-200 dark:border-slate-700 space-y-2">
-                <input
-                  type="text"
-                  placeholder="Block key (e.g. home_hero)"
-                  value={newKey}
-                  onChange={(e) => setNewKey(e.target.value)}
-                  className="w-full px-2 py-1 text-sm rounded border"
-                />
-                <textarea
-                  placeholder='{"key": "value"}'
-                  value={newContent}
-                  onChange={(e) => setNewContent(e.target.value)}
-                  rows={4}
-                  className="w-full px-2 py-1 text-sm font-mono rounded border"
-                />
+                <label className="block text-sm font-medium mb-1">Select content type</label>
+                <select
+                  value={newBlockType}
+                  onChange={(e) => setNewBlockType(e.target.value)}
+                  className="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800"
+                >
+                  <option value="">Choose...</option>
+                  {Object.entries(groupedSchemas).map(([category, blocks]) => (
+                    <optgroup key={category} label={category}>
+                      {blocks.map(({ key, label }) => (
+                        <option key={key} value={key}>
+                          {label}
+                        </option>
+                      ))}
+                    </optgroup>
+                  ))}
+                </select>
                 <div className="flex gap-2">
-                  <Button size="sm" onClick={async () => {
-                    if (!newKey.trim()) return;
-                    try {
-                      const parsed = JSON.parse(newContent || "{}");
-                      await api.adminContent.set(newKey.trim(), parsed);
-                      queryClient.invalidateQueries({ queryKey: ["admin", "content"] });
-                      setSelectedKey(newKey.trim());
-                      setEditValue("");
+                  <Button
+                    size="sm"
+                    onClick={handleCreateBlock}
+                    disabled={!newBlockType.trim()}
+                  >
+                    Create
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => {
                       setShowCreate(false);
-                      setNewKey("");
-                      setNewContent("{}");
-                    } catch {
-                      alert("Invalid JSON");
-                    }
-                  }}>Create</Button>
-                  <Button size="sm" variant="ghost" onClick={() => { setShowCreate(false); setNewKey(""); setNewContent("{}"); }}>Cancel</Button>
+                      setNewBlockType("");
+                    }}
+                  >
+                    Cancel
+                  </Button>
                 </div>
               </div>
             )}
             {isLoading ? (
               <div className="text-slate-500 text-sm">Loading...</div>
             ) : (
-              <div className="space-y-1">
-                {keys.map((k) => (
-                  <button
-                    key={k}
-                    onClick={() => {
-                      setSelectedKey(k);
-                      setEditValue("");
-                    }}
-                    className={`block w-full text-left px-3 py-2 rounded text-sm ${
-                      selectedKey === k
-                        ? "bg-primary text-white"
-                        : "hover:bg-slate-100 dark:hover:bg-slate-800"
-                    }`}
-                  >
-                    {k}
-                  </button>
-                ))}
+              <div className="space-y-2">
+                {Object.entries(groupedSchemas).map(([category, blocks]) => {
+                  const existingInCategory = blocks.filter((b) => keysSet.has(b.key));
+                  if (existingInCategory.length === 0) return null;
+                  const isExpanded = expandedCategories.has(category);
+                  return (
+                    <div key={category}>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setExpandedCategories((prev) => {
+                            const next = new Set(prev);
+                            if (next.has(category)) next.delete(category);
+                            else next.add(category);
+                            return next;
+                          })
+                        }
+                        className="flex w-full items-center gap-1 px-2 py-1.5 rounded text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
+                      >
+                        {isExpanded ? (
+                          <ChevronDown className="w-4 h-4 shrink-0" />
+                        ) : (
+                          <ChevronRight className="w-4 h-4 shrink-0" />
+                        )}
+                        {category}
+                      </button>
+                      {isExpanded && (
+                        <div className="ml-3 mt-1 space-y-0.5 border-l border-slate-200 dark:border-slate-700 pl-2">
+                          {existingInCategory.map(({ key, label }) => (
+                            <button
+                              key={key}
+                              onClick={() => selectBlock(key)}
+                              className={`block w-full text-left px-2 py-1.5 rounded text-sm ${
+                                selectedKey === key
+                                  ? "bg-primary text-white"
+                                  : "hover:bg-slate-100 dark:hover:bg-slate-800"
+                              }`}
+                            >
+                              {label}
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+                {keys.filter((k) => !Object.values(groupedSchemas).some((b) => b.some((x) => x.key === k))).length > 0 && (
+                  <div className="pt-2 border-t border-slate-200 dark:border-slate-700">
+                    <p className="px-2 py-1 text-xs font-medium text-slate-500 dark:text-slate-400">Uncategorized</p>
+                    {keys
+                      .filter((k) => !Object.values(groupedSchemas).some((b) => b.some((x) => x.key === k)))
+                      .map((k) => (
+                        <button
+                          key={k}
+                          onClick={() => selectBlock(k)}
+                          className={`block w-full text-left px-2 py-1.5 rounded text-sm ${
+                            selectedKey === k ? "bg-primary text-white" : "hover:bg-slate-100 dark:hover:bg-slate-800"
+                          }`}
+                        >
+                          {k}
+                        </button>
+                      ))}
+                  </div>
+                )}
               </div>
             )}
           </div>
@@ -200,33 +299,69 @@ export default function AdminContentPage() {
         <div className="flex-1">
           {selectedKey && (
             <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6">
-              <h2 className="font-semibold mb-4">{selectedKey}</h2>
-              <textarea
-                value={editValue || displayValue}
-                onChange={(e) => setEditValue(e.target.value)}
-                rows={16}
-                className="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 font-mono text-sm"
-              />
-              <div className="mt-4">
-                <Button
-                  onClick={handleSave}
-                  disabled={updateMutation.isPending}
-                >
-                  Save
-                </Button>
-                {updateMutation.isError && (
-                  <span className="ml-4 text-sm text-red-600">
-                    {updateMutation.error instanceof Error
-                      ? updateMutation.error.message
-                      : "Failed"}
-                  </span>
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="font-semibold">
+                  {schema?.label ?? selectedKey}
+                </h2>
+                {schema && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowJsonMode((v) => !v);
+                      if (!showJsonMode) setJsonValue(displayJson);
+                    }}
+                    className="text-xs text-slate-500 hover:text-primary"
+                  >
+                    {showJsonMode ? "Switch to form" : "Advanced: Edit as JSON"}
+                  </button>
                 )}
               </div>
+
+              {showJsonMode || !schema ? (
+                <div>
+                  <textarea
+                    value={showJsonMode ? jsonValue : displayJson}
+                    onChange={(e) => setJsonValue(e.target.value)}
+                    readOnly={!showJsonMode}
+                    rows={16}
+                    className="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 font-mono text-sm text-slate-900 dark:text-white"
+                  />
+                  <div className="mt-4">
+                    <Button
+                      onClick={handleJsonSave}
+                      disabled={updateMutation.isPending || !showJsonMode}
+                    >
+                      Save
+                    </Button>
+                    {updateMutation.isError && (
+                      <span className="ml-4 text-sm text-red-600">
+                        {updateMutation.error instanceof Error
+                          ? updateMutation.error.message
+                          : "Failed"}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              ) : (
+                <ContentBlockForm
+                  schema={schema}
+                  data={blockData}
+                  onSave={handleFormSave}
+                  isSaving={updateMutation.isPending}
+                />
+              )}
+              {updateMutation.isError && !showJsonMode && (
+                <div className="mt-4 text-sm text-red-600">
+                  {updateMutation.error instanceof Error
+                    ? updateMutation.error.message
+                    : "Failed to save"}
+                </div>
+              )}
             </div>
           )}
           {!selectedKey && (
             <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-12 text-center text-slate-500">
-              Select a content block to edit
+              Select a content block to edit, or create a new one.
             </div>
           )}
         </div>
