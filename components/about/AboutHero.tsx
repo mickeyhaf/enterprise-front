@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useContent } from "@/lib/use-content";
 import type { AboutHeroContent } from "@/lib/api-client";
 
@@ -20,12 +19,11 @@ export function AboutHero() {
   return (
     <header className="relative min-h-[calc(100vh-5rem)] flex items-center overflow-hidden">
       <div className="absolute inset-0 w-full h-full">
-        <Image
+        {/* Use native img to support any uploaded image URL without Next.js domain restrictions */}
+        <img
           src={heroImage}
           alt="Corporate team working together"
-          fill
-          className="object-cover grayscale-[20%]"
-          priority
+          className="object-cover w-full h-full grayscale-[20%]"
         />
       </div>
       <div className="absolute inset-0 bg-gradient-to-r from-primary/95 to-primary/40" />

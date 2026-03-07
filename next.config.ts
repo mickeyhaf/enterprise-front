@@ -17,6 +17,15 @@ const nextConfig: NextConfig = {
         hostname: '127.0.0.1',
         port: '3000',
       },
+      // Allow any hostname so uploaded images from the backend always load
+      {
+        protocol: 'http',
+        hostname: '**',
+      },
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
     ],
   },
 };
