@@ -135,6 +135,7 @@ export const CONTENT_BLOCK_SCHEMAS: Record<string, BlockFormSchema> = {
   },
   about_history: {
     label: "About History",
+    category: "About Page",
     fields: [
       { key: "paragraphs", label: "History paragraphs (one per line)", type: "stringList" },
     ],
@@ -299,8 +300,8 @@ export const CONTENT_BLOCK_SCHEMAS: Record<string, BlockFormSchema> = {
     ],
   },
   partners: {
-    label: "Partners",
-    category: "Home Page",
+    label: "Partners & Affiliations",
+    category: "About Page",
     fields: [
       {
         key: "items", label: "Partners", type: "repeater", itemFields: [

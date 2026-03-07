@@ -1,7 +1,6 @@
 "use client";
 
 import { SectionHeader } from "@/components/ui/SectionHeader";
-import Image from "next/image";
 import { useContent } from "@/lib/use-content";
 import type { PartnerItem } from "@/lib/api-client";
 
@@ -76,7 +75,7 @@ export function Partners() {
             >
               <div className="p-8 flex flex-col items-center text-center">
                 <div className="relative w-20 h-20 rounded-2xl overflow-hidden bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm mb-6">
-                  <Image src={partner.image ?? ""} alt={partner.name} fill className="object-cover" />
+                  <img src={partner.image ?? ""} alt={partner.name} className="object-cover w-full h-full" />
                 </div>
                 <h3 className="text-lg font-bold font-display text-slate-900 dark:text-white mb-2 group-hover:text-primary transition-colors">
                   {partner.name}
