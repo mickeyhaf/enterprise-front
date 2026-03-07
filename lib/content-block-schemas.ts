@@ -268,6 +268,7 @@ export const CONTENT_BLOCK_SCHEMAS: Record<string, BlockFormSchema> = {
       { key: "description", label: "Description", type: "textarea" },
       {
         key: "items", label: "Value items", type: "repeater", itemFields: [
+          { key: "icon", label: "Select Icon", type: "icon" },
           { key: "title", label: "Title", type: "text" },
           { key: "description", label: "Description", type: "textarea" },
         ]
@@ -282,6 +283,7 @@ export const CONTENT_BLOCK_SCHEMAS: Record<string, BlockFormSchema> = {
       { key: "description", label: "Description", type: "textarea" },
       {
         key: "stats", label: "Statistics", type: "repeater", itemFields: [
+          { key: "icon", label: "Select Icon", type: "icon" },
           { key: "value", label: "Value", type: "text" },
           { key: "label", label: "Label", type: "text" },
         ]

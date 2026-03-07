@@ -277,6 +277,7 @@ export interface ContactInfo {
 }
 
 export interface ValueItem {
+  icon?: string;
   title: string;
   description: string;
 }
@@ -288,6 +289,7 @@ export interface ValuesContent {
 }
 
 export interface StatItem {
+  icon?: string;
   value: string;
   label: string;
 }

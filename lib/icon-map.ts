@@ -30,6 +30,10 @@ import {
   Shield,
   CheckCircle,
   Home,
+  Sparkles,
+  UserCheck,
+  Trophy,
+  Calendar,
   type LucideIcon,
 } from "lucide-react";
 
@@ -65,6 +69,10 @@ export const ICON_MAP: Record<string, LucideIcon> = {
   Shield,
   CheckCircle,
   Home,
+  Sparkles,
+  UserCheck,
+  Trophy,
+  Calendar,
 };
 
 export function getIcon(name: string): LucideIcon {

@@ -4,6 +4,7 @@ import { ShieldCheck, Sparkles, Medal, Handshake, Leaf, UserCheck, type LucideIc
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { useContent } from "@/lib/use-content";
 import type { ValuesContent } from "@/lib/api-client";
+import { getIcon } from "@/lib/icon-map";
 
 const ICONS: LucideIcon[] = [ShieldCheck, Sparkles, Medal, Handshake, Leaf, UserCheck];
 
@@ -35,7 +36,8 @@ export function Values() {
         />
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {list.map((value, index) => {
-            const Icon = ICONS[index % ICONS.length];
+            // Use stored icon if available, otherwise fall back to the hardcoded cycle
+            const Icon = value.icon ? getIcon(value.icon) : ICONS[index % ICONS.length];
             const borderColor = index % 2 === 0 ? "border-primary" : "border-accent";
             const iconBg = index % 2 === 0 ? "bg-primary/10" : "bg-accent/15";
             const iconColor = index % 2 === 0 ? "text-primary" : "text-accent";
