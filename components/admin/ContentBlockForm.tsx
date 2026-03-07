@@ -9,7 +9,8 @@ import { IconPicker } from "./IconPicker";
 import type { BlockFormSchema, FieldConfig } from "@/lib/content-block-schemas";
 
 function setAt(obj: Record<string, unknown>, path: (string | number)[], value: unknown): Record<string, unknown> {
-  const out = JSON.parse(JSON.stringify(obj));
+  const safe = obj && typeof obj === "object" && !Array.isArray(obj) ? obj : {};
+  const out = JSON.parse(JSON.stringify(safe));
   let cur: unknown = out;
   for (let i = 0; i < path.length - 1; i++) {
     const key = path[i];

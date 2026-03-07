@@ -8,17 +8,20 @@ const DEFAULT_HERO: AboutHeroContent = {
   title: "About Us",
   description:
     "Learn more about our history, mission, and the dedicated team driving our success in the Horn of Africa.",
+  image:
+    "https://lh3.googleusercontent.com/aida-public/AB6AXuDuq25mY3vXtdcC6waRuuYWdh-edBAMgq6MdS_JXCUmLFWfLOoyvNpZoj_099FXdAgo9XaQ8KE8PLMnWwdiQ7MyBH8IGsagy-as-ltkMky2oJGuxvfaONJ99VOQReAmppFueZxJ47Ycar9VSmxPWdSXnw7WzSRmNzGz9fYWQM84mOzB0uRpiD6zNa5QAHqZND5H5k0IyHOohMJrcRfAw9nUa8zYUh0NNjbxcNf0XrtPydzrGQfxKG0nfWx0zSDgwyVglJ7HL0HJW3ir",
 };
 
 export function AboutHero() {
   const { data: content } = useContent<AboutHeroContent>("about_hero");
   const c = content ?? DEFAULT_HERO;
+  const heroImage = c.image?.trim() ? c.image : DEFAULT_HERO.image!;
 
   return (
     <header className="relative min-h-[calc(100vh-5rem)] flex items-center overflow-hidden">
       <div className="absolute inset-0 w-full h-full">
         <Image
-          src="https://lh3.googleusercontent.com/aida-public/AB6AXuDuq25mY3vXtdcC6waRuuYWdh-edBAMgq6MdS_JXCUmLFWfLOoyvNpZoj_099FXdAgo9XaQ8KE8PLMnWwdiQ7MyBH8IGsagy-as-ltkMky2oJGuxvfaONJ99VOQReAmppFueZxJ47Ycar9VSmxPWdSXnw7WzSRmNzGz9fYWQM84mOzB0uRpiD6zNa5QAHqZND5H5k0IyHOohMJrcRfAw9nUa8zYUh0NNjbxcNf0XrtPydzrGQfxKG0nfWx0zSDgwyVglJ7HL0HJW3ir"
+          src={heroImage}
           alt="Corporate team working together"
           fill
           className="object-cover grayscale-[20%]"

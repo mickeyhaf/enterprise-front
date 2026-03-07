@@ -41,8 +41,9 @@ async function fetchApi<T>(path: string, options?: RequestInit): Promise<T> {
           ...DEFAULT_OPTIONS,
         });
         if (refreshRes.ok) {
-          const data = await refreshRes.json();
-          onRefreshed(data.accessToken);
+          const text = await refreshRes.text();
+          const data = text && text.trim() ? (JSON.parse(text) as { accessToken?: string }) : {};
+          onRefreshed(data.accessToken ?? "");
           isRefreshing = false;
           // Retry the original request
           return fetchApi<T>(path, options);
@@ -65,10 +66,26 @@ async function fetchApi<T>(path: string, options?: RequestInit): Promise<T> {
   }
 
   if (!res.ok) {
-    const err = await res.json().catch(() => ({ message: res.statusText }));
-    throw new Error((err as { message?: string }).message ?? res.statusText);
+    const text = await res.text();
+    let err: { message?: string } = { message: res.statusText };
+    if (text && text.trim()) {
+      try {
+        err = JSON.parse(text) as { message?: string };
+      } catch {
+        // use default err
+      }
+    }
+    throw new Error(err.message ?? res.statusText);
   }
-  return res.json();
+  const text = await res.text();
+  if (!text || text.trim() === "") {
+    return null as T;
+  }
+  try {
+    return JSON.parse(text) as T;
+  } catch {
+    throw new Error("Invalid JSON response from server");
+  }
 }
 
 async function postApi<T>(path: string, body: unknown): Promise<T> {
@@ -358,6 +375,7 @@ export interface HomeTrust {
 export interface AboutHeroContent {
   title: string;
   description: string;
+  image?: string;
 }
 
 export interface ContactCTAContent {

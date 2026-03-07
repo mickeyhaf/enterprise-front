@@ -130,6 +130,7 @@ export const CONTENT_BLOCK_SCHEMAS: Record<string, BlockFormSchema> = {
     fields: [
       { key: "title", label: "Title", type: "text" },
       { key: "description", label: "Description", type: "textarea" },
+      { key: "image", label: "Hero image URL", type: "image" },
     ],
   },
   about_history: {
