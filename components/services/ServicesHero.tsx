@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useContent } from "@/lib/use-content";
 import type { ServicesHeroContent } from "@/lib/api-client";
 
@@ -13,6 +12,7 @@ const DEFAULT_SERVICES_HERO: ServicesHeroContent = {
 export function ServicesHero() {
   const { data: content } = useContent<ServicesHeroContent>("services_hero");
   const { title, description, image } = content ?? DEFAULT_SERVICES_HERO;
+  const resolvedImage = image || DEFAULT_SERVICES_HERO.image;
 
   const titleParts = (title ?? DEFAULT_SERVICES_HERO.title).split("Services");
   const hasServices = titleParts.length === 2;
@@ -20,12 +20,12 @@ export function ServicesHero() {
   return (
     <header className="relative min-h-[calc(100vh-5rem)] flex items-center overflow-hidden">
       <div className="absolute inset-0 w-full h-full">
-        <Image
-          src={image ?? DEFAULT_SERVICES_HERO.image}
+        {/* Use plain img tag instead of Next.js Image to avoid optimizer 400 errors on localhost upload URLs */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={resolvedImage}
           alt="Engineering and consultancy services"
-          fill
-          className="object-cover grayscale-[20%]"
-          priority
+          className="object-cover w-full h-full grayscale-[20%]"
         />
       </div>
 

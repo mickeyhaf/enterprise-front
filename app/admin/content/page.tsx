@@ -240,8 +240,6 @@ export default function AdminContentPage() {
             ) : (
               <div className="space-y-2">
                 {Object.entries(groupedSchemas).map(([category, blocks]) => {
-                  const existingInCategory = blocks.filter((b) => keysSet.has(b.key));
-                  if (existingInCategory.length === 0) return null;
                   const isExpanded = expandedCategories.has(category);
                   return (
                     <div key={category}>
@@ -266,7 +264,7 @@ export default function AdminContentPage() {
                       </button>
                       {isExpanded && (
                         <div className="ml-3 mt-1 space-y-0.5 border-l border-slate-200 dark:border-slate-700 pl-2">
-                          {existingInCategory.map(({ key, label }) => (
+                          {blocks.map(({ key, label }) => (
                             <button
                               key={key}
                               onClick={() => selectBlock(key)}
@@ -275,7 +273,12 @@ export default function AdminContentPage() {
                                 : "hover:bg-slate-100 dark:hover:bg-slate-800"
                                 }`}
                             >
-                              {label}
+                              <span>{label}</span>
+                              {!keysSet.has(key) && (
+                                <span className={`ml-1 text-[10px] font-semibold px-1 py-0.5 rounded ${selectedKey === key ? "bg-white/20 text-white" : "bg-amber-100 dark:bg-amber-900/40 text-amber-600 dark:text-amber-400"}`}>
+                                  NEW
+                                </span>
+                              )}
                             </button>
                           ))}
                         </div>
@@ -313,6 +316,13 @@ export default function AdminContentPage() {
                 <ChevronRight className="w-4 h-4" />
                 <span className="text-slate-900 dark:text-white font-medium">{schema?.label ?? selectedKey}</span>
               </div>
+
+              {!isError && block === null && selectedKey && !keysSet.has(selectedKey) && (
+                <div className="p-4 rounded-lg bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-800 text-sm mb-2">
+                  <p className="font-semibold">This block has not been configured yet.</p>
+                  <p className="mt-1">Click <strong>Edit Section</strong> to set the content for this block and save it.</p>
+                </div>
+              )}
 
               <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden shadow-sm">
                 {!isEditing && (
