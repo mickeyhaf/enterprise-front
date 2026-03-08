@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Plus, Pencil, Trash2 } from "lucide-react";
+import { Plus, Pencil, Trash2, Bold, Italic, Heading2, List } from "lucide-react";
 import { api } from "@/lib/api-client";
 import type { EngagementPost } from "@/lib/api-client";
 import { Button } from "@/components/ui/button";
+import { ImageUpload } from "@/components/admin/ImageUpload";
 
 function slugify(s: string) {
   return s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
@@ -15,6 +16,7 @@ export default function AdminEngagementPage() {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editing, setEditing] = useState<EngagementPost | null>(null);
   const [form, setForm] = useState({ slug: "", title: "", excerpt: "", date: "", author: "", category: "", image: "", content: "" });
+  const contentRef = useRef<HTMLTextAreaElement>(null);
   const queryClient = useQueryClient();
   const { data: posts, isLoading } = useQuery({
     queryKey: ["admin", "engagement"],
@@ -65,6 +67,26 @@ export default function AdminEngagementPage() {
     setForm((f) => ({ ...f, title, slug: f.slug || slugify(title) }));
   }
 
+  function insertMarkdown(prefix: string, suffix: string = "") {
+    if (!contentRef.current) return;
+    const start = contentRef.current.selectionStart;
+    const end = contentRef.current.selectionEnd;
+    const text = form.content;
+    const before = text.substring(0, start);
+    const selected = text.substring(start, end);
+    const after = text.substring(end);
+    
+    setForm(f => ({ ...f, content: before + prefix + selected + suffix + after }));
+    
+    // Reset focus and selection
+    setTimeout(() => {
+      if (contentRef.current) {
+        contentRef.current.focus();
+        contentRef.current.setSelectionRange(start + prefix.length, end + prefix.length);
+      }
+    }, 0);
+  }
+
   return (
     <div>
       <div className="flex items-center justify-between mb-8">
@@ -85,9 +107,30 @@ export default function AdminEngagementPage() {
             <div><label className="block text-sm font-medium mb-1">Date</label><input type="text" value={form.date} onChange={(e) => setForm((f) => ({ ...f, date: e.target.value }))} placeholder="e.g. 2024-01-15" className="w-full px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800" /></div>
             <div><label className="block text-sm font-medium mb-1">Author</label><input type="text" value={form.author} onChange={(e) => setForm((f) => ({ ...f, author: e.target.value }))} className="w-full px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800" /></div>
           </div>
-          <div><label className="block text-sm font-medium mb-1">Excerpt</label><textarea value={form.excerpt} onChange={(e) => setForm((f) => ({ ...f, excerpt: e.target.value }))} rows={2} className="w-full px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800" /></div>
-          <div><label className="block text-sm font-medium mb-1">Image URL</label><input type="url" value={form.image} onChange={(e) => setForm((f) => ({ ...f, image: e.target.value }))} className="w-full px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800" /></div>
-          <div><label className="block text-sm font-medium mb-1">Content</label><textarea value={form.content} onChange={(e) => setForm((f) => ({ ...f, content: e.target.value }))} rows={6} className="w-full px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800" /></div>
+          <div className="grid sm:grid-cols-2 gap-4">
+            <div><label className="block text-sm font-medium mb-1">Category</label><input type="text" value={form.category} onChange={(e) => setForm((f) => ({ ...f, category: e.target.value }))} placeholder="e.g. CSR, Event" className="w-full px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800" /></div>
+            <div><label className="block text-sm font-medium mb-1">Excerpt</label><textarea value={form.excerpt} onChange={(e) => setForm((f) => ({ ...f, excerpt: e.target.value }))} rows={2} className="w-full px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800" /></div>
+          </div>
+          <ImageUpload label="Image" value={form.image} onChange={(url) => setForm((f) => ({ ...f, image: url }))} />
+          <div>
+            <label className="block text-sm font-medium mb-1">Content</label>
+            <div className="border border-slate-200 dark:border-slate-700 rounded-t-lg bg-slate-50 dark:bg-slate-800/50 p-2 flex gap-1 border-b-0">
+              <Button type="button" variant="ghost" size="icon-sm" onClick={() => insertMarkdown("**", "**")} title="Bold">
+                <Bold className="w-4 h-4" />
+              </Button>
+              <Button type="button" variant="ghost" size="icon-sm" onClick={() => insertMarkdown("_", "_")} title="Italic">
+                <Italic className="w-4 h-4" />
+              </Button>
+              <div className="w-px h-5 bg-slate-300 dark:bg-slate-700 my-auto mx-1" />
+              <Button type="button" variant="ghost" size="icon-sm" onClick={() => insertMarkdown("## ")} title="Heading 2">
+                <Heading2 className="w-4 h-4" />
+              </Button>
+              <Button type="button" variant="ghost" size="icon-sm" onClick={() => insertMarkdown("- ")} title="Bullet List">
+                <List className="w-4 h-4" />
+              </Button>
+            </div>
+            <textarea ref={contentRef} value={form.content} onChange={(e) => setForm((f) => ({ ...f, content: e.target.value }))} rows={10} className="w-full px-4 py-3 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 rounded-b-lg focus:outline-none focus:ring-2 focus:ring-primary/50 font-mono text-sm" />
+          </div>
           <div className="flex gap-2"><Button type="submit" disabled={createMutation.isPending || updateMutation.isPending}>{editing ? "Update" : "Create"}</Button><Button type="button" variant="outline" onClick={resetForm}>Cancel</Button></div>
         </form>
       )}

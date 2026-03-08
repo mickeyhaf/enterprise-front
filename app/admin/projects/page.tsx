@@ -6,6 +6,8 @@ import { Plus, Pencil, Trash2 } from "lucide-react";
 import { api } from "@/lib/api-client";
 import type { Project } from "@/lib/api-client";
 import { Button } from "@/components/ui/button";
+import { ImageUpload } from "@/components/admin/ImageUpload";
+import { IconPicker } from "@/components/admin/IconPicker";
 
 function slugify(s: string) {
   return s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
@@ -14,7 +16,14 @@ function slugify(s: string) {
 export default function AdminProjectsPage() {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editing, setEditing] = useState<Project | null>(null);
-  const [form, setForm] = useState({ slug: "", title: "", category: "", image: "", description: "" });
+  const [form, setForm] = useState<{
+    slug: string; title: string; category: string; image: string; description: string;
+    challenge: string; solution: string; impact: string; icon: string;
+    location: string; year: string; client: string;
+  }>({
+    slug: "", title: "", category: "", image: "", description: "",
+    challenge: "", solution: "", impact: "", icon: "", location: "", year: "", client: ""
+  });
   const queryClient = useQueryClient();
   const { data: projects, isLoading } = useQuery({
     queryKey: ["admin", "projects"],
@@ -34,14 +43,21 @@ export default function AdminProjectsPage() {
   });
 
   function resetForm() {
-    setForm({ slug: "", title: "", category: "", image: "", description: "" });
+    setForm({
+      slug: "", title: "", category: "", image: "", description: "",
+      challenge: "", solution: "", impact: "", icon: "", location: "", year: "", client: ""
+    });
     setEditing(null);
     setIsFormOpen(false);
   }
 
   function openEdit(p: Project) {
     setEditing(p);
-    setForm({ slug: p.slug, title: p.title, category: p.category ?? "", image: p.image ?? "", description: p.description ?? "" });
+    setForm({
+      slug: p.slug, title: p.title, category: p.category ?? "", image: p.image ?? "", description: p.description ?? "",
+      challenge: p.challenge ?? "", solution: p.solution ?? "", impact: p.impact ?? "", icon: p.icon ?? "",
+      location: p.location ?? "", year: p.year ?? "", client: p.client ?? ""
+    });
     setIsFormOpen(true);
   }
 
@@ -72,9 +88,27 @@ export default function AdminProjectsPage() {
             <div><label className="block text-sm font-medium mb-1">Title</label><input type="text" required value={form.title} onChange={(e) => handleTitleChange(e.target.value)} className="w-full px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800" /></div>
             <div><label className="block text-sm font-medium mb-1">Slug</label><input type="text" required value={form.slug} onChange={(e) => setForm((f) => ({ ...f, slug: e.target.value }))} className="w-full px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800" /></div>
           </div>
-          <div><label className="block text-sm font-medium mb-1">Category</label><input type="text" value={form.category} onChange={(e) => setForm((f) => ({ ...f, category: e.target.value }))} className="w-full px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800" /></div>
-          <div><label className="block text-sm font-medium mb-1">Image URL</label><input type="url" value={form.image} onChange={(e) => setForm((f) => ({ ...f, image: e.target.value }))} className="w-full px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800" /></div>
-          <div><label className="block text-sm font-medium mb-1">Description</label><textarea value={form.description} onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))} rows={4} className="w-full px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800" /></div>
+          <div className="grid sm:grid-cols-2 gap-4">
+            <div><label className="block text-sm font-medium mb-1">Category</label><input type="text" value={form.category} onChange={(e) => setForm((f) => ({ ...f, category: e.target.value }))} className="w-full px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800" /></div>
+            <IconPicker label="Icon" value={form.icon} onChange={(iconName) => setForm((f) => ({ ...f, icon: iconName }))} />
+          </div>
+          
+          <div className="grid sm:grid-cols-3 gap-4">
+            <div><label className="block text-sm font-medium mb-1">Location</label><input type="text" value={form.location} onChange={(e) => setForm((f) => ({ ...f, location: e.target.value }))} className="w-full px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800" /></div>
+            <div><label className="block text-sm font-medium mb-1">Year</label><input type="text" value={form.year} onChange={(e) => setForm((f) => ({ ...f, year: e.target.value }))} className="w-full px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800" /></div>
+            <div><label className="block text-sm font-medium mb-1">Client</label><input type="text" value={form.client} onChange={(e) => setForm((f) => ({ ...f, client: e.target.value }))} className="w-full px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800" /></div>
+          </div>
+
+          <ImageUpload label="Image" value={form.image} onChange={(url) => setForm((f) => ({ ...f, image: url }))} />
+          
+          <div><label className="block text-sm font-medium mb-1">Short Description</label><textarea value={form.description} onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))} rows={2} className="w-full px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800" /></div>
+          
+          <div className="grid lg:grid-cols-2 gap-4">
+            <div><label className="block text-sm font-medium mb-1">The Challenge</label><textarea value={form.challenge} onChange={(e) => setForm((f) => ({ ...f, challenge: e.target.value }))} rows={4} className="w-full px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800" /></div>
+            <div><label className="block text-sm font-medium mb-1">Our Solution</label><textarea value={form.solution} onChange={(e) => setForm((f) => ({ ...f, solution: e.target.value }))} rows={4} className="w-full px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800" /></div>
+          </div>
+
+          <div><label className="block text-sm font-medium mb-1">Key Impact Quote</label><textarea value={form.impact} onChange={(e) => setForm((f) => ({ ...f, impact: e.target.value }))} rows={2} className="w-full px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800" /></div>
           <div className="flex gap-2"><Button type="submit" disabled={createMutation.isPending || updateMutation.isPending}>{editing ? "Update" : "Create"}</Button><Button type="button" variant="outline" onClick={resetForm}>Cancel</Button></div>
         </form>
       )}

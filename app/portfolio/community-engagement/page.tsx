@@ -7,7 +7,6 @@ import { PageShell } from "@/components/layout/PageShell";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { Users, Calendar, ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
 import Link from "next/link";
 import { fetchEngagementPosts } from "@/lib/community-engagement";
 
@@ -24,12 +23,11 @@ export default function CommunityEngagementPage() {
             <header className="relative min-h-[calc(100vh-5rem)] flex items-center overflow-hidden">
                 {/* Background Image */}
                 <div className="absolute inset-0 w-full h-full">
-                    <Image
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
                         src="https://lh3.googleusercontent.com/aida-public/AB6AXuDCtxVlcl-gnjzWsuPlV6PxBvqqR1hdBZEw6kBWG6u07uAL4mBktYhy_vE5wOVnSn86F4SyCqTNkBGnOAZFmT2L1J4BmV-j-41sFOkGVi8H-0b63_se1gelW8aW-bmS1k3fa9-ZtNaRirti2pAl6mFEsKhuUTT_tzlyw3jIr0ilKu2CSyndyw73u-KJsjEJvJndBI3P1cV0zIvFyIPAeVCnzK4M3400wYIaIvX668JrC7NiRwlEeOjKg8DF97Gd31pFa7i1j4zIkZQZ"
                         alt="Community engagement hero"
-                        fill
-                        className="object-cover grayscale-[20%]"
-                        priority
+                        className="w-full h-full object-cover grayscale-[20%]"
                     />
                 </div>
 
@@ -74,11 +72,11 @@ export default function CommunityEngagementPage() {
                         {posts.map((item) => (
                             <div key={item.id} className="group bg-white dark:bg-slate-900 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 hover:shadow-2xl transition-all duration-500 flex flex-col h-full hover:-translate-y-1">
                                 <div className="relative h-64 w-full overflow-hidden">
-                                    <Image
+                                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                                    <img
                                         src={item.image}
                                         alt={item.title}
-                                        fill
-                                        className="object-cover group-hover:scale-110 transition-transform duration-700"
+                                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                                     />
                                     <div className="absolute top-4 left-4 bg-primary text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest shadow-lg">
                                         {item.category ?? "Engagement"}

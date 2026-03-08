@@ -54,12 +54,11 @@ export default function EngagementPostPage({ params }: { params: Promise<{ slug:
 
             {/* Hero Section */}
             <div className="relative h-[65vh] min-h-[500px] w-full">
-                <Image
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
                     src={post.image ?? ""}
                     alt={post.title}
-                    fill
-                    className="object-cover"
-                    priority
+                    className="w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 bg-slate-900/75 backdrop-blur-[2px]"></div>
                 <div className="absolute inset-0 flex items-center justify-center">

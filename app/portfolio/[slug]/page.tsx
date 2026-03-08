@@ -56,12 +56,11 @@ export default function ProjectDetailPage({ params }: { params: Promise<{ slug: 
 
             {/* Hero Section */}
             <div className="relative h-[65vh] min-h-[500px] w-full">
-                <Image
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
                     src={project.image}
                     alt={project.title}
-                    fill
-                    className="object-cover"
-                    priority
+                    className="w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 bg-slate-900/70 backdrop-blur-[2px]"></div>
                 <div className="absolute inset-0 flex items-center justify-center">
