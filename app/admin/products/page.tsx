@@ -15,7 +15,14 @@ function slugify(s: string) {
 export default function AdminProductsPage() {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editing, setEditing] = useState<Product | null>(null);
-  const [form, setForm] = useState({ slug: "", title: "", shortDescription: "", image: "", overview: "" });
+  const [form, setForm] = useState<{
+    slug: string;
+    title: string;
+    shortDescription: string;
+    image: string;
+    overview: string;
+    highlights: string[];
+  }>({ slug: "", title: "", shortDescription: "", image: "", overview: "", highlights: [] });
   const queryClient = useQueryClient();
   const { data: products, isLoading } = useQuery({
     queryKey: ["admin", "products"],
@@ -35,14 +42,21 @@ export default function AdminProductsPage() {
   });
 
   function resetForm() {
-    setForm({ slug: "", title: "", shortDescription: "", image: "", overview: "" });
+    setForm({ slug: "", title: "", shortDescription: "", image: "", overview: "", highlights: [] });
     setEditing(null);
     setIsFormOpen(false);
   }
 
   function openEdit(p: Product) {
     setEditing(p);
-    setForm({ slug: p.slug, title: p.title, shortDescription: p.shortDescription ?? "", image: p.image ?? "", overview: p.overview ?? "" });
+    setForm({ 
+      slug: p.slug, 
+      title: p.title, 
+      shortDescription: p.shortDescription ?? "", 
+      image: p.image ?? "", 
+      overview: p.overview ?? "",
+      highlights: p.highlights ?? [] 
+    });
     setIsFormOpen(true);
   }
 
@@ -76,7 +90,48 @@ export default function AdminProductsPage() {
           <div><label className="block text-sm font-medium mb-1">Short Description</label><input type="text" value={form.shortDescription} onChange={(e) => setForm((f) => ({ ...f, shortDescription: e.target.value }))} className="w-full px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800" /></div>
           <ImageUpload label="Image" value={form.image} onChange={(url) => setForm((f) => ({ ...f, image: url }))} />
           <div><label className="block text-sm font-medium mb-1">Overview</label><textarea value={form.overview} onChange={(e) => setForm((f) => ({ ...f, overview: e.target.value }))} rows={4} className="w-full px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800" /></div>
-          <div className="flex gap-2"><Button type="submit" disabled={createMutation.isPending || updateMutation.isPending}>{editing ? "Update" : "Create"}</Button><Button type="button" variant="outline" onClick={resetForm}>Cancel</Button></div>
+          
+          <div>
+            <div className="flex items-center justify-between mb-1">
+              <label className="block text-sm font-medium">Key Highlights</label>
+              <Button type="button" variant="outline" size="sm" onClick={() => setForm(f => ({ ...f, highlights: [...f.highlights, ""] }))} className="gap-1 h-7 text-xs">
+                <Plus className="w-3 h-3" /> Add Highlight
+              </Button>
+            </div>
+            <div className="space-y-2">
+              {form.highlights.length === 0 && <div className="text-sm text-slate-500 italic py-2">No highlights added yet.</div>}
+              {form.highlights.map((highlight, index) => (
+                <div key={index} className="flex gap-2 items-start">
+                  <input
+                    type="text"
+                    value={highlight}
+                    onChange={(e) => {
+                      const newHighlights = [...form.highlights];
+                      newHighlights[index] = e.target.value;
+                      setForm(f => ({ ...f, highlights: newHighlights }));
+                    }}
+                    placeholder={`Highlight ${index + 1}`}
+                    className="flex-1 px-4 py-2 text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800"
+                  />
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => {
+                      const newHighlights = [...form.highlights];
+                      newHighlights.splice(index, 1);
+                      setForm(f => ({ ...f, highlights: newHighlights }));
+                    }}
+                    className="text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/50 shrink-0"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </Button>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="flex gap-2 pt-2"><Button type="submit" disabled={createMutation.isPending || updateMutation.isPending}>{editing ? "Update" : "Create"}</Button><Button type="button" variant="outline" onClick={resetForm}>Cancel</Button></div>
         </form>
       )}
       {isLoading ? <div className="text-slate-500">Loading...</div> : (
