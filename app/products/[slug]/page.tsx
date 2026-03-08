@@ -3,7 +3,6 @@ import { Footer } from "@/components/layout/Footer";
 import { PageShell } from "@/components/layout/PageShell";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { getProductBySlug } from "@/lib/products";
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, CheckCircle, Package } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -23,12 +22,11 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
       {/* Hero */}
       <header className="relative min-h-[calc(100vh-5rem)] flex items-center overflow-hidden">
         <div className="absolute inset-0 w-full h-full">
-          <Image
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
             src={product.image}
             alt={product.title}
-            fill
-            className="object-cover grayscale-[20%]"
-            priority
+            className="w-full h-full object-cover grayscale-[20%]"
           />
         </div>
         <div className="absolute inset-0 bg-gradient-to-r from-primary/95 to-primary/40"></div>
@@ -69,7 +67,8 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
               <SectionHeader title="Overview" description={product.overview} className="mb-8" />
               <div className="rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-xl">
                 <div className="relative h-[420px] w-full">
-                  <Image src={product.image} alt={product.title} fill className="object-cover" />
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={product.image} alt={product.title} className="w-full h-full object-cover" />
                 </div>
               </div>
             </div>
