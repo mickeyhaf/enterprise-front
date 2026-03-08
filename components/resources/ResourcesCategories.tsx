@@ -4,9 +4,8 @@ import { SectionHeader } from "@/components/ui/SectionHeader";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
-import { useContent } from "@/lib/use-content";
 import { getIcon } from "@/lib/icon-map";
-import type { ResourcesCategoriesContent, ResourcesCategoryItem } from "@/lib/api-client";
+import type { ResourcesCategoryItem } from "@/lib/api-client";
 
 const DEFAULT_CATEGORIES: ResourcesCategoryItem[] = [
   { title: "Brochures", description: "Download our latest corporate brochures and service catalogs.", icon: "Presentation", link: "/resources/brochures" },
@@ -16,8 +15,7 @@ const DEFAULT_CATEGORIES: ResourcesCategoryItem[] = [
 ];
 
 export function ResourcesCategories() {
-  const { data: content } = useContent<ResourcesCategoriesContent>("resources_categories");
-  const items = content?.items?.length ? content.items : DEFAULT_CATEGORIES;
+  const items = DEFAULT_CATEGORIES;
 
   return (
     <section className="py-24 bg-white dark:bg-slate-900">

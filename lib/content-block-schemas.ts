@@ -247,20 +247,7 @@ export const CONTENT_BLOCK_SCHEMAS: Record<string, BlockFormSchema> = {
       { key: "image", label: "Image URL", type: "image" },
     ],
   },
-  resources_categories: {
-    label: "Resources Categories",
-    category: "Resources Page",
-    fields: [
-      {
-        key: "items", label: "Categories", type: "repeater", itemFields: [
-          { key: "title", label: "Title", type: "text" },
-          { key: "description", label: "Description", type: "textarea" },
-          { key: "icon", label: "Select Icon", type: "icon" },
-          { key: "link", label: "Link", type: "text" },
-        ]
-      },
-    ],
-  },
+
   values: {
     label: "Values",
     category: "About Page",

@@ -6,6 +6,7 @@ import { Plus, Pencil, Trash2 } from "lucide-react";
 import { api } from "@/lib/api-client";
 import type { ResourceItem } from "@/lib/api-client";
 import { Button } from "@/components/ui/button";
+import { FileUpload } from "@/components/admin/FileUpload";
 
 const CATEGORIES = ["brochures", "whitepapers", "case-studies", "reports"];
 
@@ -71,7 +72,7 @@ export default function AdminResourcesPage() {
           <div><label className="block text-sm font-medium mb-1">Title</label><input type="text" required value={form.title} onChange={(e) => setForm((f) => ({ ...f, title: e.target.value }))} className="w-full px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800" /></div>
           <div><label className="block text-sm font-medium mb-1">Description</label><textarea value={form.description} onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))} rows={2} className="w-full px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800" /></div>
           <div><label className="block text-sm font-medium mb-1">Category</label><select value={form.category} onChange={(e) => setForm((f) => ({ ...f, category: e.target.value }))} className="w-full px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800"><option value="brochures">Brochures</option><option value="whitepapers">Whitepapers</option><option value="case-studies">Case Studies</option><option value="reports">Reports</option></select></div>
-          <div><label className="block text-sm font-medium mb-1">File URL</label><input type="url" value={form.fileUrl} onChange={(e) => setForm((f) => ({ ...f, fileUrl: e.target.value }))} className="w-full px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800" /></div>
+          <FileUpload label="File" value={form.fileUrl} onChange={(url) => setForm((f) => ({ ...f, fileUrl: url }))} />
           <div><label className="block text-sm font-medium mb-1">File Size</label><input type="text" value={form.fileSize} onChange={(e) => setForm((f) => ({ ...f, fileSize: e.target.value }))} placeholder="e.g. 2.4 MB" className="w-full px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800" /></div>
           <div className="flex gap-2"><Button type="submit" disabled={createMutation.isPending || updateMutation.isPending}>{editing ? "Update" : "Create"}</Button><Button type="button" variant="outline" onClick={resetForm}>Cancel</Button></div>
         </form>
